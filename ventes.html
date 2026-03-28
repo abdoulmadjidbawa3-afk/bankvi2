@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BANKVI — Ventes</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-logo">BANK<span>VI</span></div>
+    <div class="nav-date" id="nav-date"></div>
+    <div class="nav-avatar" id="nav-avatar">?</div>
+  </nav>
+
+  <main class="main-content">
+    <section class="hero-card" style="background:#0a6e4f;">
+      <div class="hero-left">
+        <p class="hero-label">Total ventes — aujourd'hui</p>
+        <h1 class="hero-amount" id="hero-amount">0 F</h1>
+        <p class="hero-sub" id="hero-sub">0 ventes enregistrées</p>
+      </div>
+      <div class="hero-badge">Aujourd'hui</div>
+      <div class="hero-stats">
+        <div class="hero-stat"><span class="hs-label">Cash</span><span class="hs-val green" id="stat-cash">0 F</span></div>
+        <div class="hero-stat"><span class="hs-label">À crédit</span><span class="hs-val warn" id="stat-credit">0 F</span></div>
+        <div class="hero-stat"><span class="hs-label">Cette semaine</span><span class="hs-val" id="stat-semaine">0 F</span></div>
+      </div>
+    </section>
+
+    <button class="btn-primary btn-green" onclick="document.getElementById('modal-vente').classList.add('open')">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+      Enregistrer une vente
+    </button>
+
+    <div class="tabs-row">
+      <button class="tab-btn active" onclick="switchTab(this, 'jour')">Aujourd'hui</button>
+      <button class="tab-btn" onclick="switchTab(this, 'semaine')">Cette semaine</button>
+      <button class="tab-btn" onclick="switchTab(this, 'mois')">Ce mois</button>
+    </div>
+
+    <div class="cards-list" id="liste-ventes">
+      <div style="padding:1.5rem;text-align:center;color:#a0a0a0;font-size:14px;">Chargement...</div>
+    </div>
+  </main>
+
+  <nav class="bottom-nav">
+    <a href="index.html" class="bn-item"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><rect x="2" y="2" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="10" y="2" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="2" y="10" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="10" y="10" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>Accueil</a>
+    <a href="dettes.html" class="bn-item"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M9 6v3l2 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Dettes</a>
+    <a href="ventes.html" class="bn-item active"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><path d="M3 12l3-3 3 3 3-4 3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Ventes</a>
+    <a href="stocks.html" class="bn-item"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><rect x="3" y="3" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M6 9h6M9 6v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Stocks</a>
+    <a href="profil.html" class="bn-item"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="6" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M3 15c0-3 2.7-5 6-5s6 2 6 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Profil</a>
+  </nav>
+
+  <div class="modal-bg" id="modal-vente">
+    <div class="modal">
+      <h3 class="modal-title">Nouvelle vente</h3>
+      <div class="field"><label>Produit vendu</label><input type="text" id="vente-produit" placeholder="Ex: Sac de riz 50kg"></div>
+      <div class="field-row">
+        <div class="field"><label>Quantité</label><input type="number" id="vente-quantite" placeholder="Ex: 2"></div>
+        <div class="field"><label>Prix total (FCFA)</label><input type="number" id="vente-montant" placeholder="Ex: 22000"></div>
+      </div>
+      <div class="field">
+        <label>Mode de paiement</label>
+        <div class="pay-modes">
+          <button class="pay-mode active" onclick="selectMode(this)">Cash</button>
+          <button class="pay-mode" onclick="selectMode(this)">À crédit</button>
+          <button class="pay-mode" onclick="selectMode(this)">Partiel</button>
+        </div>
+      </div>
+      <div class="field"><label>Client (optionnel)</label><input type="text" id="vente-client" placeholder="Ex: Afi Koffi"></div>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="document.getElementById('modal-vente').classList.remove('open')">Annuler</button>
+        <button class="btn-save" id="btn-save-vente">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script src="js/ventes.js"></script>
+</body>
+</html>

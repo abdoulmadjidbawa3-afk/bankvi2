@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BANKVI — Profil</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-logo">BANK<span>VI</span></div>
+    <div class="nav-date" id="nav-date"></div>
+    <div class="nav-avatar" id="nav-avatar">?</div>
+  </nav>
+
+  <main class="main-content">
+    <section class="hero-card profil-hero">
+      <div class="profil-info">
+        <div class="profil-avatar" id="profil-avatar">?</div>
+        <div>
+          <h2 class="profil-name" id="profil-nom">--</h2>
+          <p class="profil-shop" id="profil-boutique">--</p>
+          <p class="profil-since">Membre BANKVI</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="metrics-grid" style="grid-template-columns:repeat(3,minmax(0,1fr));margin-bottom:1.25rem;">
+      <div class="metric-card"><p class="metric-label">Aujourd'hui</p><h2 class="metric-value blue" id="p-ventes">0 F</h2><p class="metric-sub">ventes</p></div>
+      <div class="metric-card"><p class="metric-label">Dettes</p><h2 class="metric-value red" id="p-dettes">0</h2><p class="metric-sub">en cours</p></div>
+      <div class="metric-card"><p class="metric-label">Produits</p><h2 class="metric-value green" id="p-stocks">0</h2><p class="metric-sub">en stock</p></div>
+    </div>
+
+    <p class="list-section-label">Préférences</p>
+    <div class="cards-list menu-list">
+      <div class="menu-item">
+        <div class="lc-left">
+          <div class="menu-icon blue"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#185FA5" stroke-width="1.5"/><path d="M8 5v3l2 2" stroke="#185FA5" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+          <div><p class="lc-name">Alertes de stock</p><p class="lc-sub">Notification rupture</p></div>
+        </div>
+        <div class="toggle on" onclick="this.classList.toggle('on')"><div class="toggle-thumb"></div></div>
+      </div>
+      <div class="menu-item">
+        <div class="lc-left">
+          <div class="menu-icon red"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#D85A30" stroke-width="1.5"/><path d="M8 5v3l2 2" stroke="#D85A30" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+          <div><p class="lc-name">Rappels de dettes</p><p class="lc-sub">Alerte dettes en retard</p></div>
+        </div>
+        <div class="toggle on" onclick="this.classList.toggle('on')"><div class="toggle-thumb"></div></div>
+      </div>
+    </div>
+
+    <p class="list-section-label" style="margin-top:1.25rem;">Aide</p>
+    <div class="cards-list menu-list">
+      <a href="#" class="menu-item">
+        <div class="lc-left">
+          <div class="menu-icon blue"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#185FA5" stroke-width="1.5"/><path d="M8 10V9c1.1 0 2-.9 2-2S9.1 5 8 5 6 5.9 6 7" stroke="#185FA5" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="12" r="0.8" fill="#185FA5"/></svg></div>
+          <div><p class="lc-name">Guide d'utilisation</p><p class="lc-sub">Comment utiliser BANKVI</p></div>
+        </div>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="#a0a0a0" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </a>
+    </div>
+
+    <button class="btn-logout" id="btn-logout">Se déconnecter</button>
+    <p class="version-text">BANKVI v1.0 — Fait au Togo 🇹🇬</p>
+  </main>
+
+  <nav class="bottom-nav">
+    <a href="index.html" class="bn-item"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><rect x="2" y="2" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="10" y="2" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="2" y="10" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="10" y="10" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>Accueil</a>
+    <a href="dettes.html" class="bn-item"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M9 6v3l2 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Dettes</a>
+    <a href="ventes.html" class="bn-item"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><path d="M3 12l3-3 3 3 3-4 3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Ventes</a>
+    <a href="stocks.html" class="bn-item"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><rect x="3" y="3" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M6 9h6M9 6v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Stocks</a>
+    <a href="profil.html" class="bn-item active"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="6" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M3 15c0-3 2.7-5 6-5s6 2 6 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Profil</a>
+  </nav>
+
+  <script src="js/app.js"></script>
+  <script src="js/profil.js"></script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BANKVI — Connexion</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f5f5f3; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 1rem; }
+    .box { background: #fff; border-radius: 20px; padding: 2rem 1.5rem; width: 100%; max-width: 380px; border: 0.5px solid #e8e8e8; }
+    .logo { text-align: center; font-size: 32px; font-weight: 700; letter-spacing: -1px; color: #1a1a1a; margin-bottom: 6px; }
+    .logo span { color: #185FA5; }
+    .tagline { text-align: center; font-size: 13px; color: #6b6b6b; margin-bottom: 1.5rem; }
+    .tabs { display: flex; background: #f5f5f3; border-radius: 8px; padding: 3px; margin-bottom: 1.5rem; }
+    .tab { flex: 1; text-align: center; padding: 8px; font-size: 13px; font-weight: 500; border-radius: 6px; cursor: pointer; border: none; background: none; color: #6b6b6b; }
+    .tab.active { background: #fff; color: #1a1a1a; border: 0.5px solid #e8e8e8; }
+    .field { margin-bottom: 1rem; }
+    .field label { display: block; font-size: 12px; color: #6b6b6b; margin-bottom: 6px; }
+    .field input { width: 100%; padding: 11px 12px; border: 0.5px solid #e8e8e8; border-radius: 8px; font-size: 14px; color: #1a1a1a; outline: none; }
+    .field input:focus { border-color: #185FA5; }
+    .btn { width: 100%; padding: 13px; border: none; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; color: #fff; background: #185FA5; margin-top: 4px; }
+    .btn.green { background: #1D9E75; }
+    .msg { padding: 10px 14px; border-radius: 8px; font-size: 13px; margin-bottom: 1rem; display: none; }
+    .msg.error { background: #FAECE7; color: #993C1D; }
+    .msg.success { background: #E1F5EE; color: #0F6E56; }
+    .footer { text-align: center; font-size: 11px; color: #a0a0a0; margin-top: 1.5rem; }
+    #form-register { display: none; }
+  </style>
+</head>
+<body>
+<div class="box">
+  <div class="logo">BANK<span>VI</span></div>
+  <p class="tagline">Gère ton commerce. Protège ton argent.</p>
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('login', this)">Connexion</button>
+    <button class="tab" onclick="switchTab('register', this)">Inscription</button>
+  </div>
+  <div id="form-login">
+    <div class="msg error" id="err-login"></div>
+    <div class="field"><label>Numéro de téléphone</label><input type="tel" id="login-tel" placeholder="Ex: 90000000"></div>
+    <div class="field"><label>Mot de passe</label><input type="password" id="login-pwd" placeholder="Ton mot de passe"></div>
+    <button class="btn" onclick="seConnecter()">Se connecter</button>
+  </div>
+  <div id="form-register">
+    <div class="msg error" id="err-register"></div>
+    <div class="msg success" id="suc-register"></div>
+    <div class="field"><label>Nom complet</label><input type="text" id="reg-nom" placeholder="Ex: Kofi Mensah"></div>
+    <div class="field"><label>Nom de ta boutique</label><input type="text" id="reg-boutique" placeholder="Ex: Boutique Mensah"></div>
+    <div class="field"><label>Numéro de téléphone</label><input type="tel" id="reg-tel" placeholder="Ex: 90000000"></div>
+    <div class="field"><label>Mot de passe</label><input type="password" id="reg-pwd" placeholder="Minimum 6 caractères"></div>
+    <button class="btn green" onclick="sInscrire()">Créer mon compte</button>
+  </div>
+  <p class="footer">BANKVI v1.0 — Fait au Togo 🇹🇬</p>
+</div>
+<script>
+  const API = window.location.origin + '/api';
+  if (localStorage.getItem('bankvi_token')) window.location.href = 'index.html';
+
+  function switchTab(tab, el) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('form-login').style.display = tab === 'login' ? 'block' : 'none';
+    document.getElementById('form-register').style.display = tab === 'register' ? 'block' : 'none';
+  }
+
+  async function seConnecter() {
+    const tel = document.getElementById('login-tel').value.trim();
+    const pwd = document.getElementById('login-pwd').value;
+    const err = document.getElementById('err-login');
+    err.style.display = 'none';
+    if (!tel || !pwd) { err.textContent = 'Remplis tous les champs'; err.style.display = 'block'; return; }
+    try {
+      const res = await fetch(`${API}/login`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ tel, password: pwd }) });
+      const data = await res.json();
+      if (res.ok) {
+        localStorage.setItem('bankvi_token', data.token);
+        localStorage.setItem('bankvi_user', JSON.stringify(data.user));
+        window.location.href = 'index.html';
+      } else { err.textContent = data.message; err.style.display = 'block'; }
+    } catch(e) { err.textContent = 'Erreur serveur — réessaie'; err.style.display = 'block'; }
+  }
+
+  async function sInscrire() {
+    const nom = document.getElementById('reg-nom').value.trim();
+    const boutique = document.getElementById('reg-boutique').value.trim();
+    const tel = document.getElementById('reg-tel').value.trim();
+    const pwd = document.getElementById('reg-pwd').value;
+    const err = document.getElementById('err-register');
+    const suc = document.getElementById('suc-register');
+    err.style.display = 'none'; suc.style.display = 'none';
+    if (!nom || !boutique || !tel || !pwd) { err.textContent = 'Remplis tous les champs'; err.style.display = 'block'; return; }
+    if (pwd.length < 6) { err.textContent = 'Mot de passe trop court'; err.style.display = 'block'; return; }
+    try {
+      const res = await fetch(`${API}/register`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ nom, boutique, tel, password: pwd }) });
+      const data = await res.json();
+      if (res.ok) { suc.textContent = 'Compte créé ! Connecte-toi.'; suc.style.display = 'block'; setTimeout(() => switchTab('login', document.querySelector('.tab')), 1500); }
+      else { err.textContent = data.message; err.style.display = 'block'; }
+    } catch(e) { err.textContent = 'Erreur serveur — réessaie'; err.style.display = 'block'; }
+  }
+</script>
+</body>
+</html>

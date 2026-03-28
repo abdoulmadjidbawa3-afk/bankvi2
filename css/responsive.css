@@ -1,0 +1,57 @@
+/* ===== TABLETTE ET DESKTOP ===== */
+@media (min-width: 768px) {
+
+  body {
+    padding-bottom: 0;
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    grid-template-rows: 60px 1fr;
+    min-height: 100vh;
+  }
+
+  .navbar {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  .bottom-nav { display: none; }
+
+  .main-content {
+    grid-column: 2;
+    grid-row: 2;
+    max-width: 100%;
+    width: 100%;
+    padding: 1.5rem 2rem;
+    overflow-x: hidden;
+  }
+
+  .metrics-grid {
+    grid-template-columns: repeat(4, minmax(0,1fr));
+  }
+
+  .hero-amount { font-size: 42px; }
+
+  .modal {
+    border-radius: var(--radius-xl);
+    max-width: 480px;
+    margin: auto;
+  }
+
+  .modal-bg.open {
+    align-items: center;
+  }
+}
+
+@media (min-width: 1200px) {
+  .main-content { padding: 2rem 3rem; }
+  .hero-amount  { font-size: 48px; }
+}
+
+/* ===== ANTI OVERFLOW GLOBAL ===== */
+html, body { overflow-x: hidden; width: 100%; }
+img, svg   { max-width: 100%; }
+
+.metrics-grid,
+.cards-list,
+.stock-card,
+.list-card { max-width: 100%; }

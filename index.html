@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BANKVI — Accueil</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-logo">BANK<span>VI</span></div>
+    <div class="nav-date" id="nav-date"></div>
+    <div class="nav-avatar" id="nav-avatar">?</div>
+  </nav>
+
+  <main class="main-content">
+    <section class="hero-card">
+      <div class="hero-left">
+        <p class="hero-label">Chiffre d'affaires du jour</p>
+        <h1 class="hero-amount" id="hero-amount">0 F</h1>
+        <p class="hero-sub" id="hero-sub">0 ventes enregistrées</p>
+      </div>
+      <div class="hero-badge">Aujourd'hui</div>
+      <div class="hero-stats">
+        <div class="hero-stat"><span class="hs-label">Encaissé</span><span class="hs-val green" id="stat-encaisse">0 F</span></div>
+        <div class="hero-stat"><span class="hs-label">En attente</span><span class="hs-val warn" id="stat-attente">0 F</span></div>
+        <div class="hero-stat"><span class="hs-label">Cette semaine</span><span class="hs-val" id="stat-semaine">0 F</span></div>
+      </div>
+    </section>
+
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <p class="metric-label">Dettes clients</p>
+        <h2 class="metric-value red" id="m-dettes">0 F</h2>
+        <p class="metric-sub" id="m-dettes-count">0 clients</p>
+      </div>
+      <div class="metric-card">
+        <p class="metric-label">Stock critique</p>
+        <h2 class="metric-value warn" id="m-stocks">0</h2>
+        <p class="metric-sub">produits urgents</p>
+      </div>
+      <div class="metric-card">
+        <p class="metric-label">Ventes du jour</p>
+        <h2 class="metric-value green" id="m-ventes">0</h2>
+        <p class="metric-sub">enregistrées</p>
+      </div>
+      <div class="metric-card">
+        <p class="metric-label">Mon commerce</p>
+        <h2 class="metric-value blue" id="m-boutique">--</h2>
+        <p class="metric-sub">actif</p>
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="section-header">
+        <h3 class="section-title">Dettes en cours</h3>
+        <a href="dettes.html" class="section-link">Voir tout</a>
+      </div>
+      <div class="cards-list" id="liste-dettes">
+        <div style="padding:1.5rem;text-align:center;color:#a0a0a0;font-size:14px;">Chargement...</div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="bottom-nav">
+    <a href="index.html" class="bn-item active"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><rect x="2" y="2" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="10" y="2" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="2" y="10" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="10" y="10" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>Accueil</a>
+    <a href="dettes.html" class="bn-item"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M9 6v3l2 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Dettes</a>
+    <a href="ventes.html" class="bn-item"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><path d="M3 12l3-3 3 3 3-4 3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Ventes</a>
+    <a href="stocks.html" class="bn-item"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><rect x="3" y="3" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M6 9h6M9 6v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Stocks</a>
+    <a href="profil.html" class="bn-item"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="6" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M3 15c0-3 2.7-5 6-5s6 2 6 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Profil</a>
+  </nav>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
