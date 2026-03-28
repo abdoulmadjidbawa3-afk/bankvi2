@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BANKVI — Guide</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <style>
+    .guide-hero {
+      background: #0C447C;
+      border-radius: 20px;
+      padding: 2rem 1.5rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    .guide-hero h1 { font-size: 24px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .guide-hero p  { font-size: 14px; color: #85B7EB; }
+    .guide-step {
+      background: var(--bg-card);
+      border: 0.5px solid var(--border);
+      border-radius: 16px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .step-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .step-number {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .step-number.blue  { background: #E6F1FB; color: #185FA5; }
+    .step-number.green { background: #E1F5EE; color: #0F6E56; }
+    .step-number.red   { background: #FAECE7; color: #993C1D; }
+    .step-number.amber { background: #FAEEDA; color: #854F0B; }
+    .step-title { font-size: 16px; font-weight: 600; color: var(--text); }
+    .step-desc  { font-size: 13px; color: #6b6b6b; line-height: 1.6; margin-bottom: 10px; }
+    .step-how {
+      background: #f5f5f3;
+      border-radius: 10px;
+      padding: 10px 14px;
+    }
+    .step-how p {
+      font-size: 12px;
+      color: #6b6b6b;
+      margin-bottom: 4px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .step-how ul {
+      list-style: none;
+      padding: 0;
+    }
+    .step-how ul li {
+      font-size: 13px;
+      color: var(--text);
+      padding: 4px 0;
+      border-bottom: 0.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .step-how ul li:last-child { border-bottom: none; }
+    .step-how ul li::before {
+      content: '→';
+      color: #185FA5;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .tip {
+      background: #E1F5EE;
+      border-left: 3px solid #1D9E75;
+      border-radius: 0 10px 10px 0;
+      padding: 10px 14px;
+      margin-top: 10px;
+      font-size: 13px;
+      color: #0F6E56;
+    }
+    .section-guide-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #a0a0a0;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin: 1.5rem 0 0.75rem;
+    }
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #185FA5;
+      font-size: 14px;
+      margin-bottom: 1rem;
+      cursor: pointer;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-logo">BANK<span>VI</span></div>
+    <div class="nav-date" id="nav-date"></div>
+    <div class="nav-avatar" id="nav-avatar">?</div>
+  </nav>
+
+  <main class="main-content">
+
+    <a href="profil.html" class="back-btn">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M10 4l-4 4 4 4" stroke="#185FA5" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      Retour au profil
+    </a>
+
+    <div class="guide-hero">
+      <h1>Guide BANKVI</h1>
+      <p>Tout ce que tu dois savoir pour gérer ton commerce facilement</p>
+    </div>
+
+    <p class="section-guide-title">Démarrage</p>
+
+    <div class="guide-step">
+      <div class="step-header">
+        <div class="step-number blue">1</div>
+        <div class="step-title">Créer ton compte</div>
+      </div>
+      <p class="step-desc">La première chose à faire — crée ton compte personnel. Chaque commerçant a son propre espace privé. Personne d'autre ne voit tes données.</p>
+      <div class="step-how">
+        <p>Comment faire</p>
+        <ul>
+          <li>Va sur bankvi.onrender.com</li>
+          <li>Clique sur "Inscription"</li>
+          <li>Entre ton nom, ta boutique, ton numéro et un mot de passe</li>
+          <li>Clique "Créer mon compte"</li>
+          <li>Connecte-toi avec ton numéro et mot de passe</li>
+        </ul>
+      </div>
+      <div class="tip">Retiens bien ton mot de passe — il n'y a pas encore de récupération par SMS.</div>
+    </div>
+
+    <p class="section-guide-title">Gérer tes ventes</p>
+
+    <div class="guide-step">
+      <div class="step-header">
+        <div class="step-number green">2</div>
+        <div class="step-title">Enregistrer une vente</div>
+      </div>
+      <p class="step-desc">À chaque fois que tu vends quelque chose, enregistre-le dans BANKVI. Ça te donne ton chiffre d'affaires exact en temps réel.</p>
+      <div class="step-how">
+        <p>Comment faire</p>
+        <ul>
+          <li>Va dans l'onglet "Ventes"</li>
+          <li>Clique le bouton vert "+ Enregistrer une vente"</li>
+          <li>Entre le nom du produit, la quantité et le prix total</li>
+          <li>Choisis le mode de paiement : Cash, À crédit ou Partiel</li>
+          <li>Si c'est à crédit, entre le nom du client</li>
+          <li>Clique "Enregistrer"</li>
+        </ul>
+      </div>
+      <div class="tip">Si tu choisis "À crédit" et que tu entres le nom du client, la dette est créée automatiquement dans l'onglet Dettes.</div>
+    </div>
+
+    <p class="section-guide-title">Gérer les dettes</p>
+
+    <div class="guide-step">
+      <div class="step-header">
+        <div class="step-number red">3</div>
+        <div class="step-title">Suivre les crédits clients</div>
+      </div>
+      <p class="step-desc">Plus de carnet perdu. Toutes les dettes de tes clients sont ici, avec la date et le montant exact.</p>
+      <div class="step-how">
+        <p>Comment faire</p>
+        <ul>
+          <li>Va dans l'onglet "Dettes"</li>
+          <li>Clique "+ Ajouter une dette" pour enregistrer un crédit</li>
+          <li>Entre le nom du client, le produit et le montant</li>
+          <li>Quand le client rembourse, clique "Marquer payé"</li>
+          <li>Tu peux aussi modifier ou supprimer une dette</li>
+        </ul>
+      </div>
+      <div class="tip">Tu vois directement le total de tout ce qu'on te doit en haut de la page.</div>
+    </div>
+
+    <p class="section-guide-title">Gérer ton stock</p>
+
+    <div class="guide-step">
+      <div class="step-header">
+        <div class="step-number amber">4</div>
+        <div class="step-title">Suivre tes produits</div>
+      </div>
+      <p class="step-desc">BANKVI t'alerte quand un produit est en rupture ou en stock bas. Tu ne seras plus jamais pris au dépourvu.</p>
+      <div class="step-how">
+        <p>Comment faire</p>
+        <ul>
+          <li>Va dans l'onglet "Stocks"</li>
+          <li>Clique "+ Ajouter un produit"</li>
+          <li>Entre le nom, la catégorie, la quantité et le prix</li>
+          <li>Définit un seuil d'alerte (ex: 5 = alerte quand il reste 5)</li>
+          <li>Les produits en rouge = rupture, en orange = stock bas</li>
+          <li>Tu peux modifier ou supprimer un produit à tout moment</li>
+        </ul>
+      </div>
+      <div class="tip">Le tableau de bord affiche automatiquement le nombre de produits en stock critique.</div>
+    </div>
+
+    <p class="section-guide-title">Tableau de bord</p>
+
+    <div class="guide-step">
+      <div class="step-header">
+        <div class="step-number blue">5</div>
+        <div class="step-title">Lire ton résumé du jour</div>
+      </div>
+      <p class="step-desc">La page d'accueil te donne un résumé complet de ta journée en un coup d'œil.</p>
+      <div class="step-how">
+        <p>Ce que tu vois</p>
+        <ul>
+          <li>Chiffre d'affaires du jour — total de tes ventes</li>
+          <li>Dettes clients — ce qu'on te doit en ce moment</li>
+          <li>Stock critique — produits à commander</li>
+          <li>Ventes du jour — nombre de ventes enregistrées</li>
+          <li>Dettes récentes — les 3 dernières dettes en cours</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="section-guide-title">Conseils importants</p>
+
+    <div class="guide-step">
+      <div class="step-header">
+        <div class="step-number green">6</div>
+        <div class="step-title">Bonnes pratiques</div>
+      </div>
+      <div class="step-how">
+        <p>Pour bien utiliser BANKVI</p>
+        <ul>
+          <li>Enregistre chaque vente immédiatement après la transaction</li>
+          <li>Vérifie les dettes en cours chaque matin</li>
+          <li>Mets à jour ton stock après chaque réapprovisionnement</li>
+          <li>Consulte le tableau de bord chaque soir avant de fermer</li>
+          <li>Ne partage jamais ton mot de passe avec quelqu'un</li>
+        </ul>
+      </div>
+      <div class="tip">BANKVI fonctionne mieux quand tu l'utilises tous les jours — c'est comme un carnet numérique toujours à jour.</div>
+    </div>
+
+  </main>
+
+  <nav class="bottom-nav">
+    <a href="index.html" class="bn-item"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><rect x="2" y="2" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="10" y="2" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="2" y="10" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="10" y="10" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>Accueil</a>
+    <a href="dettes.html" class="bn-item"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M9 6v3l2 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Dettes</a>
+    <a href="ventes.html" class="bn-item"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><path d="M3 12l3-3 3 3 3-4 3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Ventes</a>
+    <a href="stocks.html" class="bn-item"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><rect x="3" y="3" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M6 9h6M9 6v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Stocks</a>
+    <a href="profil.html" class="bn-item active"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="6" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M3 15c0-3 2.7-5 6-5s6 2 6 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Profil</a>
+  </nav>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
