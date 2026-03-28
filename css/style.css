@@ -678,7 +678,6 @@ a { text-decoration: none; color: inherit; }
   z-index: 40;
   overflow-y: auto;
 }
-
 .sidebar-item {
   display: flex;
   align-items: center;
@@ -695,3 +694,32 @@ a { text-decoration: none; color: inherit; }
 .sidebar-item:hover { background: var(--bg); color: var(--text); }
 .sidebar-item.active { background: var(--blue-light); color: var(--blue); font-weight: 500; }
 .sidebar-item svg { flex-shrink: 0; }
+
+/* ===== FLUIDITÉ ===== */
+* { transition: none; }
+
+.btn-primary,
+.btn-save,
+.btn-cancel,
+.filter-btn,
+.tab-btn,
+.pay-mode,
+.sidebar-item,
+.bn-item {
+  transition: background 0.15s, color 0.15s;
+}
+
+.modal-bg {
+  transition: opacity 0.2s;
+}
+
+.cards-list,
+.metric-card,
+.stock-card,
+.list-card {
+  will-change: auto;
+}
+
+img, * {
+  -webkit-font-smoothing: antialiased;
+}
