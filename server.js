@@ -58,6 +58,7 @@ async function initDb() {
 app.use(cors());
 app.use(express.json());
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'login.html')));
+app.get('/api/ping', (req, res) => res.json({ status: 'ok' }));
 
 async function auth(req, res, next) {
   const token = req.headers['authorization'];
@@ -146,6 +147,23 @@ app.put('/api/dettes/:id/payer', auth, async (req, res) => {
     res.json({ message: 'Dette payée' });
   } catch(e) { res.status(500).json({ message: e.message }); }
 });
+app.put('/api/dettes/:id', auth, async (req, res) => {
+  try {
+    const { client, produit, montant, date_remboursement } = req.body;
+    await pool.query(
+      'UPDATE dettes SET client=$1, produit=$2, montant=$3, date_remboursement=$4 WHERE id=$5 AND utilisateur_id=$6',
+      [client, produit, montant, date_remboursement || '', req.params.id, req.user.id]
+    );
+    res.json({ message: 'Dette modifiée' });
+  } catch(e) { res.status(500).json({ message: e.message }); }
+});
+
+app.delete('/api/dettes/:id', auth, async (req, res) => {
+  try {
+    await pool.query('DELETE FROM dettes WHERE id=$1 AND utilisateur_id=$2', [req.params.id, req.user.id]);
+    res.json({ message: 'Dette supprimée' });
+  } catch(e) { res.status(500).json({ message: e.message }); }
+});
 
 // STOCKS
 app.get('/api/stocks', auth, async (req, res) => {
@@ -165,6 +183,23 @@ app.post('/api/stocks', auth, async (req, res) => {
       [req.user.id, nom, categorie || 'Autre', quantite, seuil_alerte || 5, prix_unitaire]
     );
     res.json({ message: 'Produit ajouté' });
+  } catch(e) { res.status(500).json({ message: e.message }); }
+});
+app.put('/api/stocks/:id', auth, async (req, res) => {
+  try {
+    const { nom, categorie, quantite, seuil_alerte, prix_unitaire } = req.body;
+    await pool.query(
+      'UPDATE stocks SET nom=$1, categorie=$2, quantite=$3, seuil_alerte=$4, prix_unitaire=$5 WHERE id=$6 AND utilisateur_id=$7',
+      [nom, categorie, quantite, seuil_alerte || 5, prix_unitaire, req.params.id, req.user.id]
+    );
+    res.json({ message: 'Stock modifié' });
+  } catch(e) { res.status(500).json({ message: e.message }); }
+});
+
+app.delete('/api/stocks/:id', auth, async (req, res) => {
+  try {
+    await pool.query('DELETE FROM stocks WHERE id=$1 AND utilisateur_id=$2', [req.params.id, req.user.id]);
+    res.json({ message: 'Stock supprimé' });
   } catch(e) { res.status(500).json({ message: e.message }); }
 });
 

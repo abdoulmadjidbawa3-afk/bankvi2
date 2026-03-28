@@ -19,7 +19,7 @@ function afficherStocks(stocks) {
   liste.innerHTML = stocks.map(s => {
     const rupture = s.quantite === 0;
     const bas     = s.quantite > 0 && s.quantite <= s.seuil_alerte;
-    const statut  = rupture ? { label:'Rupture', classe:'out' } : bas ? { label:'Stock bas', classe:'low' } : { label:'OK', classe:'ok' };
+    const statut  = rupture ? {label:'Rupture',classe:'out'} : bas ? {label:'Stock bas',classe:'low'} : {label:'OK',classe:'ok'};
     const pct     = Math.min(100, Math.round((s.quantite / (s.seuil_alerte * 5)) * 100));
     return `
       <div class="stock-card ${rupture ? 'danger' : bas ? 'warn' : ''}">
@@ -36,8 +36,8 @@ function afficherStocks(stocks) {
         </div>
         <p class="stock-price">Prix : <strong>${fmt(s.prix_unitaire)}</strong></p>
         <div class="list-card-actions">
-          <button class="btn-success-sm">Commander</button>
-          <button class="btn-neutral-sm">Modifier</button>
+          <button class="btn-success-sm" onclick="ouvrirModifierStock(${s.id}, '${s.nom}', '${s.categorie}', ${s.quantite}, ${s.seuil_alerte}, ${s.prix_unitaire})">Modifier</button>
+          <button class="btn-neutral-sm" style="background:#FAECE7;color:#993C1D;" onclick="supprimerStock(${s.id})">Supprimer</button>
         </div>
       </div>`;
   }).join('');
@@ -74,6 +74,45 @@ document.getElementById('search-input').addEventListener('input', function() {
     card.style.display = nom?.includes(val) ? '' : 'none';
   });
 });
+
+function ouvrirModifierStock(id, nom, categorie, quantite, seuil, prix) {
+  document.getElementById('modifier-stock-id').value        = id;
+  document.getElementById('modifier-stock-nom').value       = nom;
+  document.getElementById('modifier-stock-categorie').value = categorie;
+  document.getElementById('modifier-stock-quantite').value  = quantite;
+  document.getElementById('modifier-stock-seuil').value     = seuil;
+  document.getElementById('modifier-stock-prix').value      = prix;
+  document.getElementById('modal-modifier-stock').classList.add('open');
+}
+
+async function modifierStock() {
+  const id        = document.getElementById('modifier-stock-id').value;
+  const nom       = document.getElementById('modifier-stock-nom').value.trim();
+  const categorie = document.getElementById('modifier-stock-categorie').value;
+  const quantite  = document.getElementById('modifier-stock-quantite').value;
+  const seuil     = document.getElementById('modifier-stock-seuil').value;
+  const prix      = document.getElementById('modifier-stock-prix').value;
+  if (!nom || !quantite || !prix) { alert('Remplis les champs obligatoires'); return; }
+  try {
+    const res = await fetch(`${API}/stocks/${id}`, {
+      method: 'PUT', headers: getHeaders(),
+      body: JSON.stringify({ nom, categorie, quantite: Number(quantite), seuil_alerte: Number(seuil) || 5, prix_unitaire: Number(prix) })
+    });
+    if (!res.ok) { const e = await res.json(); alert(e.message); return; }
+    document.getElementById('modal-modifier-stock').classList.remove('open');
+    chargerStocks();
+  } catch(e) { alert('Erreur serveur — réessaie'); }
+}
+
+async function supprimerStock(id) {
+  if (!confirm('Supprimer ce produit définitivement ?')) return;
+  try {
+    await fetch(`${API}/stocks/${id}`, { method: 'DELETE', headers: getHeaders() });
+    chargerStocks();
+  } catch(e) { alert('Erreur serveur — réessaie'); }
+}
+
+document.getElementById('btn-save-modifier-stock').addEventListener('click', modifierStock);
 
 document.getElementById('btn-save-stock').addEventListener('click', enregistrerStock);
 chargerStocks();

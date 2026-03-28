@@ -25,6 +25,47 @@
     .msg.success { background: #E1F5EE; color: #0F6E56; }
     .footer { text-align: center; font-size: 11px; color: #a0a0a0; margin-top: 1.5rem; }
     #form-register { display: none; }
+    #loading-screen {
+  position: fixed;
+  inset: 0;
+  background: #0C447C;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.5s;
+}
+.loading-logo {
+  font-size: 36px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -1px;
+  margin-bottom: 8px;
+}
+.loading-logo span { color: #5DCAA5; }
+.loading-msg {
+  font-size: 14px;
+  color: #85B7EB;
+  margin-bottom: 2rem;
+}
+.loading-dots {
+  display: flex;
+  gap: 8px;
+}
+.loading-dots div {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #5DCAA5;
+  animation: bounce 1.2s infinite;
+}
+.loading-dots div:nth-child(2) { animation-delay: 0.2s; }
+.loading-dots div:nth-child(3) { animation-delay: 0.4s; }
+@keyframes bounce {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+  40% { transform: scale(1); opacity: 1; }
+}
   </style>
 </head>
 <body>
@@ -53,6 +94,17 @@
   <p class="footer">BANKVI v1.0 — Fait au Togo 🇹🇬</p>
 </div>
 <script>
+  async function verifierServeur() {
+  const loading = document.getElementById('loading-screen');
+  try {
+    await fetch(`${API}/ping`);
+    loading.style.opacity = '0';
+    setTimeout(() => loading.style.display = 'none', 500);
+  } catch(e) {
+    setTimeout(verifierServeur, 3000);
+  }
+}
+verifierServeur();
   const API = window.location.origin + '/api';
   if (localStorage.getItem('bankvi_token')) window.location.href = 'index.html';
 
@@ -99,4 +151,11 @@
   }
 </script>
 </body>
+<div id="loading-screen">
+  <div class="loading-logo">BANK<span>VI</span></div>
+  <p class="loading-msg">Le serveur se réveille, patiente...</p>
+  <div class="loading-dots">
+    <div></div><div></div><div></div>
+  </div>
+</div>
 </html>
