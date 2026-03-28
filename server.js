@@ -230,7 +230,15 @@ app.get('/api/dashboard', auth, async (req, res) => {
 });
 
 app.use(express.static(path.join(__dirname)));
-
+app.get('/api/reset-db-bankvi-2026', async (req, res) => {
+  try {
+    await pool.query('DELETE FROM ventes');
+    await pool.query('DELETE FROM dettes');
+    await pool.query('DELETE FROM stocks');
+    await pool.query('DELETE FROM utilisateurs');
+    res.json({ message: 'Base de données vidée' });
+  } catch(e) { res.status(500).json({ message: e.message }); }
+});
 initDb().then(() => {
-  app.listen(PORT, () => console.log(`BANKVI sur http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`BANKVI sur http://localhost:${PORT}`));
 }).catch(e => console.error('Erreur DB:', e));
