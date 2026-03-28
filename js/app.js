@@ -68,36 +68,21 @@ async function chargerDashboard() {
   try {
     const res  = await fetch(`${API}/dashboard`, { headers: getHeaders() });
     const data = await res.json();
+    document.getElementById('hero-amount').textContent  = fmt(data.ventes_jour);
+    document.getElementById('hero-sub').textContent     = data.ventes_count + ' ventes enregistrées';
+    document.getElementById('m-dettes').textContent     = fmt(data.dettes_total);
+    document.getElementById('m-dettes-count').textContent = data.dettes_count + ' clients';
+    document.getElementById('m-stocks').textContent     = data.stocks_critique;
+    document.getElementById('m-ventes').textContent     = data.ventes_count;
+    if (user.boutique) document.getElementById('m-boutique').textContent = user.boutique.substring(0,8);
 
-    const ventes_jour  = Number(data.ventes_jour)  || 0;
-    const ventes_count = Number(data.ventes_count) || 0;
-    const dettes_total = Number(data.dettes_total) || 0;
-    const dettes_count = Number(data.dettes_count) || 0;
-    const stocks_crit  = Number(data.stocks_critique) || 0;
-
-    document.getElementById('hero-amount').textContent = fmt(ventes_jour);
-    document.getElementById('hero-sub').textContent    = ventes_count + ' ventes enregistrées';
-    document.getElementById('m-dettes').textContent       = fmt(dettes_total);
-    document.getElementById('m-dettes-count').textContent = dettes_count + ' clients';
-    document.getElementById('m-stocks').textContent    = stocks_crit;
-    document.getElementById('m-ventes').textContent    = ventes_count;
-
-    if (user.boutique) {
-      document.getElementById('m-boutique').textContent = user.boutique.substring(0, 8);
-    }
-
-    const resD    = await fetch(`${API}/dettes`, { headers: getHeaders() });
-    const dettes  = await resD.json();
-    const enCours = Array.isArray(dettes) ? dettes.filter(d => d.statut === 'en_cours').slice(0, 3) : [];
-    const liste   = document.getElementById('liste-dettes');
+    const resD   = await fetch(`${API}/dettes`, { headers: getHeaders() });
+    const dettes = await resD.json();
+    const liste  = document.getElementById('liste-dettes');
+    const enCours = dettes.filter(d => d.statut === 'en_cours').slice(0,3);
     if (!liste) return;
-
     if (enCours.length === 0) {
-      liste.innerHTML = `
-        <div style="padding:1.5rem;text-align:center;">
-          <p style="color:#a0a0a0;font-size:14px;">Aucune dette en cours</p>
-          <a href="dettes.html" style="color:#185FA5;font-size:13px;display:block;margin-top:6px;">Ajouter une dette →</a>
-        </div>`;
+      liste.innerHTML = `<div style="padding:1.5rem;text-align:center;"><p style="color:#a0a0a0;font-size:14px;">Aucune dette en cours</p><a href="dettes.html" style="color:#185FA5;font-size:13px;display:block;margin-top:6px;">Ajouter une dette →</a></div>`;
     } else {
       liste.innerHTML = enCours.map(d => `
         <div class="list-card">
@@ -111,17 +96,6 @@ async function chargerDashboard() {
           </div>
         </div>`).join('');
     }
-  } catch(e) {
-    console.log('Erreur dashboard', e);
-    const hero = document.getElementById('hero-amount');
-    if (hero) hero.textContent = '0 F';
-    const sub = document.getElementById('hero-sub');
-    if (sub) sub.textContent = '0 ventes enregistrées';
-    ['m-dettes','m-stocks','m-ventes'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.textContent = '0';
-    });
-    const dc = document.getElementById('m-dettes-count');
-    if (dc) dc.textContent = '0 clients';
-  }
+  } catch(e) { console.log('Erreur dashboard', e); }
 }
+chargerDashboard();
