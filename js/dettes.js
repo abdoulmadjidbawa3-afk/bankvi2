@@ -1,4 +1,27 @@
+const API = window.location.origin + '/api';
+
+function getHeaders() {
+  return {
+    'Content-Type': 'application/json',
+    'Authorization': localStorage.getItem('bankvi_token') || ''
+  };
+}
+
 let toutesLesDettes = [];
+
+document.addEventListener('DOMContentLoaded', () => {
+  const s = document.getElementById('search-dettes');
+  if (s) {
+    s.addEventListener('input', function() {
+      const val = this.value.toLowerCase();
+      const filtrees = toutesLesDettes.filter(d =>
+        d.client.toLowerCase().includes(val) ||
+        d.produit.toLowerCase().includes(val)
+      );
+      afficherDettes(filtrees);
+    });
+  }
+});
 
 function filtrerDettes(filtre, el) {
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -30,19 +53,23 @@ function afficherDettes(dettes) {
     </div>
     <div class="list-card-actions">
       ${d.statut === 'en_cours' ? `<button class="btn-success-sm" onclick="marquerPaye(${d.id})">Marquer payé</button>` : ''}
-      <button class="btn-neutral-sm" onclick="ouvrirModifierDette(${d.id}, '${d.client}', '${d.produit}', ${d.montant}, '${d.date_remboursement || ''}')">Modifier</button>
+      <button class="btn-neutral-sm" onclick="ouvrirModifierDette(${d.id}, '${d.client.replace(/'/g,"\\'")}', '${d.produit.replace(/'/g,"\\'")}', ${d.montant}, '${d.date_remboursement || ''}')">Modifier</button>
       <button class="btn-neutral-sm" style="background:#FAECE7;color:#993C1D;" onclick="supprimerDette(${d.id})">Supprimer</button>
     </div>`).join('');
 }
+
+function fmt(m) { return Number(m).toLocaleString('fr-FR') + ' F'; }
 
 async function chargerDettes() {
   try {
     const res = await fetch(`${API}/dettes`, { headers: getHeaders() });
     toutesLesDettes = await res.json();
     const enCours = toutesLesDettes.filter(d => d.statut === 'en_cours');
-    const total   = enCours.reduce((s,d) => s + d.montant, 0);
-    document.getElementById('hero-amount').textContent = fmt(total);
-    document.getElementById('hero-sub').textContent    = enCours.length + ' clients concernés';
+    const total   = enCours.reduce((s,d) => s + Number(d.montant), 0);
+    const hero    = document.getElementById('hero-amount');
+    const sub     = document.getElementById('hero-sub');
+    if (hero) hero.textContent = fmt(total);
+    if (sub)  sub.textContent  = enCours.length + ' clients concernés';
     afficherDettes(toutesLesDettes);
   } catch(e) { console.log('Erreur dettes', e); }
 }
@@ -52,9 +79,7 @@ async function enregistrerDette() {
   const produit = document.getElementById('dette-produit').value.trim();
   const montant = document.getElementById('dette-montant').value;
   const date    = document.getElementById('dette-date').value;
-
   if (!client || !produit || !montant) { alert('Remplis les champs obligatoires'); return; }
-
   try {
     const res = await fetch(`${API}/dettes`, {
       method: 'POST', headers: getHeaders(),
@@ -112,8 +137,8 @@ async function supprimerDette(id) {
   } catch(e) { alert('Erreur serveur — réessaie'); }
 }
 
+document.getElementById('btn-save-dette').addEventListener('click', enregistrerDette);
 document.getElementById('btn-save-modifier-dette').addEventListener('click', modifierDette);
 
-document.getElementById('btn-save-dette').addEventListener('click', enregistrerDette);
 chargerDettes();
 

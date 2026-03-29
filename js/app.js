@@ -7,26 +7,16 @@ function getHeaders() {
   };
 }
 
-// Protection
-const token = localStorage.getItem('bankvi_token');
-const page  = window.location.pathname.split('/').pop();
-if (!token && page !== 'login.html' && page !== '') {
-  window.location.href = 'login.html';
-}
-
-// Date
 function afficherDate() {
   const el = document.getElementById('nav-date');
   if (el) el.textContent = new Date().toLocaleDateString('fr-FR', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
 }
 afficherDate();
 
-// Avatar
 const user = JSON.parse(localStorage.getItem('bankvi_user') || '{}');
 const avatarEl = document.getElementById('nav-avatar');
 if (avatarEl && user.nom) avatarEl.textContent = user.nom.substring(0,2).toUpperCase();
 
-// Sidebar desktop
 function creerSidebar() {
   if (window.innerWidth < 768) return;
   const existing = document.querySelector('.sidebar');
@@ -53,8 +43,8 @@ function creerSidebar() {
 }
 creerSidebar();
 
-// Utilitaires
 function fmt(montant) { return Number(montant).toLocaleString('fr-FR') + ' F'; }
+
 function joursDepuis(dateStr) {
   const diff = Math.floor((new Date() - new Date(dateStr)) / 86400000);
   if (diff === 0) return "aujourd'hui";
@@ -62,25 +52,56 @@ function joursDepuis(dateStr) {
   return `il y a ${diff} jours`;
 }
 
-// Dashboard
+function telechargerRapport() {
+  const token = localStorage.getItem('bankvi_token');
+  window.open(`${API}/rapport?token=${token}`, '_blank');
+}
+
+async function verifierDettesRetard() {
+  try {
+    const res    = await fetch(`${API}/dettes/retard`, { headers: getHeaders() });
+    const retard = await res.json();
+    if (!Array.isArray(retard) || retard.length === 0) return;
+    if (document.getElementById('alert-retard')) return;
+    const bar = document.createElement('div');
+    bar.id = 'alert-retard';
+    bar.style.cssText = 'background:#FAECE7;border-left:3px solid #D85A30;border-radius:0 8px 8px 0;padding:10px 14px;margin-bottom:1.25rem;font-size:13px;color:#993C1D;';
+    bar.innerHTML = `${retard.length} dette(s) en retard — <a href="dettes.html" style="color:#993C1D;font-weight:600;text-decoration:underline;">Voir →</a>`;
+    const main = document.querySelector('.main-content');
+    const hero = main?.querySelector('.hero-card');
+    if (hero) hero.insertAdjacentElement('afterend', bar);
+  } catch(e) {}
+}
+
 async function chargerDashboard() {
   if (!document.getElementById('hero-amount')) return;
   try {
     const res  = await fetch(`${API}/dashboard`, { headers: getHeaders() });
     const data = await res.json();
-    document.getElementById('hero-amount').textContent  = fmt(data.ventes_jour);
-    document.getElementById('hero-sub').textContent     = data.ventes_count + ' ventes enregistrées';
-    document.getElementById('m-dettes').textContent     = fmt(data.dettes_total);
-    document.getElementById('m-dettes-count').textContent = data.dettes_count + ' clients';
-    document.getElementById('m-stocks').textContent     = data.stocks_critique;
-    document.getElementById('m-ventes').textContent     = data.ventes_count;
-    if (user.boutique) document.getElementById('m-boutique').textContent = user.boutique.substring(0,8);
 
-    const resD   = await fetch(`${API}/dettes`, { headers: getHeaders() });
-    const dettes = await resD.json();
-    const liste  = document.getElementById('liste-dettes');
-    const enCours = dettes.filter(d => d.statut === 'en_cours').slice(0,3);
+    const ventes_jour  = Number(data.ventes_jour)  || 0;
+    const ventes_count = Number(data.ventes_count) || 0;
+    const dettes_total = Number(data.dettes_total) || 0;
+    const dettes_count = Number(data.dettes_count) || 0;
+    const stocks_crit  = Number(data.stocks_critique) || 0;
+
+    document.getElementById('hero-amount').textContent    = fmt(ventes_jour);
+    document.getElementById('hero-sub').textContent       = ventes_count + ' ventes enregistrées';
+    document.getElementById('m-dettes').textContent       = fmt(dettes_total);
+    document.getElementById('m-dettes-count').textContent = dettes_count + ' clients';
+    document.getElementById('m-stocks').textContent       = stocks_crit;
+    document.getElementById('m-ventes').textContent       = ventes_count;
+    if (user.boutique) {
+      const mb = document.getElementById('m-boutique');
+      if (mb) mb.textContent = user.boutique.substring(0,8);
+    }
+
+    const resD    = await fetch(`${API}/dettes`, { headers: getHeaders() });
+    const dettes  = await resD.json();
+    const enCours = Array.isArray(dettes) ? dettes.filter(d => d.statut === 'en_cours').slice(0,3) : [];
+    const liste   = document.getElementById('liste-dettes');
     if (!liste) return;
+
     if (enCours.length === 0) {
       liste.innerHTML = `<div style="padding:1.5rem;text-align:center;"><p style="color:#a0a0a0;font-size:14px;">Aucune dette en cours</p><a href="dettes.html" style="color:#185FA5;font-size:13px;display:block;margin-top:6px;">Ajouter une dette →</a></div>`;
     } else {
@@ -96,6 +117,20 @@ async function chargerDashboard() {
           </div>
         </div>`).join('');
     }
-  } catch(e) { console.log('Erreur dashboard', e); }
+
+    verifierDettesRetard();
+
+  } catch(e) {
+    console.log('Erreur dashboard', e);
+    ['hero-amount','m-dettes','m-stocks','m-ventes'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = '0';
+    });
+    const hs = document.getElementById('hero-sub');
+    if (hs) hs.textContent = '0 ventes enregistrées';
+    const dc = document.getElementById('m-dettes-count');
+    if (dc) dc.textContent = '0 clients';
+  }
 }
+
 chargerDashboard();
