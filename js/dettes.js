@@ -1,5 +1,3 @@
-const API = window.location.origin + '/api';
-
 function getHeaders() {
   return {
     'Content-Type': 'application/json',
@@ -141,4 +139,3 @@ document.getElementById('btn-save-dette').addEventListener('click', enregistrerD
 document.getElementById('btn-save-modifier-dette').addEventListener('click', modifierDette);
 
 chargerDettes();
-
