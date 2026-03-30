@@ -6,158 +6,292 @@
   <title>BANKVI — Connexion</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Segoe UI', sans-serif; background: #f5f5f3; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 1rem; }
-    .box { background: #fff; border-radius: 20px; padding: 2rem 1.5rem; width: 100%; max-width: 380px; border: 0.5px solid #e8e8e8; }
-    .logo { text-align: center; font-size: 32px; font-weight: 700; letter-spacing: -1px; color: #1a1a1a; margin-bottom: 6px; }
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #f0ede8;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem 1rem;
+    }
+    .logo-wrap { text-align: center; margin-bottom: 1.5rem; }
+    .logo { font-size: 32px; font-weight: 800; letter-spacing: -1.5px; color: #0C2D5A; }
     .logo span { color: #185FA5; }
-    .tagline { text-align: center; font-size: 13px; color: #6b6b6b; margin-bottom: 1.5rem; }
-    .tabs { display: flex; background: #f5f5f3; border-radius: 8px; padding: 3px; margin-bottom: 1.5rem; }
-    .tab { flex: 1; text-align: center; padding: 8px; font-size: 13px; font-weight: 500; border-radius: 6px; cursor: pointer; border: none; background: none; color: #6b6b6b; }
-    .tab.active { background: #fff; color: #1a1a1a; border: 0.5px solid #e8e8e8; }
+    .tagline { font-size: 14px; color: #7a7a7a; margin-top: 4px; }
+    .card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 2rem 1.75rem;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+    }
+    .tabs {
+      display: flex;
+      background: #f0ede8;
+      border-radius: 12px;
+      padding: 4px;
+      margin-bottom: 1.75rem;
+    }
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 10px;
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: #9a9a9a;
+      transition: all 0.2s;
+    }
+    .tab.active {
+      background: #fff;
+      color: #0C2D5A;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+    .form-title { font-size: 20px; font-weight: 700; color: #0C2D5A; margin-bottom: 4px; }
+    .form-sub { font-size: 13px; color: #9a9a9a; margin-bottom: 1.5rem; }
     .field { margin-bottom: 1rem; }
-    .field label { display: block; font-size: 12px; color: #6b6b6b; margin-bottom: 6px; }
-    .field input { width: 100%; padding: 11px 12px; border: 0.5px solid #e8e8e8; border-radius: 8px; font-size: 14px; color: #1a1a1a; outline: none; }
-    .field input:focus { border-color: #185FA5; }
-    .btn { width: 100%; padding: 13px; border: none; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; color: #fff; background: #185FA5; margin-top: 4px; }
-    .btn.green { background: #1D9E75; }
-    .msg { padding: 10px 14px; border-radius: 8px; font-size: 13px; margin-bottom: 1rem; display: none; }
+    .field label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      color: #5a5a5a;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+    .input-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #f7f5f2;
+      border: 1.5px solid #e8e4df;
+      border-radius: 12px;
+      padding: 12px 14px;
+      transition: border-color 0.2s;
+    }
+    .input-wrap:focus-within { border-color: #185FA5; background: #fff; }
+    .input-wrap svg { flex-shrink: 0; opacity: 0.4; }
+    .input-wrap input {
+      border: none;
+      background: none;
+      outline: none;
+      font-size: 14px;
+      color: #1a1a1a;
+      width: 100%;
+    }
+    .forgot {
+      text-align: right;
+      font-size: 12px;
+      color: #185FA5;
+      font-weight: 500;
+      margin-top: -4px;
+      margin-bottom: 1rem;
+      cursor: pointer;
+    }
+    .btn-main {
+      width: 100%;
+      padding: 14px;
+      background: #0C2D5A;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background 0.2s;
+    }
+    .btn-main:hover { background: #185FA5; }
+    .btn-main.green { background: #1D9E75; }
+    .btn-main.green:hover { background: #0F6E56; }
+    .security {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 1rem;
+      font-size: 11px;
+      color: #b0b0b0;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .msg { padding: 10px 14px; border-radius: 10px; font-size: 13px; margin-bottom: 1rem; display: none; }
     .msg.error { background: #FAECE7; color: #993C1D; }
     .msg.success { background: #E1F5EE; color: #0F6E56; }
-    .footer { text-align: center; font-size: 11px; color: #a0a0a0; margin-top: 1.5rem; }
+    .footer-badges {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+      font-size: 11px;
+      color: #b0b0b0;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .badge-item { display: flex; align-items: center; gap: 5px; }
     #form-register { display: none; }
-    #loading-screen {
-  position: fixed;
-  inset: 0;
-  background: #0C447C;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  transition: opacity 0.5s;
-}
-.loading-logo {
-  font-size: 36px;
-  font-weight: 700;
-  color: #fff;
-  letter-spacing: -1px;
-  margin-bottom: 8px;
-}
-.loading-logo span { color: #5DCAA5; }
-.loading-msg {
-  font-size: 14px;
-  color: #85B7EB;
-  margin-bottom: 2rem;
-}
-.loading-dots {
-  display: flex;
-  gap: 8px;
-}
-.loading-dots div {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #5DCAA5;
-  animation: bounce 1.2s infinite;
-}
-.loading-dots div:nth-child(2) { animation-delay: 0.2s; }
-.loading-dots div:nth-child(3) { animation-delay: 0.4s; }
-@keyframes bounce {
-  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
-  40% { transform: scale(1); opacity: 1; }
-}
+
+    @media (min-width: 768px) {
+      body { background: #e8e4de; }
+      .card { padding: 2.5rem 2.5rem; }
+    }
   </style>
 </head>
 <body>
-<div class="box">
-  <div class="logo">BANK<span>VI</span></div>
-  <p class="tagline">Gère ton commerce. Protège ton argent.</p>
-  <div class="tabs">
-    <button class="tab active" onclick="switchTab('login', this)">Connexion</button>
-    <button class="tab" onclick="switchTab('register', this)">Inscription</button>
+
+  <div class="logo-wrap">
+    <div class="logo">BANK<span>VI</span></div>
+    <p class="tagline">Gère ton commerce. Protège ton argent.</p>
   </div>
-  <div id="form-login">
-    <div class="msg error" id="err-login"></div>
-    <div class="field"><label>Numéro de téléphone</label><input type="tel" id="login-tel" placeholder="Ex: 90000000"></div>
-    <div class="field"><label>Mot de passe</label><input type="password" id="login-pwd" placeholder="Ton mot de passe"></div>
-    <button class="btn" onclick="seConnecter()">Se connecter</button>
+
+  <div class="card">
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('login', this)">Se connecter</button>
+      <button class="tab" onclick="switchTab('register', this)">S'inscrire</button>
+    </div>
+
+    <!-- CONNEXION -->
+    <div id="form-login">
+      <h2 class="form-title">Bon retour parmi nous</h2>
+      <p class="form-sub">Entrez vos identifiants pour accéder à votre espace.</p>
+      <div class="msg error" id="err-login"></div>
+      <div class="field">
+        <label>Numéro de téléphone</label>
+        <div class="input-wrap">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="3" y="1" width="10" height="14" rx="2" stroke="#1a1a1a" stroke-width="1.5"/><circle cx="8" cy="12" r="1" fill="#1a1a1a"/></svg>
+          <input type="tel" id="login-tel" placeholder="Ex: 90000000">
+        </div>
+      </div>
+      <div class="field">
+        <label>Mot de passe</label>
+        <div class="input-wrap">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="2" stroke="#1a1a1a" stroke-width="1.5"/><path d="M5 7V5a3 3 0 016 0v2" stroke="#1a1a1a" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <input type="password" id="login-pwd" placeholder="Ton mot de passe">
+        </div>
+      </div>
+      <button class="btn-main" onclick="seConnecter()">
+        Se connecter
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="security">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1L2 3v3c0 2.5 1.8 4.5 4 5 2.2-.5 4-2.5 4-5V3L6 1z" stroke="#b0b0b0" stroke-width="1.2"/></svg>
+        Sécurité bancaire
+      </div>
+    </div>
+
+    <!-- INSCRIPTION -->
+    <div id="form-register">
+      <h2 class="form-title">Créer mon compte</h2>
+      <p class="form-sub">Rejoignez des milliers de commerçants.</p>
+      <div class="msg error" id="err-register"></div>
+      <div class="msg success" id="suc-register"></div>
+      <div class="field">
+        <label>Nom complet</label>
+        <div class="input-wrap">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="#1a1a1a" stroke-width="1.5"/><path d="M2 14c0-3 2.7-4 6-4s6 1 6 4" stroke="#1a1a1a" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <input type="text" id="reg-nom" placeholder="Ex: Kofi Mensah">
+        </div>
+      </div>
+      <div class="field">
+        <label>Nom de ta boutique</label>
+        <div class="input-wrap">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="6" width="12" height="8" rx="1.5" stroke="#1a1a1a" stroke-width="1.5"/><path d="M1 6l1-3h12l1 3" stroke="#1a1a1a" stroke-width="1.5" stroke-linecap="round"/><path d="M6 14v-4h4v4" stroke="#1a1a1a" stroke-width="1.5"/></svg>
+          <input type="text" id="reg-boutique" placeholder="Ex: Boutique Mensah">
+        </div>
+      </div>
+      <div class="field">
+        <label>Numéro de téléphone</label>
+        <div class="input-wrap">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="3" y="1" width="10" height="14" rx="2" stroke="#1a1a1a" stroke-width="1.5"/><circle cx="8" cy="12" r="1" fill="#1a1a1a"/></svg>
+          <input type="tel" id="reg-tel" placeholder="Ex: 90000000">
+        </div>
+      </div>
+      <div class="field">
+        <label>Mot de passe</label>
+        <div class="input-wrap">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="2" stroke="#1a1a1a" stroke-width="1.5"/><path d="M5 7V5a3 3 0 016 0v2" stroke="#1a1a1a" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <input type="password" id="reg-pwd" placeholder="Minimum 6 caractères">
+        </div>
+      </div>
+      <button class="btn-main green" onclick="sInscrire()">
+        Créer mon compte
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
   </div>
-  <div id="form-register">
-    <div class="msg error" id="err-register"></div>
-    <div class="msg success" id="suc-register"></div>
-    <div class="field"><label>Nom complet</label><input type="text" id="reg-nom" placeholder="Ex: Kofi Mensah"></div>
-    <div class="field"><label>Nom de ta boutique</label><input type="text" id="reg-boutique" placeholder="Ex: Boutique Mensah"></div>
-    <div class="field"><label>Numéro de téléphone</label><input type="tel" id="reg-tel" placeholder="Ex: 90000000"></div>
-    <div class="field"><label>Mot de passe</label><input type="password" id="reg-pwd" placeholder="Minimum 6 caractères"></div>
-    <button class="btn green" onclick="sInscrire()">Créer mon compte</button>
+
+  <div class="footer-badges">
+    <div class="badge-item">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#b0b0b0" stroke-width="1.5" stroke-linecap="round"/></svg>
+      Sécurisé
+    </div>
+    <div class="badge-item">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4" stroke="#b0b0b0" stroke-width="1.2"/><path d="M6 3v3l2 2" stroke="#b0b0b0" stroke-width="1.2" stroke-linecap="round"/></svg>
+      Temps réel
+    </div>
+    <div class="badge-item">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4" stroke="#b0b0b0" stroke-width="1.2"/><path d="M4 6h4M6 4v4" stroke="#b0b0b0" stroke-width="1.2" stroke-linecap="round"/></svg>
+      Support 24/7
+    </div>
   </div>
-  <p class="footer">BANKVI v1.0</p>
-  <a class="guide" href="guide.html"></a>
-</div>
 
-<script>
-  async function verifierServeur() {
-  const loading = document.getElementById('loading-screen');
-  try {
-    await fetch(`${API}/ping`);
-    loading.style.opacity = '0';
-    setTimeout(() => loading.style.display = 'none', 500);
-  } catch(e) {
-    setTimeout(verifierServeur, 3000);
-  }
-}
-verifierServeur();
-  const API = window.location.origin + '/api';
-  if (localStorage.getItem('bankvi_token')) window.location.href = 'index.html';
+  <script>
+    const API = window.location.origin + '/api';
+    if (localStorage.getItem('bankvi_token')) window.location.href = 'index.html';
 
-  function switchTab(tab, el) {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    el.classList.add('active');
-    document.getElementById('form-login').style.display = tab === 'login' ? 'block' : 'none';
-    document.getElementById('form-register').style.display = tab === 'register' ? 'block' : 'none';
-  }
+    function switchTab(tab, el) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      document.getElementById('form-login').style.display    = tab === 'login'    ? 'block' : 'none';
+      document.getElementById('form-register').style.display = tab === 'register' ? 'block' : 'none';
+    }
 
-  async function seConnecter() {
-    const tel = document.getElementById('login-tel').value.trim();
-    const pwd = document.getElementById('login-pwd').value;
-    const err = document.getElementById('err-login');
-    err.style.display = 'none';
-    if (!tel || !pwd) { err.textContent = 'Remplis tous les champs'; err.style.display = 'block'; return; }
-    try {
-      const res = await fetch(`${API}/login`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ tel, password: pwd }) });
-      const data = await res.json();
-      if (res.ok) {
-        localStorage.setItem('bankvi_token', data.token);
-        localStorage.setItem('bankvi_user', JSON.stringify(data.user));
-        window.location.href = 'index.html';
-      } else { err.textContent = data.message; err.style.display = 'block'; }
-    } catch(e) { err.textContent = 'Erreur serveur — réessaie'; err.style.display = 'block'; }
-  }
+    async function seConnecter() {
+      const tel = document.getElementById('login-tel').value.trim();
+      const pwd = document.getElementById('login-pwd').value;
+      const err = document.getElementById('err-login');
+      err.style.display = 'none';
+      if (!tel || !pwd) { err.textContent = 'Remplis tous les champs'; err.style.display = 'block'; return; }
+      try {
+        const res  = await fetch(`${API}/login`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ tel, password:pwd }) });
+        const data = await res.json();
+        if (res.ok) {
+          localStorage.setItem('bankvi_token', data.token);
+          localStorage.setItem('bankvi_user', JSON.stringify(data.user));
+          window.location.href = 'index.html';
+        } else { err.textContent = data.message; err.style.display = 'block'; }
+      } catch(e) { err.textContent = 'Erreur serveur — réessaie'; err.style.display = 'block'; }
+    }
 
-  async function sInscrire() {
-    const nom = document.getElementById('reg-nom').value.trim();
-    const boutique = document.getElementById('reg-boutique').value.trim();
-    const tel = document.getElementById('reg-tel').value.trim();
-    const pwd = document.getElementById('reg-pwd').value;
-    const err = document.getElementById('err-register');
-    const suc = document.getElementById('suc-register');
-    err.style.display = 'none'; suc.style.display = 'none';
-    if (!nom || !boutique || !tel || !pwd) { err.textContent = 'Remplis tous les champs'; err.style.display = 'block'; return; }
-    if (pwd.length < 6) { err.textContent = 'Mot de passe trop court'; err.style.display = 'block'; return; }
-    try {
-      const res = await fetch(`${API}/register`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ nom, boutique, tel, password: pwd }) });
-      const data = await res.json();
-      if (res.ok) { suc.textContent = 'Compte créé ! Connecte-toi.'; suc.style.display = 'block'; setTimeout(() => switchTab('login', document.querySelector('.tab')), 1500); }
-      else { err.textContent = data.message; err.style.display = 'block'; }
-    } catch(e) { err.textContent = 'Erreur serveur — réessaie'; err.style.display = 'block'; }
-  }
-</script>
+    async function sInscrire() {
+      const nom      = document.getElementById('reg-nom').value.trim();
+      const boutique = document.getElementById('reg-boutique').value.trim();
+      const tel      = document.getElementById('reg-tel').value.trim();
+      const pwd      = document.getElementById('reg-pwd').value;
+      const err = document.getElementById('err-register');
+      const suc = document.getElementById('suc-register');
+      err.style.display = 'none'; suc.style.display = 'none';
+      if (!nom || !boutique || !tel || !pwd) { err.textContent = 'Remplis tous les champs'; err.style.display = 'block'; return; }
+      if (pwd.length < 6) { err.textContent = 'Mot de passe trop court'; err.style.display = 'block'; return; }
+      try {
+        const res  = await fetch(`${API}/register`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ nom, boutique, tel, password:pwd }) });
+        const data = await res.json();
+        if (res.ok) {
+          suc.textContent = 'Compte créé ! Connecte-toi.';
+          suc.style.display = 'block';
+          setTimeout(() => switchTab('login', document.querySelector('.tab')), 1500);
+        } else { err.textContent = data.message; err.style.display = 'block'; }
+      } catch(e) { err.textContent = 'Erreur serveur — réessaie'; err.style.display = 'block'; }
+    }
+  </script>
 </body>
-<div id="loading-screen">
-  <div class="loading-logo">BANK<span>VI</span></div>
-  <p class="loading-msg">Veuillez patientez...</p>
-  <div class="loading-dots">
-    <div></div><div></div><div></div>
-  </div>
-</div>
 </html>
