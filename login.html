@@ -4,255 +4,208 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BANKVI — Connexion</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#002e59",
+            "primary-container": "#0c447c",
+            "secondary": "#1960a6",
+            "secondary-container": "#7ab3ff",
+            "tertiary": "#003524",
+            "tertiary-fixed-dim": "#68dbae",
+            "on-primary": "#ffffff",
+            "surface": "#f9f9f7",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#f4f4f2",
+            "surface-container": "#eeeeec",
+            "on-surface": "#1a1c1b",
+            "on-surface-variant": "#424750",
+            "outline": "#737781",
+            "outline-variant": "#c2c6d1",
+            "error": "#ba1a1a",
+            "error-container": "#ffdad6",
+          },
+          fontFamily: {
+            "headline": ["Manrope"],
+            "body": ["Inter"],
+          }
+        }
+      }
+    }
+  </script>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      background: #f0ede8;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 1.5rem 1rem;
+    body { font-family: 'Inter', sans-serif; }
+    .font-headline { font-family: 'Manrope', sans-serif; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    .bento-mesh {
+      background-color: #f9f9f7;
+      background-image: radial-gradient(at 0% 0%, hsla(210,100%,96%,1) 0, transparent 50%),
+                        radial-gradient(at 100% 100%, hsla(160,100%,96%,1) 0, transparent 50%);
     }
-    .logo-wrap { text-align: center; margin-bottom: 1.5rem; }
-    .logo { font-size: 32px; font-weight: 800; letter-spacing: -1.5px; color: #0C2D5A; }
-    .logo span { color: #185FA5; }
-    .tagline { font-size: 14px; color: #7a7a7a; margin-top: 4px; }
-    .card {
-      background: #fff;
-      border-radius: 20px;
-      padding: 2rem 1.75rem;
-      width: 100%;
-      max-width: 420px;
-      box-shadow: 0 2px 20px rgba(0,0,0,0.06);
-    }
-    .tabs {
-      display: flex;
-      background: #f0ede8;
-      border-radius: 12px;
-      padding: 4px;
-      margin-bottom: 1.75rem;
-    }
-    .tab {
-      flex: 1;
-      text-align: center;
-      padding: 10px;
-      font-size: 14px;
-      font-weight: 600;
-      border-radius: 10px;
-      cursor: pointer;
-      border: none;
-      background: none;
-      color: #9a9a9a;
-      transition: all 0.2s;
-    }
-    .tab.active {
-      background: #fff;
-      color: #0C2D5A;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-    }
-    .form-title { font-size: 20px; font-weight: 700; color: #0C2D5A; margin-bottom: 4px; }
-    .form-sub { font-size: 13px; color: #9a9a9a; margin-bottom: 1.5rem; }
-    .field { margin-bottom: 1rem; }
-    .field label {
-      display: block;
-      font-size: 11px;
-      font-weight: 700;
-      color: #5a5a5a;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 8px;
-    }
-    .input-wrap {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: #f7f5f2;
-      border: 1.5px solid #e8e4df;
-      border-radius: 12px;
-      padding: 12px 14px;
-      transition: border-color 0.2s;
-    }
-    .input-wrap:focus-within { border-color: #185FA5; background: #fff; }
-    .input-wrap svg { flex-shrink: 0; opacity: 0.4; }
-    .input-wrap input {
-      border: none;
-      background: none;
-      outline: none;
-      font-size: 14px;
-      color: #1a1a1a;
-      width: 100%;
-    }
-    .forgot {
-      text-align: right;
-      font-size: 12px;
-      color: #185FA5;
-      font-weight: 500;
-      margin-top: -4px;
-      margin-bottom: 1rem;
-      cursor: pointer;
-    }
-    .btn-main {
-      width: 100%;
-      padding: 14px;
-      background: #0C2D5A;
-      color: #fff;
-      border: none;
-      border-radius: 12px;
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      transition: background 0.2s;
-    }
-    .btn-main:hover { background: #185FA5; }
-    .btn-main.green { background: #1D9E75; }
-    .btn-main.green:hover { background: #0F6E56; }
-    .security {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      margin-top: 1rem;
-      font-size: 11px;
-      color: #b0b0b0;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .msg { padding: 10px 14px; border-radius: 10px; font-size: 13px; margin-bottom: 1rem; display: none; }
-    .msg.error { background: #FAECE7; color: #993C1D; }
-    .msg.success { background: #E1F5EE; color: #0F6E56; }
-    .footer-badges {
-      display: flex;
-      justify-content: center;
-      gap: 1.5rem;
-      margin-top: 1.5rem;
-      font-size: 11px;
-      color: #b0b0b0;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .badge-item { display: flex; align-items: center; gap: 5px; }
-    #form-register { display: none; }
-
-    @media (min-width: 768px) {
-      body { background: #e8e4de; }
-      .card { padding: 2.5rem 2.5rem; }
-    }
+    .msg { display: none; padding: 10px 14px; border-radius: 10px; font-size: 13px; margin-bottom: 1rem; }
+    .msg.error { background: #ffdad6; color: #93000a; }
+    .msg.success { background: #e1f5ee; color: #0F6E56; }
   </style>
 </head>
-<body>
+<body class="bg-surface font-body text-on-background min-h-screen bento-mesh flex flex-col">
 
-  <div class="logo-wrap">
-    <div class="logo">BANK<span>VI</span></div>
-    <p class="tagline">Gère ton commerce. Protège ton argent.</p>
-  </div>
+  <header class="w-full py-12 flex flex-col items-center justify-center">
+    <div class="flex items-center space-x-0.5 mb-2">
+      <span class="text-4xl font-black tracking-tighter text-on-surface font-headline">BANK</span>
+      <span class="text-4xl font-black tracking-tighter text-secondary font-headline">VI</span>
+    </div>
+    <p class="text-on-surface-variant font-medium tracking-tight opacity-80">Gère ton commerce. Protège ton argent.</p>
+  </header>
 
-  <div class="card">
-    <div class="tabs">
-      <button class="tab active" onclick="switchTab('login', this)">Se connecter</button>
-      <button class="tab" onclick="switchTab('register', this)">S'inscrire</button>
-    </div>
+  <main class="flex-grow flex items-start justify-center px-6 pb-24">
+    <div class="w-full max-w-[480px]">
+      <div class="bg-surface-container-lowest rounded-xl shadow-[0_20px_40px_rgba(0,28,58,0.06)] overflow-hidden">
 
-    <!-- CONNEXION -->
-    <div id="form-login">
-      <h2 class="form-title">Bon retour parmi nous</h2>
-      <p class="form-sub">Entrez vos identifiants pour accéder à votre espace.</p>
-      <div class="msg error" id="err-login"></div>
-      <div class="field">
-        <label>Numéro de téléphone</label>
-        <div class="input-wrap">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="3" y="1" width="10" height="14" rx="2" stroke="#1a1a1a" stroke-width="1.5"/><circle cx="8" cy="12" r="1" fill="#1a1a1a"/></svg>
-          <input type="tel" id="login-tel" placeholder="Ex: 90000000">
+        <!-- Tabs -->
+        <div class="flex bg-surface-container-low p-1.5">
+          <button id="tab-login" onclick="switchTab('login')" class="flex-1 py-3 text-sm font-semibold rounded-lg bg-surface-container-lowest text-primary shadow-sm transition-all duration-200">
+            Se connecter
+          </button>
+          <button id="tab-register" onclick="switchTab('register')" class="flex-1 py-3 text-sm font-semibold rounded-lg text-on-surface-variant hover:text-primary transition-all duration-200">
+            S'inscrire
+          </button>
         </div>
-      </div>
-      <div class="field">
-        <label>Mot de passe</label>
-        <div class="input-wrap">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="2" stroke="#1a1a1a" stroke-width="1.5"/><path d="M5 7V5a3 3 0 016 0v2" stroke="#1a1a1a" stroke-width="1.5" stroke-linecap="round"/></svg>
-          <input type="password" id="login-pwd" placeholder="Ton mot de passe">
-        </div>
-      </div>
-      <button class="btn-main" onclick="seConnecter()">
-        Se connecter
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-      <div class="security">
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1L2 3v3c0 2.5 1.8 4.5 4 5 2.2-.5 4-2.5 4-5V3L6 1z" stroke="#b0b0b0" stroke-width="1.2"/></svg>
-        Sécurité bancaire
-      </div>
-    </div>
 
-    <!-- INSCRIPTION -->
-    <div id="form-register">
-      <h2 class="form-title">Créer mon compte</h2>
-      <p class="form-sub">Rejoignez des milliers de commerçants.</p>
-      <div class="msg error" id="err-register"></div>
-      <div class="msg success" id="suc-register"></div>
-      <div class="field">
-        <label>Nom complet</label>
-        <div class="input-wrap">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="#1a1a1a" stroke-width="1.5"/><path d="M2 14c0-3 2.7-4 6-4s6 1 6 4" stroke="#1a1a1a" stroke-width="1.5" stroke-linecap="round"/></svg>
-          <input type="text" id="reg-nom" placeholder="Ex: Kofi Mensah">
-        </div>
-      </div>
-      <div class="field">
-        <label>Nom de ta boutique</label>
-        <div class="input-wrap">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="6" width="12" height="8" rx="1.5" stroke="#1a1a1a" stroke-width="1.5"/><path d="M1 6l1-3h12l1 3" stroke="#1a1a1a" stroke-width="1.5" stroke-linecap="round"/><path d="M6 14v-4h4v4" stroke="#1a1a1a" stroke-width="1.5"/></svg>
-          <input type="text" id="reg-boutique" placeholder="Ex: Boutique Mensah">
-        </div>
-      </div>
-      <div class="field">
-        <label>Numéro de téléphone</label>
-        <div class="input-wrap">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="3" y="1" width="10" height="14" rx="2" stroke="#1a1a1a" stroke-width="1.5"/><circle cx="8" cy="12" r="1" fill="#1a1a1a"/></svg>
-          <input type="tel" id="reg-tel" placeholder="Ex: 90000000">
-        </div>
-      </div>
-      <div class="field">
-        <label>Mot de passe</label>
-        <div class="input-wrap">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="2" stroke="#1a1a1a" stroke-width="1.5"/><path d="M5 7V5a3 3 0 016 0v2" stroke="#1a1a1a" stroke-width="1.5" stroke-linecap="round"/></svg>
-          <input type="password" id="reg-pwd" placeholder="Minimum 6 caractères">
-        </div>
-      </div>
-      <button class="btn-main green" onclick="sInscrire()">
-        Créer mon compte
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-    </div>
-  </div>
+        <div class="p-8">
 
-  <div class="footer-badges">
-    <div class="badge-item">
-      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#b0b0b0" stroke-width="1.5" stroke-linecap="round"/></svg>
-      Sécurisé
+          <!-- CONNEXION -->
+          <div id="form-login" class="space-y-6">
+            <div class="space-y-2">
+              <h2 class="text-xl font-bold font-headline text-on-surface tracking-tight">Bon retour parmi nous</h2>
+              <p class="text-sm text-on-surface-variant">Entrez vos identifiants pour accéder à votre espace.</p>
+            </div>
+            <div class="msg error" id="err-login"></div>
+            <div class="space-y-4">
+              <div class="space-y-1.5">
+                <label class="text-[0.6875rem] font-bold uppercase tracking-[0.05em] text-outline ml-1">Numéro de téléphone</label>
+                <div class="relative">
+                  <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-xl">smartphone</span>
+                  <input id="login-tel" type="tel" placeholder="Ex: 90000000" class="w-full pl-12 pr-4 py-3.5 bg-surface-container-lowest border border-outline-variant/30 rounded-xl focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all text-sm">
+                </div>
+              </div>
+              <div class="space-y-1.5">
+                <div class="flex justify-between items-end ml-1">
+                  <label class="text-[0.6875rem] font-bold uppercase tracking-[0.05em] text-outline">Mot de passe</label>
+                </div>
+                <div class="relative">
+                  <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-xl">lock</span>
+                  <input id="login-pwd" type="password" placeholder="••••••••" class="w-full pl-12 pr-4 py-3.5 bg-surface-container-lowest border border-outline-variant/30 rounded-xl focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all text-sm">
+                </div>
+              </div>
+            </div>
+            <button onclick="seConnecter()" class="w-full py-4 bg-primary text-white font-bold rounded-xl hover:opacity-95 active:scale-[0.98] transition-all flex items-center justify-center space-x-2 shadow-lg shadow-primary/10">
+              <span>Se connecter</span>
+              <span class="material-symbols-outlined text-lg">arrow_forward</span>
+            </button>
+            <div class="flex items-center gap-4 mt-4">
+              <div class="h-[0.5px] flex-grow bg-outline-variant/30"></div>
+              <span class="text-[10px] font-bold text-outline uppercase tracking-widest">Sécurité Bancaire</span>
+              <div class="h-[0.5px] flex-grow bg-outline-variant/30"></div>
+            </div>
+          </div>
+
+          <!-- INSCRIPTION -->
+          <div id="form-register" class="space-y-6 hidden">
+            <div class="space-y-2">
+              <h2 class="text-xl font-bold font-headline text-on-surface tracking-tight">Créer un compte marchand</h2>
+              <p class="text-sm text-on-surface-variant">Commencez à gérer vos stocks et dettes aujourd'hui.</p>
+            </div>
+            <div class="msg error" id="err-register"></div>
+            <div class="msg success" id="suc-register"></div>
+            <div class="space-y-4">
+              <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-1.5">
+                  <label class="text-[0.6875rem] font-bold uppercase tracking-[0.05em] text-outline ml-1">Nom complet</label>
+                  <input id="reg-nom" type="text" placeholder="Ex: Kofi Mensah" class="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant/30 rounded-xl focus:border-secondary outline-none text-sm">
+                </div>
+                <div class="space-y-1.5">
+                  <label class="text-[0.6875rem] font-bold uppercase tracking-[0.05em] text-outline ml-1">Nom boutique</label>
+                  <input id="reg-boutique" type="text" placeholder="Ex: Ma Boutique" class="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant/30 rounded-xl focus:border-secondary outline-none text-sm">
+                </div>
+              </div>
+              <div class="space-y-1.5">
+                <label class="text-[0.6875rem] font-bold uppercase tracking-[0.05em] text-outline ml-1">Numéro de téléphone</label>
+                <div class="relative">
+                  <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-xl">smartphone</span>
+                  <input id="reg-tel" type="tel" placeholder="Ex: 90000000" class="w-full pl-12 pr-4 py-3 bg-surface-container-lowest border border-outline-variant/30 rounded-xl focus:border-secondary outline-none text-sm">
+                </div>
+              </div>
+              <div class="space-y-1.5">
+                <label class="text-[0.6875rem] font-bold uppercase tracking-[0.05em] text-outline ml-1">Mot de passe</label>
+                <div class="relative">
+                  <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-xl">lock</span>
+                  <input id="reg-pwd" type="password" placeholder="Minimum 6 caractères" class="w-full pl-12 pr-4 py-3 bg-surface-container-lowest border border-outline-variant/30 rounded-xl focus:border-secondary outline-none text-sm">
+                </div>
+              </div>
+            </div>
+            <button onclick="sInscrire()" class="w-full py-4 bg-[#003524] text-white font-bold rounded-xl hover:opacity-95 active:scale-[0.98] transition-all flex items-center justify-center space-x-2 shadow-lg mt-4">
+              <span>Créer mon compte</span>
+              <span class="material-symbols-outlined text-lg">rocket_launch</span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Footer badges -->
+      <div class="mt-12 flex flex-col items-center space-y-6">
+        <div class="flex items-center space-x-8 opacity-40 hover:opacity-70 transition-all duration-500">
+          <div class="flex items-center space-x-2">
+            <span class="material-symbols-outlined text-2xl">verified_user</span>
+            <span class="text-[0.6875rem] font-bold uppercase tracking-widest">Sécurisé</span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <span class="material-symbols-outlined text-2xl">cloud_done</span>
+            <span class="text-[0.6875rem] font-bold uppercase tracking-widest">Temps Réel</span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <span class="material-symbols-outlined text-2xl">support_agent</span>
+            <span class="text-[0.6875rem] font-bold uppercase tracking-widest">Support 24/7</span>
+          </div>
+        </div>
+        <p class="text-[0.6875rem] text-outline-variant font-medium">© 2024 BANKVI. Tous droits réservés.</p>
+      </div>
     </div>
-    <div class="badge-item">
-      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4" stroke="#b0b0b0" stroke-width="1.2"/><path d="M6 3v3l2 2" stroke="#b0b0b0" stroke-width="1.2" stroke-linecap="round"/></svg>
-      Temps réel
-    </div>
-    <div class="badge-item">
-      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4" stroke="#b0b0b0" stroke-width="1.2"/><path d="M4 6h4M6 4v4" stroke="#b0b0b0" stroke-width="1.2" stroke-linecap="round"/></svg>
-      Support 24/7
-    </div>
-  </div>
+  </main>
+
+  <!-- Decorative gradient -->
+  <div class="fixed bottom-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-secondary to-[#68dbae] opacity-20"></div>
 
   <script>
     const API = window.location.origin + '/api';
     if (localStorage.getItem('bankvi_token')) window.location.href = 'index.html';
 
-    function switchTab(tab, el) {
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      el.classList.add('active');
-      document.getElementById('form-login').style.display    = tab === 'login'    ? 'block' : 'none';
-      document.getElementById('form-register').style.display = tab === 'register' ? 'block' : 'none';
+    function switchTab(tab) {
+      const loginTab = document.getElementById('tab-login');
+      const registerTab = document.getElementById('tab-register');
+      const formLogin = document.getElementById('form-login');
+      const formRegister = document.getElementById('form-register');
+
+      if (tab === 'login') {
+        loginTab.classList.add('bg-surface-container-lowest', 'text-primary', 'shadow-sm');
+        loginTab.classList.remove('text-on-surface-variant');
+        registerTab.classList.remove('bg-surface-container-lowest', 'text-primary', 'shadow-sm');
+        registerTab.classList.add('text-on-surface-variant');
+        formLogin.classList.remove('hidden');
+        formRegister.classList.add('hidden');
+      } else {
+        registerTab.classList.add('bg-surface-container-lowest', 'text-primary', 'shadow-sm');
+        registerTab.classList.remove('text-on-surface-variant');
+        loginTab.classList.remove('bg-surface-container-lowest', 'text-primary', 'shadow-sm');
+        loginTab.classList.add('text-on-surface-variant');
+        formRegister.classList.remove('hidden');
+        formLogin.classList.add('hidden');
+      }
     }
 
     async function seConnecter() {
@@ -262,7 +215,7 @@
       err.style.display = 'none';
       if (!tel || !pwd) { err.textContent = 'Remplis tous les champs'; err.style.display = 'block'; return; }
       try {
-        const res  = await fetch(`${API}/login`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ tel, password:pwd }) });
+        const res  = await fetch(`${API}/login`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ tel, password: pwd }) });
         const data = await res.json();
         if (res.ok) {
           localStorage.setItem('bankvi_token', data.token);
@@ -283,12 +236,12 @@
       if (!nom || !boutique || !tel || !pwd) { err.textContent = 'Remplis tous les champs'; err.style.display = 'block'; return; }
       if (pwd.length < 6) { err.textContent = 'Mot de passe trop court'; err.style.display = 'block'; return; }
       try {
-        const res  = await fetch(`${API}/register`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ nom, boutique, tel, password:pwd }) });
+        const res  = await fetch(`${API}/register`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ nom, boutique, tel, password: pwd }) });
         const data = await res.json();
         if (res.ok) {
           suc.textContent = 'Compte créé ! Connecte-toi.';
           suc.style.display = 'block';
-          setTimeout(() => switchTab('login', document.querySelector('.tab')), 1500);
+          setTimeout(() => switchTab('login'), 1500);
         } else { err.textContent = data.message; err.style.display = 'block'; }
       } catch(e) { err.textContent = 'Erreur serveur — réessaie'; err.style.display = 'block'; }
     }

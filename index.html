@@ -3,297 +3,343 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BANKVI — Accueil</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/responsive.css">
+  <title>BANKVI — Tableau de bord</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#002e59",
+            "primary-container": "#0c447c",
+            "secondary": "#1960a6",
+            "secondary-container": "#7ab3ff",
+            "tertiary": "#003524",
+            "tertiary-fixed-dim": "#68dbae",
+            "on-primary": "#ffffff",
+            "on-primary-container": "#88b2f1",
+            "surface": "#f9f9f7",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#f4f4f2",
+            "surface-container": "#eeeeec",
+            "surface-container-high": "#e8e8e6",
+            "on-surface": "#1a1c1b",
+            "on-surface-variant": "#424750",
+            "outline": "#737781",
+            "outline-variant": "#c2c6d1",
+            "error": "#ba1a1a",
+            "error-container": "#ffdad6",
+            "on-error-container": "#93000a",
+          },
+          fontFamily: {
+            "headline": ["Manrope"],
+            "body": ["Inter"],
+          }
+        }
+      }
+    }
+  </script>
   <style>
-    body { background: #f0ede8; }
-
-    .navbar {
-      background: #f0ede8;
-      border-bottom: none;
-      padding: 1rem 1.25rem;
-    }
-
-    .nav-logo {
-      font-size: 22px;
-      font-weight: 800;
-      letter-spacing: -1px;
-      color: #0C2D5A;
-    }
-    .nav-logo span { color: #185FA5; }
-
-    .nav-avatar {
-      background: #0C2D5A;
-      color: #fff;
-      font-weight: 700;
-    }
-
-    .main-content { background: #f0ede8; }
-
-    .hero-card {
-      background: #0C2D5A;
-      border-radius: 20px;
-      padding: 1.5rem;
-      margin-bottom: 1.25rem;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-label { font-size: 11px; color: #8aa8cc; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
-    .hero-amount { font-size: 36px; font-weight: 800; color: #fff; letter-spacing: -1.5px; margin-bottom: 2px; }
-    .hero-sub { font-size: 12px; color: #8aa8cc; margin-bottom: 1rem; }
-
-    .hero-badge {
-      position: absolute;
-      top: 1.25rem;
-      right: 1.25rem;
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 20px;
-      padding: 4px 12px;
-      font-size: 11px;
-      color: #fff;
-    }
-
-    .hero-stats {
-      display: flex;
-      justify-content: space-between;
-      border-top: 1px solid rgba(255,255,255,0.1);
-      padding-top: 1rem;
-      margin-top: 0.5rem;
-    }
-
-    .hero-stat { display: flex; flex-direction: column; gap: 4px; }
-    .hs-label { font-size: 10px; color: #8aa8cc; text-transform: uppercase; letter-spacing: 0.3px; }
-    .hs-val { font-size: 14px; font-weight: 700; color: #fff; }
-    .hs-val.green { color: #5DCAA5; }
-    .hs-val.warn  { color: #FAC775; }
-
-    .metrics-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
-      gap: 10px;
-      margin-bottom: 1.25rem;
-    }
-
-    .metric-card {
-      background: #fff;
-      border-radius: 16px;
-      padding: 1rem;
-      border: none;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-    }
-
-    .metric-label {
-      font-size: 10px;
-      color: #9a9a9a;
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
-      margin-bottom: 8px;
-    }
-
-    .metric-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 8px;
-    }
-
-    .metric-icon.red    { background: #FAECE7; }
-    .metric-icon.amber  { background: #FAEEDA; }
-    .metric-icon.green  { background: #E1F5EE; }
-    .metric-icon.blue   { background: #E6F1FB; }
-
-    .metric-value {
-      font-size: clamp(14px, 4vw, 20px);
-      font-weight: 800;
-      margin-bottom: 2px;
-    }
-
-    .metric-value.red   { color: #D85A30; }
-    .metric-value.green { color: #1D9E75; }
-    .metric-value.warn  { color: #BA7517; }
-    .metric-value.blue  { color: #185FA5; }
-    .metric-sub { font-size: 11px; color: #b0b0b0; }
-
-    .rapport-btn {
-      width: 100%;
-      padding: 13px;
-      background: #fff;
-      border: none;
-      border-radius: 14px;
-      font-size: 14px;
-      color: #0C2D5A;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      margin-bottom: 1.25rem;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-    }
-
-    .section-title { font-size: 16px; font-weight: 700; color: #0C2D5A; }
-    .section-link  { font-size: 13px; color: #185FA5; font-weight: 500; }
-
-    .cards-list {
-      background: #fff;
-      border: none;
-      border-radius: 16px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-    }
-
-    .list-card { padding: 14px 1.25rem; }
-    .lc-name { font-size: 14px; font-weight: 600; color: #0C2D5A; }
-    .lc-sub  { font-size: 12px; color: #9a9a9a; margin-top: 1px; }
-    .lc-amount { font-size: 14px; font-weight: 700; }
-    .lc-days { font-size: 11px; color: #b0b0b0; margin-top: 2px; }
-
-    .lc-avatar {
-      width: 38px;
-      height: 38px;
-      border-radius: 12px;
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .lc-avatar.red   { background: #FAECE7; color: #D85A30; }
-    .lc-avatar.green { background: #E1F5EE; color: #1D9E75; }
-    .lc-avatar.blue  { background: #E6F1FB; color: #185FA5; }
-
-    .bottom-nav {
-      background: #fff;
-      border-top: none;
-      box-shadow: 0 -2px 10px rgba(0,0,0,0.06);
-    }
-
-    .bn-item { color: #b0b0b0; font-size: 10px; font-weight: 500; }
-    .bn-item.active { color: #0C2D5A; }
-
-    .alert-retard {
-      background: #FAECE7;
-      border-left: 3px solid #D85A30;
-      border-radius: 0 12px 12px 0;
-      padding: 10px 14px;
-      margin-bottom: 1.25rem;
-      font-size: 13px;
-      color: #993C1D;
-    }
+    body { font-family: 'Inter', sans-serif; background-color: #f9f9f7; }
+    .font-headline { font-family: 'Manrope', sans-serif; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
   </style>
 </head>
-<body>
-  <nav class="navbar">
-    <div class="nav-logo">BANK<span>VI</span></div>
-    <div class="nav-date" id="nav-date"></div>
-    <div class="nav-avatar" id="nav-avatar">?</div>
-  </nav>
+<body class="flex min-h-screen text-on-surface">
 
-  <main class="main-content">
-
-    <section class="hero-card">
-      <div class="hero-badge">Aujourd'hui</div>
-      <p class="hero-label">Chiffre d'affaires du jour</p>
-      <h1 class="hero-amount" id="hero-amount">0 F</h1>
-      <p class="hero-sub" id="hero-sub">0 ventes enregistrées</p>
-      <div class="hero-stats">
-        <div class="hero-stat">
-          <span class="hs-label">Encaissé</span>
-          <span class="hs-val green" id="stat-encaisse">0 F</span>
-        </div>
-        <div class="hero-stat">
-          <span class="hs-label">En attente</span>
-          <span class="hs-val warn" id="stat-attente">0 F</span>
-        </div>
-        <div class="hero-stat">
-          <span class="hs-label">Cette semaine</span>
-          <span class="hs-val" id="stat-semaine">0 F</span>
-        </div>
-      </div>
-    </section>
-
-    <div class="metrics-grid">
-      <div class="metric-card">
-        <div class="metric-icon red">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="6" stroke="#D85A30" stroke-width="1.5"/><path d="M9 6v3l2 2" stroke="#D85A30" stroke-width="1.5" stroke-linecap="round"/></svg>
-        </div>
-        <p class="metric-label">Dettes clients</p>
-        <h2 class="metric-value red" id="m-dettes">0 F</h2>
-        <p class="metric-sub" id="m-dettes-count">0 clients</p>
-      </div>
-      <div class="metric-card">
-        <div class="metric-icon amber">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 3L16 15H2L9 3Z" stroke="#BA7517" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 8v3" stroke="#BA7517" stroke-width="1.5" stroke-linecap="round"/><circle cx="9" cy="13" r="0.8" fill="#BA7517"/></svg>
-        </div>
-        <p class="metric-label">Stock critique</p>
-        <h2 class="metric-value warn" id="m-stocks">0</h2>
-        <p class="metric-sub">produits urgents</p>
-      </div>
-      <div class="metric-card">
-        <div class="metric-icon green">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 10l3-3 3 3 3-4 3 2" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-        <p class="metric-label">Ventes du jour</p>
-        <h2 class="metric-value green" id="m-ventes">0</h2>
-        <p class="metric-sub">enregistrées</p>
-      </div>
-      <div class="metric-card">
-        <div class="metric-icon blue">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="6" width="14" height="9" rx="2" stroke="#185FA5" stroke-width="1.5"/><path d="M5 6V5a4 4 0 018 0v1" stroke="#185FA5" stroke-width="1.5"/></svg>
-        </div>
-        <p class="metric-label">Mon commerce</p>
-        <h2 class="metric-value blue" id="m-boutique">--</h2>
-        <p class="metric-sub">actif</p>
+  <!-- SIDEBAR DESKTOP -->
+  <aside class="hidden lg:flex w-[220px] h-screen sticky top-0 bg-surface-container-low flex-col py-8 px-4 z-50">
+    <div class="mb-10 px-2">
+      <h1 class="text-2xl font-black tracking-tight text-on-surface font-headline">BANK<span class="text-secondary">VI</span></h1>
+      <p class="text-[0.6875rem] font-bold uppercase tracking-widest text-outline mt-1">Management</p>
+    </div>
+    <nav class="flex-1 space-y-1" id="sidebar-nav">
+      <a href="index.html" class="flex items-center gap-3 px-3 py-3 text-primary-container font-bold bg-surface-container-lowest rounded-lg shadow-sm">
+        <span class="material-symbols-outlined">dashboard</span>
+        <span class="text-sm">Accueil</span>
+      </a>
+      <a href="dettes.html" class="flex items-center gap-3 px-3 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-lg transition-colors">
+        <span class="material-symbols-outlined">payments</span>
+        <span class="text-sm">Dettes</span>
+      </a>
+      <a href="ventes.html" class="flex items-center gap-3 px-3 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-lg transition-colors">
+        <span class="material-symbols-outlined">receipt_long</span>
+        <span class="text-sm">Ventes</span>
+      </a>
+      <a href="stocks.html" class="flex items-center gap-3 px-3 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-lg transition-colors">
+        <span class="material-symbols-outlined">inventory_2</span>
+        <span class="text-sm">Stocks</span>
+      </a>
+      <a href="profil.html" class="flex items-center gap-3 px-3 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-lg transition-colors">
+        <span class="material-symbols-outlined">person</span>
+        <span class="text-sm">Profil</span>
+      </a>
+    </nav>
+    <div class="pt-6 border-t border-outline-variant/30 flex items-center gap-3 px-2">
+      <div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold text-xs" id="sidebar-avatar">--</div>
+      <div class="overflow-hidden">
+        <p class="text-xs font-bold truncate" id="sidebar-nom">--</p>
+        <p class="text-[10px] text-outline uppercase">Gérant</p>
       </div>
     </div>
+  </aside>
 
-    <button class="rapport-btn" onclick="telechargerRapport()">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <path d="M8 3v8M5 8l3 3 3-3" stroke="#0C2D5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M3 13h10" stroke="#0C2D5A" stroke-width="1.5" stroke-linecap="round"/>
-      </svg>
-      Télécharger le rapport du jour
-    </button>
+  <div class="flex-1 flex flex-col min-h-screen">
 
-    <section class="section">
-      <div class="section-header">
-        <h3 class="section-title">Dettes en cours</h3>
-        <a href="dettes.html" class="section-link">Voir tout →</a>
+    <!-- TOPBAR -->
+    <header class="w-full h-16 sticky top-0 z-40 bg-surface flex justify-between items-center px-6 lg:px-8 border-b border-outline-variant/20">
+      <div class="flex items-center gap-4">
+        <!-- Mobile logo -->
+        <h1 class="text-xl font-black tracking-tight font-headline lg:hidden">BANK<span class="text-secondary">VI</span></h1>
+        <!-- Desktop title -->
+        <h2 class="hidden lg:block font-headline font-bold text-xl text-on-surface">Dashboard</h2>
+        <div class="hidden lg:block h-4 w-[1px] bg-outline-variant opacity-30"></div>
+        <p class="hidden lg:block text-sm text-outline font-medium" id="nav-date-desktop"></p>
       </div>
-      <div class="cards-list" id="liste-dettes">
-        <div style="padding:1.5rem;text-align:center;color:#b0b0b0;font-size:14px;">Chargement...</div>
+      <div class="flex items-center gap-3">
+        <p class="text-sm text-outline" id="nav-date-mobile"></p>
+        <div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-white text-xs font-bold cursor-pointer" id="nav-avatar" onclick="window.location.href='profil.html'">--</div>
       </div>
-    </section>
+    </header>
 
-  </main>
+    <!-- MAIN -->
+    <main class="flex-1 p-4 lg:p-8 max-w-[1400px] w-full mx-auto space-y-6 pb-24 lg:pb-8">
 
-  <nav class="bottom-nav">
-    <a href="index.html" class="bn-item active">
-      <svg width="20" height="20" viewBox="0 0 18 18" fill="none"><rect x="2" y="2" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="10" y="2" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="2" y="10" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="10" y="10" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>
-      Accueil
-    </a>
-    <a href="dettes.html" class="bn-item">
-      <svg width="20" height="20" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M9 6v3l2 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-      Dettes
-    </a>
-    <a href="ventes.html" class="bn-item">
-      <svg width="20" height="20" viewBox="0 0 18 18" fill="none"><path d="M3 12l3-3 3 3 3-4 3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      Ventes
-    </a>
-    <a href="stocks.html" class="bn-item">
-      <svg width="20" height="20" viewBox="0 0 18 18" fill="none"><rect x="3" y="3" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M6 9h6M9 6v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-      Stocks
-    </a>
-    <a href="profil.html" class="bn-item">
-      <svg width="20" height="20" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="6" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M3 15c0-3 2.7-5 6-5s6 2 6 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-      Profil
-    </a>
-  </nav>
+      <!-- ALERTE RETARD -->
+      <div id="alert-retard" class="hidden bg-error-container text-on-error-container rounded-xl px-5 py-3 text-sm font-medium flex items-center gap-2">
+        <span class="material-symbols-outlined text-lg">warning</span>
+        <span id="alert-retard-text"></span>
+        <a href="dettes.html" class="ml-auto font-bold underline">Voir →</a>
+      </div>
 
-  <script src="js/app.js"></script>
+      <!-- HERO SECTION -->
+      <section class="relative overflow-hidden bg-primary-container rounded-3xl p-6 lg:p-10 text-white shadow-2xl">
+        <div class="relative z-10 space-y-4 lg:space-y-6">
+          <div>
+            <span class="text-[0.6875rem] font-bold uppercase tracking-[0.1em] opacity-70">Chiffre d'affaires aujourd'hui</span>
+            <h3 class="font-headline text-4xl lg:text-[3.5rem] font-extrabold leading-none mt-2 tracking-tight" id="hero-amount">0 F</h3>
+          </div>
+          <div class="flex flex-wrap gap-6 lg:gap-12">
+            <div class="space-y-1">
+              <p class="text-on-primary-container text-xs font-medium uppercase tracking-wider opacity-70">Ventes</p>
+              <p class="text-xl lg:text-2xl font-bold" id="hero-ventes">0</p>
+            </div>
+            <div class="space-y-1">
+              <p class="text-on-primary-container text-xs font-medium uppercase tracking-wider opacity-70">Encaissé</p>
+              <p class="text-xl lg:text-2xl font-bold text-[#68dbae]" id="hero-encaisse">0 F</p>
+            </div>
+            <div class="space-y-1">
+              <p class="text-on-primary-container text-xs font-medium uppercase tracking-wider opacity-70">En attente</p>
+              <p class="text-xl lg:text-2xl font-bold text-secondary-container" id="hero-attente">0 F</p>
+            </div>
+          </div>
+        </div>
+        <button onclick="telechargerRapport()" class="mt-6 lg:mt-0 lg:absolute lg:top-10 lg:right-10 flex items-center gap-2 bg-white text-primary-container px-6 py-3 rounded-xl font-bold text-sm hover:scale-[1.02] transition-transform">
+          <span class="material-symbols-outlined text-[20px]">download</span>
+          Télécharger le rapport
+        </button>
+      </section>
+
+      <!-- METRICS GRID -->
+      <section class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-surface-container-lowest p-4 lg:p-6 rounded-2xl shadow-sm border border-outline-variant/10 hover:bg-error-container/10 transition-all">
+          <div class="w-10 h-10 rounded-xl bg-error-container flex items-center justify-center text-on-error-container mb-3">
+            <span class="material-symbols-outlined text-xl">person_alert</span>
+          </div>
+          <p class="text-xs font-medium text-on-surface-variant mb-1">Dettes clients</p>
+          <p class="font-headline text-xl lg:text-2xl font-bold text-error" id="m-dettes">0 F</p>
+          <p class="text-[11px] text-outline mt-1" id="m-dettes-count">0 clients</p>
+        </div>
+        <div class="bg-surface-container-lowest p-4 lg:p-6 rounded-2xl shadow-sm border border-outline-variant/10 hover:bg-orange-50 transition-all">
+          <div class="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center text-orange-700 mb-3">
+            <span class="material-symbols-outlined text-xl">inventory</span>
+          </div>
+          <p class="text-xs font-medium text-on-surface-variant mb-1">Stock critique</p>
+          <p class="font-headline text-xl lg:text-2xl font-bold text-orange-600" id="m-stocks">0</p>
+          <p class="text-[11px] text-outline mt-1">produits urgents</p>
+        </div>
+        <div class="bg-surface-container-lowest p-4 lg:p-6 rounded-2xl shadow-sm border border-outline-variant/10 hover:bg-[#68dbae]/10 transition-all">
+          <div class="w-10 h-10 rounded-xl bg-[#68dbae]/30 flex items-center justify-center text-[#003524] mb-3">
+            <span class="material-symbols-outlined text-xl">shopping_cart</span>
+          </div>
+          <p class="text-xs font-medium text-on-surface-variant mb-1">Ventes du jour</p>
+          <p class="font-headline text-xl lg:text-2xl font-bold text-[#003524]" id="m-ventes">0</p>
+          <p class="text-[11px] text-outline mt-1">enregistrées</p>
+        </div>
+        <div class="bg-surface-container-lowest p-4 lg:p-6 rounded-2xl shadow-sm border border-outline-variant/10 hover:bg-secondary-container/20 transition-all">
+          <div class="w-10 h-10 rounded-xl bg-secondary-container/30 flex items-center justify-center text-primary mb-3">
+            <span class="material-symbols-outlined text-xl">storefront</span>
+          </div>
+          <p class="text-xs font-medium text-on-surface-variant mb-1">Mon commerce</p>
+          <p class="font-headline text-xl lg:text-2xl font-bold text-primary truncate" id="m-boutique">--</p>
+          <p class="text-[11px] text-outline mt-1">actif</p>
+        </div>
+      </section>
+
+      <!-- BOTTOM CONTENT -->
+      <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- DETTES EN COURS -->
+        <div class="lg:col-span-2 space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="font-headline text-lg lg:text-xl font-bold tracking-tight">Dettes en cours</h3>
+            <a href="dettes.html" class="text-xs font-bold text-secondary flex items-center gap-1 hover:underline">
+              Tout voir
+              <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+            </a>
+          </div>
+          <div class="space-y-3" id="liste-dettes">
+            <div class="bg-surface-container-lowest p-4 rounded-2xl text-center text-on-surface-variant text-sm">Chargement...</div>
+          </div>
+        </div>
+
+        <!-- ACTIONS RAPIDES -->
+        <div class="bg-surface-container-low rounded-3xl p-6 space-y-6">
+          <h4 class="font-headline text-lg font-bold">Actions rapides</h4>
+          <div class="grid grid-cols-2 gap-3">
+            <a href="ventes.html" class="flex flex-col items-center gap-2 p-4 bg-surface-container-lowest rounded-xl hover:shadow-md transition-shadow cursor-pointer">
+              <span class="material-symbols-outlined text-secondary text-2xl">add_shopping_cart</span>
+              <span class="text-xs font-bold text-center">Nouvelle Vente</span>
+            </a>
+            <a href="dettes.html" class="flex flex-col items-center gap-2 p-4 bg-surface-container-lowest rounded-xl hover:shadow-md transition-shadow cursor-pointer">
+              <span class="material-symbols-outlined text-error text-2xl">person_add</span>
+              <span class="text-xs font-bold text-center">Nouvelle Dette</span>
+            </a>
+            <a href="stocks.html" class="flex flex-col items-center gap-2 p-4 bg-surface-container-lowest rounded-xl hover:shadow-md transition-shadow cursor-pointer">
+              <span class="material-symbols-outlined text-orange-600 text-2xl">add_box</span>
+              <span class="text-xs font-bold text-center">Ajouter Stock</span>
+            </a>
+            <a href="guide.html" class="flex flex-col items-center gap-2 p-4 bg-surface-container-lowest rounded-xl hover:shadow-md transition-shadow cursor-pointer">
+              <span class="material-symbols-outlined text-[#003524] text-2xl">help</span>
+              <span class="text-xs font-bold text-center">Guide</span>
+            </a>
+          </div>
+        </div>
+
+      </section>
+    </main>
+
+    <!-- BOTTOM NAV MOBILE -->
+    <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-surface-container-lowest border-t border-outline-variant/20 flex justify-around items-center py-2 z-50 shadow-[0_-2px_12px_rgba(0,0,0,0.06)]">
+      <a href="index.html" class="flex flex-col items-center gap-1 text-primary-container">
+        <span class="material-symbols-outlined text-xl" style="font-variation-settings:'FILL' 1">dashboard</span>
+        <span class="text-[10px] font-bold">Accueil</span>
+      </a>
+      <a href="dettes.html" class="flex flex-col items-center gap-1 text-on-surface-variant">
+        <span class="material-symbols-outlined text-xl">payments</span>
+        <span class="text-[10px] font-medium">Dettes</span>
+      </a>
+      <a href="ventes.html" class="flex flex-col items-center gap-1 text-on-surface-variant">
+        <span class="material-symbols-outlined text-xl">receipt_long</span>
+        <span class="text-[10px] font-medium">Ventes</span>
+      </a>
+      <a href="stocks.html" class="flex flex-col items-center gap-1 text-on-surface-variant">
+        <span class="material-symbols-outlined text-xl">inventory_2</span>
+        <span class="text-[10px] font-medium">Stocks</span>
+      </a>
+      <a href="profil.html" class="flex flex-col items-center gap-1 text-on-surface-variant">
+        <span class="material-symbols-outlined text-xl">person</span>
+        <span class="text-[10px] font-medium">Profil</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <script>
+    const API = window.location.origin + '/api';
+
+    function getHeaders() {
+      return { 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('bankvi_token') || '' };
+    }
+
+    function telechargerRapport() {
+      const token = localStorage.getItem('bankvi_token');
+      window.open(`${API}/rapport?token=${token}`, '_blank');
+    }
+
+    // Date
+    function afficherDate() {
+      const d = new Date().toLocaleDateString('fr-FR', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+      const dm = document.getElementById('nav-date-mobile');
+      const dd = document.getElementById('nav-date-desktop');
+      if (dm) dm.textContent = d;
+      if (dd) dd.textContent = d;
+    }
+    afficherDate();
+
+    // User
+    const user = JSON.parse(localStorage.getItem('bankvi_user') || '{}');
+    const initiales = user.nom ? user.nom.substring(0,2).toUpperCase() : '--';
+    ['nav-avatar','sidebar-avatar'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = initiales; });
+    const sn = document.getElementById('sidebar-nom');
+    if (sn && user.nom) sn.textContent = user.nom;
+    const mb = document.getElementById('m-boutique');
+    if (mb && user.boutique) mb.textContent = user.boutique.substring(0,10);
+
+    function fmt(v) { return Number(v).toLocaleString('fr-FR') + ' F'; }
+    function joursDepuis(d) {
+      const diff = Math.floor((new Date() - new Date(d)) / 86400000);
+      if (diff === 0) return "aujourd'hui";
+      if (diff === 1) return 'hier';
+      return `il y a ${diff} jours`;
+    }
+
+    async function chargerDashboard() {
+      try {
+        const res  = await fetch(`${API}/dashboard`, { headers: getHeaders() });
+        const data = await res.json();
+        document.getElementById('hero-amount').textContent  = fmt(data.ventes_jour || 0);
+        document.getElementById('hero-ventes').textContent  = data.ventes_count || 0;
+        document.getElementById('hero-encaisse').textContent = fmt(data.ventes_jour || 0);
+        document.getElementById('hero-attente').textContent  = fmt(data.dettes_total || 0);
+        document.getElementById('m-dettes').textContent      = fmt(data.dettes_total || 0);
+        document.getElementById('m-dettes-count').textContent = (data.dettes_count || 0) + ' clients';
+        document.getElementById('m-stocks').textContent      = data.stocks_critique || 0;
+        document.getElementById('m-ventes').textContent      = data.ventes_count || 0;
+
+        const resD   = await fetch(`${API}/dettes`, { headers: getHeaders() });
+        const dettes = await resD.json();
+        const enCours = Array.isArray(dettes) ? dettes.filter(d => d.statut === 'en_cours').slice(0,3) : [];
+        const liste = document.getElementById('liste-dettes');
+
+        if (enCours.length === 0) {
+          liste.innerHTML = `<div class="bg-surface-container-lowest p-6 rounded-2xl text-center"><p class="text-on-surface-variant text-sm">Aucune dette en cours</p><a href="dettes.html" class="text-secondary text-xs font-bold mt-2 block">Ajouter une dette →</a></div>`;
+        } else {
+          liste.innerHTML = enCours.map(d => `
+            <div class="group bg-surface-container-lowest p-4 rounded-2xl flex items-center justify-between hover:bg-surface-container transition-colors">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-error-container flex items-center justify-center text-on-error-container font-bold text-xs">${d.client.substring(0,2).toUpperCase()}</div>
+                <div>
+                  <p class="font-bold text-sm">${d.client}</p>
+                  <p class="text-[11px] text-on-surface-variant">${d.produit}</p>
+                </div>
+              </div>
+              <div class="text-right">
+                <p class="font-bold text-error text-sm">${fmt(d.montant)}</p>
+                <p class="text-[10px] text-outline">${joursDepuis(d.date_creation)}</p>
+              </div>
+            </div>`).join('');
+        }
+
+        // Alertes retard
+        const resR  = await fetch(`${API}/dettes/retard`, { headers: getHeaders() });
+        const retard = await resR.json();
+        if (Array.isArray(retard) && retard.length > 0) {
+          const bar = document.getElementById('alert-retard');
+          const txt = document.getElementById('alert-retard-text');
+          if (bar && txt) {
+            txt.textContent = `${retard.length} dette(s) en retard de remboursement`;
+            bar.classList.remove('hidden');
+            bar.classList.add('flex');
+          }
+        }
+
+      } catch(e) { console.log('Erreur dashboard', e); }
+    }
+
+    chargerDashboard();
+  </script>
 </body>
 </html>
