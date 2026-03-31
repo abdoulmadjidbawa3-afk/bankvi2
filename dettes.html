@@ -4,93 +4,323 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BANKVI — Dettes</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/responsive.css">
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#002e59", "primary-container": "#0c447c", "secondary": "#1960a6",
+            "secondary-container": "#7ab3ff", "tertiary": "#003524", "tertiary-fixed-dim": "#68dbae",
+            "surface": "#f9f9f7", "surface-container-lowest": "#ffffff", "surface-container-low": "#f4f4f2",
+            "surface-container": "#eeeeec", "surface-container-high": "#e8e8e6",
+            "on-surface": "#1a1c1b", "on-surface-variant": "#424750", "outline": "#737781",
+            "outline-variant": "#c2c6d1", "error": "#ba1a1a", "error-container": "#ffdad6",
+            "on-error-container": "#93000a", "on-primary-container": "#88b2f1",
+          },
+          fontFamily: { "headline": ["Manrope"], "body": ["Inter"] }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #f9f9f7; }
+    .font-headline { font-family: 'Manrope', sans-serif; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    .modal-bg { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:100; align-items:flex-end; justify-content:center; }
+    .modal-bg.open { display:flex; }
+    @media(min-width:1024px) { .modal-bg { align-items:center; } .modal-sheet { border-radius:1.5rem !important; max-width:480px; width:100%; } }
+  </style>
 </head>
-<body>
-  <nav class="navbar">
-    <div class="nav-logo">BANK<span>VI</span></div>
-    <div class="nav-date" id="nav-date"></div>
-    <div class="nav-avatar" id="nav-avatar">?</div>
-  </nav>
+<body class="flex min-h-screen text-on-surface">
 
-  <main class="main-content">
-    <section class="hero-card">
-      <div class="hero-left">
-        <p class="hero-label">Total dettes en cours</p>
-        <h1 class="hero-amount" id="hero-amount">0 F</h1>
-        <p class="hero-sub" id="hero-sub">0 clients concernés</p>
+  <!-- SIDEBAR DESKTOP -->
+  <aside class="hidden lg:flex w-[220px] h-screen sticky top-0 bg-surface-container-low flex-col py-8 px-4 z-50">
+    <div class="mb-10 px-2">
+      <h1 class="text-2xl font-black tracking-tight font-headline">BANK<span class="text-secondary">VI</span></h1>
+      <p class="text-[0.6875rem] font-bold uppercase tracking-widest text-outline mt-1">Management</p>
+    </div>
+    <nav class="flex-1 space-y-1">
+      <a href="index.html" class="flex items-center gap-3 px-3 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-lg transition-colors">
+        <span class="material-symbols-outlined">dashboard</span><span class="text-sm">Accueil</span>
+      </a>
+      <a href="dettes.html" class="flex items-center gap-3 px-3 py-3 text-primary-container font-bold bg-surface-container-lowest rounded-lg shadow-sm">
+        <span class="material-symbols-outlined">payments</span><span class="text-sm">Dettes</span>
+      </a>
+      <a href="ventes.html" class="flex items-center gap-3 px-3 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-lg transition-colors">
+        <span class="material-symbols-outlined">receipt_long</span><span class="text-sm">Ventes</span>
+      </a>
+      <a href="stocks.html" class="flex items-center gap-3 px-3 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-lg transition-colors">
+        <span class="material-symbols-outlined">inventory_2</span><span class="text-sm">Stocks</span>
+      </a>
+      <a href="profil.html" class="flex items-center gap-3 px-3 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-lg transition-colors">
+        <span class="material-symbols-outlined">person</span><span class="text-sm">Profil</span>
+      </a>
+    </nav>
+    <div class="pt-6 border-t border-outline-variant/30 flex items-center gap-3 px-2">
+      <div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold text-xs" id="sidebar-avatar">--</div>
+      <div><p class="text-xs font-bold truncate" id="sidebar-nom">--</p><p class="text-[10px] text-outline uppercase">Gérant</p></div>
+    </div>
+  </aside>
+
+  <div class="flex-1 flex flex-col min-h-screen">
+    <!-- TOPBAR -->
+    <header class="w-full h-16 sticky top-0 z-40 bg-surface flex justify-between items-center px-6 border-b border-outline-variant/20">
+      <div class="flex items-center gap-4">
+        <h1 class="text-xl font-black tracking-tight font-headline lg:hidden">BANK<span class="text-secondary">VI</span></h1>
+        <h2 class="hidden lg:block font-headline font-bold text-xl">Gestion des Dettes</h2>
       </div>
-      <div class="hero-badge">En cours</div>
-      <div class="hero-stats">
-        <div class="hero-stat"><span class="hs-label">En retard</span><span class="hs-val warn" id="stat-retard">0 F</span></div>
-        <div class="hero-stat"><span class="hs-label">Cette semaine</span><span class="hs-val" id="stat-semaine">0 F</span></div>
-        <div class="hero-stat"><span class="hs-label">Remboursé</span><span class="hs-val green" id="stat-rembourse">0 F</span></div>
+      <div class="flex items-center gap-3">
+        <p class="hidden lg:block text-sm text-outline" id="nav-date"></p>
+        <div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-white text-xs font-bold" id="nav-avatar">--</div>
       </div>
-    </section>
+    </header>
 
-    <button class="btn-primary" onclick="document.getElementById('modal-dette').classList.add('open')">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
-      Ajouter une dette
-    </button>
+    <main class="flex-1 p-4 lg:p-8 max-w-[1400px] w-full mx-auto pb-24 lg:pb-8 space-y-6">
 
-    <div class="search-bar" style="margin-bottom:1.25rem;">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-        <circle cx="6" cy="6" r="4" stroke="#a0a0a0" stroke-width="1.5"/>
-        <path d="M9.5 9.5L12 12" stroke="#a0a0a0" stroke-width="1.5" stroke-linecap="round"/>
-      </svg>
-      <input type="text" id="search-dettes" placeholder="Rechercher un client ou produit...">
-    </div>
+      <!-- HERO -->
+      <section class="relative overflow-hidden bg-primary-container rounded-3xl p-6 lg:p-10 text-white shadow-xl flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+        <div class="space-y-4">
+          <span class="text-[0.6875rem] font-bold uppercase tracking-[0.1em] opacity-70">Total des créances</span>
+          <h3 class="font-headline text-4xl lg:text-5xl font-extrabold leading-none tracking-tight" id="hero-amount">0 F</h3>
+          <div class="flex gap-8">
+            <div><p class="text-xs opacity-70 uppercase tracking-wider">Clients actifs</p><p class="text-2xl font-bold" id="hero-clients">0</p></div>
+            <div><p class="text-xs opacity-70 uppercase tracking-wider">En retard</p><p class="text-2xl font-bold text-secondary-container" id="hero-retard">0</p></div>
+          </div>
+        </div>
+        <button onclick="document.getElementById('modal-dette').classList.add('open')" class="flex items-center gap-2 bg-white text-primary-container px-6 py-3 rounded-xl font-bold text-sm hover:scale-[1.02] transition-transform w-full lg:w-auto justify-center">
+          <span class="material-symbols-outlined text-[20px]">add</span>
+          Ajouter une dette
+        </button>
+      </section>
 
-    <div class="filters-row">
-      <button class="filter-btn active" onclick="filtrerDettes('toutes', this)">Toutes</button>
-      <button class="filter-btn" onclick="filtrerDettes('en_cours', this)">En cours</button>
-      <button class="filter-btn" onclick="filtrerDettes('payee', this)">Payées</button>
-    </div>
+      <!-- SEARCH + FILTERS -->
+      <div class="flex flex-col sm:flex-row gap-3">
+        <div class="relative flex-1">
+          <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-xl">search</span>
+          <input id="search-dettes" type="text" placeholder="Rechercher un client ou produit..." class="w-full pl-12 pr-4 py-3 bg-surface-container-lowest border border-outline-variant/30 rounded-xl focus:border-secondary outline-none text-sm">
+        </div>
+        <div class="flex gap-2">
+          <button onclick="filtrerDettes('toutes',this)" class="filter-btn px-4 py-2 rounded-xl text-sm font-semibold bg-primary text-white">Toutes</button>
+          <button onclick="filtrerDettes('en_cours',this)" class="filter-btn px-4 py-2 rounded-xl text-sm font-semibold bg-surface-container-lowest border border-outline-variant/30 text-on-surface-variant">En cours</button>
+          <button onclick="filtrerDettes('payee',this)" class="filter-btn px-4 py-2 rounded-xl text-sm font-semibold bg-surface-container-lowest border border-outline-variant/30 text-on-surface-variant">Payées</button>
+        </div>
+      </div>
 
-    <div class="cards-list" id="liste-dettes">
-      <div style="padding:1.5rem;text-align:center;color:#a0a0a0;font-size:14px;">Chargement...</div>
-    </div>
-  </main>
+      <!-- LISTE DETTES -->
+      <div class="space-y-3" id="liste-dettes">
+        <div class="bg-surface-container-lowest p-6 rounded-2xl text-center text-on-surface-variant text-sm">Chargement...</div>
+      </div>
 
-  <nav class="bottom-nav">
-    <a href="index.html" class="bn-item"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><rect x="2" y="2" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="10" y="2" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="2" y="10" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="10" y="10" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>Accueil</a>
-    <a href="dettes.html" class="bn-item active"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M9 6v3l2 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Dettes</a>
-    <a href="ventes.html" class="bn-item"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><path d="M3 12l3-3 3 3 3-4 3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Ventes</a>
-    <a href="stocks.html" class="bn-item"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><rect x="3" y="3" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M6 9h6M9 6v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Stocks</a>
-    <a href="profil.html" class="bn-item"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="6" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M3 15c0-3 2.7-5 6-5s6 2 6 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Profil</a>
-  </nav>
+    </main>
 
+    <!-- BOTTOM NAV MOBILE -->
+    <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-surface-container-lowest border-t border-outline-variant/20 flex justify-around items-center py-2 z-50 shadow-[0_-2px_12px_rgba(0,0,0,0.06)]">
+      <a href="index.html" class="flex flex-col items-center gap-1 text-on-surface-variant"><span class="material-symbols-outlined text-xl">dashboard</span><span class="text-[10px]">Accueil</span></a>
+      <a href="dettes.html" class="flex flex-col items-center gap-1 text-primary-container"><span class="material-symbols-outlined text-xl" style="font-variation-settings:'FILL' 1">payments</span><span class="text-[10px] font-bold">Dettes</span></a>
+      <a href="ventes.html" class="flex flex-col items-center gap-1 text-on-surface-variant"><span class="material-symbols-outlined text-xl">receipt_long</span><span class="text-[10px]">Ventes</span></a>
+      <a href="stocks.html" class="flex flex-col items-center gap-1 text-on-surface-variant"><span class="material-symbols-outlined text-xl">inventory_2</span><span class="text-[10px]">Stocks</span></a>
+      <a href="profil.html" class="flex flex-col items-center gap-1 text-on-surface-variant"><span class="material-symbols-outlined text-xl">person</span><span class="text-[10px]">Profil</span></a>
+    </nav>
+  </div>
+
+  <!-- MODAL AJOUT DETTE -->
   <div class="modal-bg" id="modal-dette">
-    <div class="modal">
-      <h3 class="modal-title">Nouvelle dette</h3>
-      <div class="field"><label>Nom du client</label><input type="text" id="dette-client" placeholder="Ex: Kofi Mensah"></div>
-      <div class="field"><label>Produit acheté</label><input type="text" id="dette-produit" placeholder="Ex: Riz 50kg x2"></div>
-      <div class="field"><label>Montant (FCFA)</label><input type="number" id="dette-montant" placeholder="Ex: 25000"></div>
-      <div class="field"><label>Date de remboursement</label><input type="date" id="dette-date"></div>
-      <div class="modal-actions">
-        <button class="btn-cancel" onclick="document.getElementById('modal-dette').classList.remove('open')">Annuler</button>
-        <button class="btn-save" id="btn-save-dette">Enregistrer</button>
+    <div class="modal-sheet bg-surface-container-lowest w-full rounded-t-3xl p-6 space-y-4 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between mb-2">
+        <h3 class="font-headline text-lg font-bold">Nouvelle dette</h3>
+        <button onclick="document.getElementById('modal-dette').classList.remove('open')" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+      </div>
+      <div class="space-y-1.5">
+        <label class="text-[0.6875rem] font-bold uppercase tracking-wider text-outline">Nom du client</label>
+        <input id="dette-client" type="text" placeholder="Ex: Kofi Mensah" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant/30 rounded-xl focus:border-secondary outline-none text-sm">
+      </div>
+      <div class="space-y-1.5">
+        <label class="text-[0.6875rem] font-bold uppercase tracking-wider text-outline">Produit acheté</label>
+        <input id="dette-produit" type="text" placeholder="Ex: Riz 50kg x2" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant/30 rounded-xl focus:border-secondary outline-none text-sm">
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div class="space-y-1.5">
+          <label class="text-[0.6875rem] font-bold uppercase tracking-wider text-outline">Montant (FCFA)</label>
+          <input id="dette-montant" type="number" placeholder="Ex: 25000" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant/30 rounded-xl focus:border-secondary outline-none text-sm">
+        </div>
+        <div class="space-y-1.5">
+          <label class="text-[0.6875rem] font-bold uppercase tracking-wider text-outline">Date remboursement</label>
+          <input id="dette-date" type="date" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant/30 rounded-xl focus:border-secondary outline-none text-sm">
+        </div>
+      </div>
+      <div class="flex gap-3 pt-2">
+        <button onclick="document.getElementById('modal-dette').classList.remove('open')" class="flex-1 py-3 border border-outline-variant/30 rounded-xl text-sm font-semibold text-on-surface-variant">Annuler</button>
+        <button id="btn-save-dette" class="flex-2 flex-1 py-3 bg-primary text-white rounded-xl text-sm font-bold">Enregistrer</button>
       </div>
     </div>
   </div>
 
+  <!-- MODAL MODIFIER DETTE -->
   <div class="modal-bg" id="modal-modifier-dette">
-    <div class="modal">
-      <h3 class="modal-title">Modifier la dette</h3>
+    <div class="modal-sheet bg-surface-container-lowest w-full rounded-t-3xl p-6 space-y-4 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between mb-2">
+        <h3 class="font-headline text-lg font-bold">Modifier la dette</h3>
+        <button onclick="document.getElementById('modal-modifier-dette').classList.remove('open')" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+      </div>
       <input type="hidden" id="modifier-dette-id">
-      <div class="field"><label>Nom du client</label><input type="text" id="modifier-dette-client"></div>
-      <div class="field"><label>Produit</label><input type="text" id="modifier-dette-produit"></div>
-      <div class="field"><label>Montant (FCFA)</label><input type="number" id="modifier-dette-montant"></div>
-      <div class="field"><label>Date remboursement</label><input type="date" id="modifier-dette-date"></div>
-      <div class="modal-actions">
-        <button class="btn-cancel" onclick="document.getElementById('modal-modifier-dette').classList.remove('open')">Annuler</button>
-        <button class="btn-save" id="btn-save-modifier-dette">Modifier</button>
+      <div class="space-y-1.5">
+        <label class="text-[0.6875rem] font-bold uppercase tracking-wider text-outline">Nom du client</label>
+        <input id="modifier-dette-client" type="text" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant/30 rounded-xl focus:border-secondary outline-none text-sm">
+      </div>
+      <div class="space-y-1.5">
+        <label class="text-[0.6875rem] font-bold uppercase tracking-wider text-outline">Produit</label>
+        <input id="modifier-dette-produit" type="text" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant/30 rounded-xl focus:border-secondary outline-none text-sm">
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div class="space-y-1.5">
+          <label class="text-[0.6875rem] font-bold uppercase tracking-wider text-outline">Montant</label>
+          <input id="modifier-dette-montant" type="number" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant/30 rounded-xl focus:border-secondary outline-none text-sm">
+        </div>
+        <div class="space-y-1.5">
+          <label class="text-[0.6875rem] font-bold uppercase tracking-wider text-outline">Date remboursement</label>
+          <input id="modifier-dette-date" type="date" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant/30 rounded-xl focus:border-secondary outline-none text-sm">
+        </div>
+      </div>
+      <div class="flex gap-3 pt-2">
+        <button onclick="document.getElementById('modal-modifier-dette').classList.remove('open')" class="flex-1 py-3 border border-outline-variant/30 rounded-xl text-sm font-semibold text-on-surface-variant">Annuler</button>
+        <button id="btn-save-modifier-dette" class="flex-1 py-3 bg-primary text-white rounded-xl text-sm font-bold">Modifier</button>
       </div>
     </div>
   </div>
 
-  <script src="js/app.js"></script>
-  <script src="js/dettes.js"></script>
+  <script>
+    const API = window.location.origin + '/api';
+    function getHeaders() { return { 'Content-Type':'application/json','Authorization':localStorage.getItem('bankvi_token')||'' }; }
+    function fmt(v) { return Number(v).toLocaleString('fr-FR') + ' F'; }
+
+    const user = JSON.parse(localStorage.getItem('bankvi_user')||'{}');
+    const ini = user.nom ? user.nom.substring(0,2).toUpperCase() : '--';
+    ['nav-avatar','sidebar-avatar'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=ini; });
+    const sn = document.getElementById('sidebar-nom'); if(sn&&user.nom) sn.textContent=user.nom;
+    const nd = document.getElementById('nav-date');
+    if(nd) nd.textContent = new Date().toLocaleDateString('fr-FR',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+    let toutesLesDettes = [];
+
+    document.getElementById('search-dettes').addEventListener('input', function() {
+      const val = this.value.toLowerCase();
+      afficherDettes(toutesLesDettes.filter(d => d.client.toLowerCase().includes(val) || d.produit.toLowerCase().includes(val)));
+    });
+
+    function filtrerDettes(filtre, el) {
+      document.querySelectorAll('.filter-btn').forEach(b => {
+        b.className = 'filter-btn px-4 py-2 rounded-xl text-sm font-semibold bg-surface-container-lowest border border-outline-variant/30 text-on-surface-variant';
+      });
+      el.className = 'filter-btn px-4 py-2 rounded-xl text-sm font-semibold bg-primary text-white';
+      const filtrees = filtre === 'toutes' ? toutesLesDettes : toutesLesDettes.filter(d => d.statut === filtre);
+      afficherDettes(filtrees);
+    }
+
+    function afficherDettes(dettes) {
+      const liste = document.getElementById('liste-dettes');
+      if (dettes.length === 0) {
+        liste.innerHTML = '<div class="bg-surface-container-lowest p-8 rounded-2xl text-center text-on-surface-variant text-sm">Aucune dette trouvée</div>';
+        return;
+      }
+      liste.innerHTML = dettes.map(d => {
+        const isRetard = d.date_remboursement && d.date_remboursement < new Date().toISOString().split('T')[0] && d.statut === 'en_cours';
+        return `
+        <div class="bg-surface-container-lowest rounded-2xl overflow-hidden border ${isRetard ? 'border-l-4 border-l-error border-outline-variant/5' : 'border-outline-variant/10'}">
+          <div class="flex items-center justify-between p-4 lg:p-5">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-xs ${d.statut==='payee' ? 'bg-[#68dbae]/30 text-[#003524]' : 'bg-error-container text-on-error-container'}">${d.client.substring(0,2).toUpperCase()}</div>
+              <div>
+                <p class="font-bold text-sm">${d.client}</p>
+                <p class="text-xs text-on-surface-variant">${d.produit}</p>
+              </div>
+            </div>
+            <div class="text-right">
+              <p class="font-bold ${d.statut==='payee' ? 'text-[#003524]' : 'text-error'}">${fmt(d.montant)}</p>
+              ${isRetard ? '<span class="text-[10px] bg-error-container text-on-error-container px-2 py-0.5 rounded-full font-bold">En retard</span>' : `<p class="text-[11px] text-outline">${new Date(d.date_creation).toLocaleDateString('fr-FR')}</p>`}
+            </div>
+          </div>
+          <div class="flex gap-2 px-4 pb-4 ${d.statut==='payee' ? 'hidden' : ''}">
+            <button onclick="marquerPaye(${d.id})" class="flex-1 py-2 bg-[#68dbae]/20 text-[#003524] rounded-xl text-xs font-bold hover:bg-[#68dbae]/40 transition-colors">Marquer payé</button>
+            <button onclick="ouvrirModifierDette(${d.id},'${d.client.replace(/'/g,"\\'")}','${d.produit.replace(/'/g,"\\'")}',${d.montant},'${d.date_remboursement||''}')" class="flex-1 py-2 bg-surface-container text-on-surface-variant rounded-xl text-xs font-bold hover:bg-surface-container-high transition-colors">Modifier</button>
+            <button onclick="supprimerDette(${d.id})" class="py-2 px-3 bg-error-container/50 text-error rounded-xl text-xs font-bold hover:bg-error-container transition-colors">
+              <span class="material-symbols-outlined text-sm">delete</span>
+            </button>
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    async function chargerDettes() {
+      try {
+        const res = await fetch(`${API}/dettes`, { headers: getHeaders() });
+        toutesLesDettes = await res.json();
+        const enCours = toutesLesDettes.filter(d => d.statut === 'en_cours');
+        const retard  = toutesLesDettes.filter(d => d.statut === 'en_cours' && d.date_remboursement && d.date_remboursement < new Date().toISOString().split('T')[0]);
+        document.getElementById('hero-amount').textContent  = fmt(enCours.reduce((s,d)=>s+Number(d.montant),0));
+        document.getElementById('hero-clients').textContent = enCours.length;
+        document.getElementById('hero-retard').textContent  = retard.length;
+        afficherDettes(toutesLesDettes);
+      } catch(e) { console.log('Erreur dettes',e); }
+    }
+
+    document.getElementById('btn-save-dette').addEventListener('click', async () => {
+      const client  = document.getElementById('dette-client').value.trim();
+      const produit = document.getElementById('dette-produit').value.trim();
+      const montant = document.getElementById('dette-montant').value;
+      const date    = document.getElementById('dette-date').value;
+      if (!client||!produit||!montant) { alert('Remplis les champs obligatoires'); return; }
+      try {
+        const res = await fetch(`${API}/dettes`, { method:'POST', headers:getHeaders(), body:JSON.stringify({client,produit,montant:Number(montant),date_remboursement:date}) });
+        if (!res.ok) { const e=await res.json(); alert(e.message); return; }
+        ['dette-client','dette-produit','dette-montant','dette-date'].forEach(id => document.getElementById(id).value='');
+        document.getElementById('modal-dette').classList.remove('open');
+        chargerDettes();
+      } catch(e) { alert('Erreur serveur'); }
+    });
+
+    async function marquerPaye(id) {
+      try { await fetch(`${API}/dettes/${id}/payer`,{method:'PUT',headers:getHeaders()}); chargerDettes(); }
+      catch(e) { alert('Erreur serveur'); }
+    }
+
+    function ouvrirModifierDette(id,client,produit,montant,date) {
+      document.getElementById('modifier-dette-id').value      = id;
+      document.getElementById('modifier-dette-client').value  = client;
+      document.getElementById('modifier-dette-produit').value = produit;
+      document.getElementById('modifier-dette-montant').value = montant;
+      document.getElementById('modifier-dette-date').value    = date;
+      document.getElementById('modal-modifier-dette').classList.add('open');
+    }
+
+    document.getElementById('btn-save-modifier-dette').addEventListener('click', async () => {
+      const id      = document.getElementById('modifier-dette-id').value;
+      const client  = document.getElementById('modifier-dette-client').value.trim();
+      const produit = document.getElementById('modifier-dette-produit').value.trim();
+      const montant = document.getElementById('modifier-dette-montant').value;
+      const date    = document.getElementById('modifier-dette-date').value;
+      if (!client||!produit||!montant) { alert('Remplis les champs obligatoires'); return; }
+      try {
+        const res = await fetch(`${API}/dettes/${id}`,{method:'PUT',headers:getHeaders(),body:JSON.stringify({client,produit,montant:Number(montant),date_remboursement:date})});
+        if (!res.ok) { const e=await res.json(); alert(e.message); return; }
+        document.getElementById('modal-modifier-dette').classList.remove('open');
+        chargerDettes();
+      } catch(e) { alert('Erreur serveur'); }
+    });
+
+    async function supprimerDette(id) {
+      if (!confirm('Supprimer cette dette définitivement ?')) return;
+      try { await fetch(`${API}/dettes/${id}`,{method:'DELETE',headers:getHeaders()}); chargerDettes(); }
+      catch(e) { alert('Erreur serveur'); }
+    }
+
+    chargerDettes();
+  </script>
 </body>
 </html>

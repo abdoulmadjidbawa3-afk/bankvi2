@@ -4,98 +4,325 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BANKVI — Stocks</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/responsive.css">
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            "primary":"#002e59","primary-container":"#0c447c","secondary":"#1960a6",
+            "tertiary":"#003524","tertiary-fixed-dim":"#68dbae","surface":"#f9f9f7",
+            "surface-container-lowest":"#ffffff","surface-container-low":"#f4f4f2",
+            "surface-container":"#eeeeec","surface-container-high":"#e8e8e6",
+            "on-surface":"#1a1c1b","on-surface-variant":"#424750","outline":"#737781",
+            "outline-variant":"#c2c6d1","error":"#ba1a1a","error-container":"#ffdad6",
+            "on-error-container":"#93000a","on-primary-container":"#88b2f1",
+          },
+          fontFamily:{"headline":["Manrope"],"body":["Inter"]}
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #f9f9f7; }
+    .font-headline { font-family: 'Manrope', sans-serif; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    .modal-bg { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:100; align-items:flex-end; justify-content:center; }
+    .modal-bg.open { display:flex; }
+    @media(min-width:1024px) { .modal-bg { align-items:center; } .modal-sheet { border-radius:1.5rem !important; max-width:520px; width:100%; } }
+  </style>
 </head>
-<body>
-  <nav class="navbar">
-    <div class="nav-logo">BANK<span>VI</span></div>
-    <div class="nav-date" id="nav-date"></div>
-    <div class="nav-avatar" id="nav-avatar">?</div>
-  </nav>
+<body class="flex min-h-screen text-on-surface">
 
-  <main class="main-content">
-    <div class="metrics-grid" style="margin-bottom:1.25rem;">
-      <div class="metric-card"><p class="metric-label">Produits</p><h2 class="metric-value green" id="m-total">0</h2><p class="metric-sub">en stock</p></div>
-      <div class="metric-card"><p class="metric-label">Stock bas</p><h2 class="metric-value warn" id="m-bas">0</h2><p class="metric-sub">à renouveler</p></div>
-      <div class="metric-card"><p class="metric-label">Rupture</p><h2 class="metric-value red" id="m-rupture">0</h2><p class="metric-sub">urgents</p></div>
+  <!-- SIDEBAR -->
+  <aside class="hidden lg:flex w-[220px] h-screen sticky top-0 bg-surface-container-low flex-col py-8 px-4 z-50">
+    <div class="mb-10 px-2">
+      <h1 class="text-2xl font-black tracking-tight font-headline">BANK<span class="text-secondary">VI</span></h1>
+      <p class="text-[0.6875rem] font-bold uppercase tracking-widest text-outline mt-1">Management</p>
     </div>
-
-    <button class="btn-primary" onclick="document.getElementById('modal-stock').classList.add('open')">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
-      Ajouter un produit
-    </button>
-
-    <div class="search-bar">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4" stroke="#a0a0a0" stroke-width="1.5"/><path d="M9.5 9.5L12 12" stroke="#a0a0a0" stroke-width="1.5" stroke-linecap="round"/></svg>
-      <input type="text" id="search-input" placeholder="Rechercher un produit...">
+    <nav class="flex-1 space-y-1">
+      <a href="index.html" class="flex items-center gap-3 px-3 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-lg transition-colors"><span class="material-symbols-outlined">dashboard</span><span class="text-sm">Accueil</span></a>
+      <a href="dettes.html" class="flex items-center gap-3 px-3 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-lg transition-colors"><span class="material-symbols-outlined">payments</span><span class="text-sm">Dettes</span></a>
+      <a href="ventes.html" class="flex items-center gap-3 px-3 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-lg transition-colors"><span class="material-symbols-outlined">receipt_long</span><span class="text-sm">Ventes</span></a>
+      <a href="stocks.html" class="flex items-center gap-3 px-3 py-3 text-primary-container font-bold bg-surface-container-lowest rounded-lg shadow-sm"><span class="material-symbols-outlined">inventory_2</span><span class="text-sm">Stocks</span></a>
+      <a href="profil.html" class="flex items-center gap-3 px-3 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-lg transition-colors"><span class="material-symbols-outlined">person</span><span class="text-sm">Profil</span></a>
+    </nav>
+    <div class="pt-6 border-t border-outline-variant/30 flex items-center gap-3 px-2">
+      <div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold text-xs" id="sidebar-avatar">--</div>
+      <div><p class="text-xs font-bold truncate" id="sidebar-nom">--</p><p class="text-[10px] text-outline uppercase">Gérant</p></div>
     </div>
+  </aside>
 
-    <div class="cards-list" id="liste-stocks">
-      <div style="padding:1.5rem;text-align:center;color:#a0a0a0;font-size:14px;">Chargement...</div>
-    </div>
-  </main>
+  <div class="flex-1 flex flex-col min-h-screen">
+    <header class="w-full h-16 sticky top-0 z-40 bg-surface flex justify-between items-center px-6 border-b border-outline-variant/20">
+      <div class="flex items-center gap-4">
+        <h1 class="text-xl font-black tracking-tight font-headline lg:hidden">BANK<span class="text-secondary">VI</span></h1>
+        <h2 class="hidden lg:block font-headline font-bold text-xl">Gestion des Stocks</h2>
+      </div>
+      <div class="flex items-center gap-3">
+        <p class="hidden lg:block text-sm text-outline" id="nav-date"></p>
+        <div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-white text-xs font-bold" id="nav-avatar">--</div>
+      </div>
+    </header>
 
-  <nav class="bottom-nav">
-    <a href="index.html" class="bn-item"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><rect x="2" y="2" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="10" y="2" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="2" y="10" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="10" y="10" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>Accueil</a>
-    <a href="dettes.html" class="bn-item"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M9 6v3l2 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Dettes</a>
-    <a href="ventes.html" class="bn-item"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><path d="M3 12l3-3 3 3 3-4 3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Ventes</a>
-    <a href="stocks.html" class="bn-item active"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><rect x="3" y="3" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M6 9h6M9 6v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Stocks</a>
-    <a href="profil.html" class="bn-item"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="6" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M3 15c0-3 2.7-5 6-5s6 2 6 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Profil</a>
-  </nav>
+    <main class="flex-1 p-4 lg:p-8 max-w-[1400px] w-full mx-auto pb-24 lg:pb-8 space-y-6">
 
+      <!-- MÉTRIQUES -->
+      <section class="grid grid-cols-3 gap-4">
+        <div class="bg-surface-container-lowest p-4 rounded-2xl border border-outline-variant/10 text-center">
+          <div class="w-10 h-10 rounded-xl bg-[#68dbae]/20 flex items-center justify-center text-[#003524] mx-auto mb-2"><span class="material-symbols-outlined text-xl">inventory_2</span></div>
+          <p class="font-headline text-2xl font-bold text-[#003524]" id="m-total">0</p>
+          <p class="text-xs text-on-surface-variant mt-1">Produits</p>
+        </div>
+        <div class="bg-surface-container-lowest p-4 rounded-2xl border border-outline-variant/10 text-center">
+          <div class="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center text-orange-700 mx-auto mb-2"><span class="material-symbols-outlined text-xl">warning</span></div>
+          <p class="font-headline text-2xl font-bold text-orange-600" id="m-bas">0</p>
+          <p class="text-xs text-on-surface-variant mt-1">Stock bas</p>
+        </div>
+        <div class="bg-surface-container-lowest p-4 rounded-2xl border border-outline-variant/10 text-center">
+          <div class="w-10 h-10 rounded-xl bg-error-container flex items-center justify-center text-on-error-container mx-auto mb-2"><span class="material-symbols-outlined text-xl">error</span></div>
+          <p class="font-headline text-2xl font-bold text-error" id="m-rupture">0</p>
+          <p class="text-xs text-on-surface-variant mt-1">Rupture</p>
+        </div>
+      </section>
+
+      <!-- ACTIONS -->
+      <div class="flex flex-col sm:flex-row gap-3">
+        <div class="relative flex-1">
+          <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-xl">search</span>
+          <input id="search-stocks" type="text" placeholder="Rechercher un produit..." class="w-full pl-12 pr-4 py-3 bg-surface-container-lowest border border-outline-variant/30 rounded-xl focus:border-secondary outline-none text-sm">
+        </div>
+        <button onclick="document.getElementById('modal-stock').classList.add('open')" class="flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-xl font-bold text-sm hover:opacity-90 transition justify-center">
+          <span class="material-symbols-outlined text-[20px]">add</span>
+          Ajouter un produit
+        </button>
+      </div>
+
+      <!-- LISTE STOCKS -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4" id="liste-stocks">
+        <div class="bg-surface-container-lowest p-6 rounded-2xl text-center text-on-surface-variant text-sm col-span-full">Chargement...</div>
+      </div>
+
+    </main>
+
+    <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-surface-container-lowest border-t border-outline-variant/20 flex justify-around items-center py-2 z-50 shadow-[0_-2px_12px_rgba(0,0,0,0.06)]">
+      <a href="index.html" class="flex flex-col items-center gap-1 text-on-surface-variant"><span class="material-symbols-outlined text-xl">dashboard</span><span class="text-[10px]">Accueil</span></a>
+      <a href="dettes.html" class="flex flex-col items-center gap-1 text-on-surface-variant"><span class="material-symbols-outlined text-xl">payments</span><span class="text-[10px]">Dettes</span></a>
+      <a href="ventes.html" class="flex flex-col items-center gap-1 text-on-surface-variant"><span class="material-symbols-outlined text-xl">receipt_long</span><span class="text-[10px]">Ventes</span></a>
+      <a href="stocks.html" class="flex flex-col items-center gap-1 text-primary-container"><span class="material-symbols-outlined text-xl" style="font-variation-settings:'FILL' 1">inventory_2</span><span class="text-[10px] font-bold">Stocks</span></a>
+      <a href="profil.html" class="flex flex-col items-center gap-1 text-on-surface-variant"><span class="material-symbols-outlined text-xl">person</span><span class="text-[10px]">Profil</span></a>
+    </nav>
+  </div>
+
+  <!-- MODAL AJOUT STOCK -->
   <div class="modal-bg" id="modal-stock">
-    <div class="modal">
-      <h3 class="modal-title">Nouveau produit</h3>
-      <div class="field"><label>Nom du produit</label><input type="text" id="stock-nom" placeholder="Ex: Riz importé 50kg"></div>
-      <div class="field">
-        <label>Catégorie</label>
-        <select id="stock-categorie">
-          <option>Alimentation</option>
-          <option>Hygiène</option>
-          <option>Boissons</option>
-          <option>Textile</option>
-          <option>Autre</option>
+    <div class="modal-sheet bg-surface-container-lowest w-full rounded-t-3xl p-6 space-y-4 max-h-[92vh] overflow-y-auto">
+      <div class="flex items-center justify-between mb-2">
+        <h3 class="font-headline text-lg font-bold">Ajouter un produit</h3>
+        <button onclick="document.getElementById('modal-stock').classList.remove('open')" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center"><span class="material-symbols-outlined text-lg">close</span></button>
+      </div>
+      <div class="space-y-1.5">
+        <label class="text-[0.6875rem] font-bold uppercase tracking-wider text-outline">Nom du produit</label>
+        <input id="stock-nom" type="text" placeholder="Ex: Riz importé 50kg" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant/30 rounded-xl focus:border-secondary outline-none text-sm">
+      </div>
+      <div class="space-y-1.5">
+        <label class="text-[0.6875rem] font-bold uppercase tracking-wider text-outline">Catégorie</label>
+        <select id="stock-categorie" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant/30 rounded-xl focus:border-secondary outline-none text-sm">
+          <option>Alimentation</option><option>Hygiène</option><option>Boissons</option><option>Textile</option><option>Électronique</option><option>Autre</option>
         </select>
       </div>
-      <div class="field-row">
-        <div class="field"><label>Quantité</label><input type="number" id="stock-quantite" placeholder="Ex: 30"></div>
-        <div class="field"><label>Seuil d'alerte</label><input type="number" id="stock-seuil" placeholder="Ex: 5"></div>
+      <div class="grid grid-cols-2 gap-3">
+        <div class="space-y-1.5">
+          <label class="text-[0.6875rem] font-bold uppercase tracking-wider text-outline">Quantité</label>
+          <input id="stock-quantite" type="number" placeholder="Ex: 30" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant/30 rounded-xl focus:border-secondary outline-none text-sm">
+        </div>
+        <div class="space-y-1.5">
+          <label class="text-[0.6875rem] font-bold uppercase tracking-wider text-outline">Seuil d'alerte</label>
+          <input id="stock-seuil" type="number" placeholder="Ex: 5" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant/30 rounded-xl focus:border-secondary outline-none text-sm">
+        </div>
       </div>
-      <div class="field"><label>Prix unitaire (FCFA)</label><input type="number" id="stock-prix" placeholder="Ex: 11000"></div>
-      <div class="modal-actions">
-        <button class="btn-cancel" onclick="document.getElementById('modal-stock').classList.remove('open')">Annuler</button>
-        <button class="btn-save" id="btn-save-stock">Enregistrer</button>
+      <div class="space-y-1.5">
+        <label class="text-[0.6875rem] font-bold uppercase tracking-wider text-outline">Prix unitaire (FCFA)</label>
+        <input id="stock-prix" type="number" placeholder="Ex: 11000" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant/30 rounded-xl focus:border-secondary outline-none text-sm">
+      </div>
+      <div class="flex gap-3 pt-2">
+        <button onclick="document.getElementById('modal-stock').classList.remove('open')" class="flex-1 py-3 border border-outline-variant/30 rounded-xl text-sm font-semibold text-on-surface-variant">Annuler</button>
+        <button id="btn-save-stock" class="flex-1 py-3 bg-primary text-white rounded-xl text-sm font-bold">Enregistrer</button>
       </div>
     </div>
   </div>
-<div class="modal-bg" id="modal-modifier-stock">
-  <div class="modal">
-    <h3 class="modal-title">Modifier le produit</h3>
-    <input type="hidden" id="modifier-stock-id">
-    <div class="field"><label>Nom du produit</label><input type="text" id="modifier-stock-nom"></div>
-    <div class="field">
-      <label>Catégorie</label>
-      <select id="modifier-stock-categorie">
-        <option>Alimentation</option>
-        <option>Hygiène</option>
-        <option>Boissons</option>
-        <option>Textile</option>
-        <option>Autre</option>
-      </select>
-    </div>
-    <div class="field-row">
-      <div class="field"><label>Quantité</label><input type="number" id="modifier-stock-quantite"></div>
-      <div class="field"><label>Seuil alerte</label><input type="number" id="modifier-stock-seuil"></div>
-    </div>
-    <div class="field"><label>Prix unitaire (FCFA)</label><input type="number" id="modifier-stock-prix"></div>
-    <div class="modal-actions">
-      <button class="btn-cancel" onclick="document.getElementById('modal-modifier-stock').classList.remove('open')">Annuler</button>
-      <button class="btn-save" id="btn-save-modifier-stock">Modifier</button>
+
+  <!-- MODAL MODIFIER STOCK -->
+  <div class="modal-bg" id="modal-modifier-stock">
+    <div class="modal-sheet bg-surface-container-lowest w-full rounded-t-3xl p-6 space-y-4 max-h-[92vh] overflow-y-auto">
+      <div class="flex items-center justify-between mb-2">
+        <h3 class="font-headline text-lg font-bold">Modifier le produit</h3>
+        <button onclick="document.getElementById('modal-modifier-stock').classList.remove('open')" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center"><span class="material-symbols-outlined text-lg">close</span></button>
+      </div>
+      <input type="hidden" id="modifier-stock-id">
+      <div class="space-y-1.5">
+        <label class="text-[0.6875rem] font-bold uppercase tracking-wider text-outline">Nom du produit</label>
+        <input id="modifier-stock-nom" type="text" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant/30 rounded-xl focus:border-secondary outline-none text-sm">
+      </div>
+      <div class="space-y-1.5">
+        <label class="text-[0.6875rem] font-bold uppercase tracking-wider text-outline">Catégorie</label>
+        <select id="modifier-stock-categorie" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant/30 rounded-xl focus:border-secondary outline-none text-sm">
+          <option>Alimentation</option><option>Hygiène</option><option>Boissons</option><option>Textile</option><option>Électronique</option><option>Autre</option>
+        </select>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div class="space-y-1.5">
+          <label class="text-[0.6875rem] font-bold uppercase tracking-wider text-outline">Quantité</label>
+          <input id="modifier-stock-quantite" type="number" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant/30 rounded-xl focus:border-secondary outline-none text-sm">
+        </div>
+        <div class="space-y-1.5">
+          <label class="text-[0.6875rem] font-bold uppercase tracking-wider text-outline">Seuil d'alerte</label>
+          <input id="modifier-stock-seuil" type="number" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant/30 rounded-xl focus:border-secondary outline-none text-sm">
+        </div>
+      </div>
+      <div class="space-y-1.5">
+        <label class="text-[0.6875rem] font-bold uppercase tracking-wider text-outline">Prix unitaire (FCFA)</label>
+        <input id="modifier-stock-prix" type="number" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant/30 rounded-xl focus:border-secondary outline-none text-sm">
+      </div>
+      <div class="flex gap-3 pt-2">
+        <button onclick="document.getElementById('modal-modifier-stock').classList.remove('open')" class="flex-1 py-3 border border-outline-variant/30 rounded-xl text-sm font-semibold text-on-surface-variant">Annuler</button>
+        <button id="btn-save-modifier-stock" class="flex-1 py-3 bg-primary text-white rounded-xl text-sm font-bold">Modifier</button>
+      </div>
     </div>
   </div>
-</div>
-  <script src="js/app.js"></script>
-  <script src="js/stocks.js"></script>
+
+  <script>
+    const API = window.location.origin + '/api';
+    function getHeaders() { return {'Content-Type':'application/json','Authorization':localStorage.getItem('bankvi_token')||''}; }
+    function fmt(v) { return Number(v).toLocaleString('fr-FR') + ' F'; }
+
+    const user = JSON.parse(localStorage.getItem('bankvi_user')||'{}');
+    const ini = user.nom ? user.nom.substring(0,2).toUpperCase() : '--';
+    ['nav-avatar','sidebar-avatar'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=ini; });
+    const sn=document.getElementById('sidebar-nom'); if(sn&&user.nom) sn.textContent=user.nom;
+    const nd=document.getElementById('nav-date');
+    if(nd) nd.textContent=new Date().toLocaleDateString('fr-FR',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+    let tousStocks = [];
+
+    document.getElementById('search-stocks').addEventListener('input', function() {
+      const val = this.value.toLowerCase();
+      afficherStocks(tousStocks.filter(s => s.nom.toLowerCase().includes(val) || s.categorie.toLowerCase().includes(val)));
+    });
+
+    function afficherStocks(stocks) {
+      const liste = document.getElementById('liste-stocks');
+      if (stocks.length === 0) {
+        liste.innerHTML = '<div class="bg-surface-container-lowest p-8 rounded-2xl text-center text-on-surface-variant text-sm col-span-full">Aucun produit trouvé</div>';
+        return;
+      }
+      liste.innerHTML = stocks.map(s => {
+        const rupture = s.quantite === 0;
+        const bas     = s.quantite > 0 && s.quantite <= s.seuil_alerte;
+        const pct     = Math.min(100, Math.round((s.quantite / Math.max(s.seuil_alerte * 5, 1)) * 100));
+        const badgeClass = rupture ? 'bg-error-container text-on-error-container' : bas ? 'bg-orange-100 text-orange-700' : 'bg-[#68dbae]/20 text-[#003524]';
+        const badgeText  = rupture ? 'Rupture' : bas ? 'Stock bas' : 'OK';
+        const barClass   = rupture ? 'bg-error' : bas ? 'bg-orange-500' : 'bg-[#003524]';
+        const borderClass = rupture ? 'border-l-4 border-l-error' : bas ? 'border-l-4 border-l-orange-500' : '';
+        return `
+        <div class="bg-surface-container-lowest rounded-2xl overflow-hidden border border-outline-variant/10 ${borderClass} hover:shadow-md transition-all">
+          <div class="p-4 lg:p-5">
+            <div class="flex items-start justify-between mb-3">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl font-bold text-xs flex items-center justify-center ${rupture ? 'bg-error-container text-on-error-container' : bas ? 'bg-orange-100 text-orange-700' : 'bg-[#68dbae]/20 text-[#003524]'}">${s.nom.substring(0,2).toUpperCase()}</div>
+                <div>
+                  <p class="font-bold text-sm">${s.nom}</p>
+                  <p class="text-xs text-on-surface-variant">${s.categorie}</p>
+                </div>
+              </div>
+              <span class="text-[10px] px-2 py-1 rounded-full font-bold ${badgeClass}">${badgeText}</span>
+            </div>
+            <div class="mb-3">
+              <div class="flex justify-between text-xs text-on-surface-variant mb-1">
+                <span>${s.quantite} unités</span>
+                <span class="font-bold">${pct}%</span>
+              </div>
+              <div class="w-full bg-surface-container-high rounded-full h-1.5">
+                <div class="h-1.5 rounded-full ${barClass} transition-all" style="width:${pct}%"></div>
+              </div>
+              <div class="flex justify-between text-[10px] text-outline mt-1">
+                <span>Seuil: ${s.seuil_alerte}</span>
+                <span>${fmt(s.prix_unitaire)} /unité</span>
+              </div>
+            </div>
+            <div class="flex gap-2">
+              <button onclick="ouvrirModifierStock(${s.id},'${s.nom.replace(/'/g,"\\'")}','${s.categorie}',${s.quantite},${s.seuil_alerte},${s.prix_unitaire})" class="flex-1 py-2 bg-surface-container text-on-surface-variant rounded-xl text-xs font-bold hover:bg-surface-container-high transition-colors">Modifier</button>
+              <button onclick="supprimerStock(${s.id})" class="py-2 px-3 bg-error-container/50 text-error rounded-xl text-xs font-bold hover:bg-error-container transition-colors">
+                <span class="material-symbols-outlined text-sm">delete</span>
+              </button>
+            </div>
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    async function chargerStocks() {
+      try {
+        const res = await fetch(`${API}/stocks`, { headers: getHeaders() });
+        tousStocks = await res.json();
+        document.getElementById('m-total').textContent   = tousStocks.length;
+        document.getElementById('m-bas').textContent     = tousStocks.filter(s => s.quantite > 0 && s.quantite <= s.seuil_alerte).length;
+        document.getElementById('m-rupture').textContent = tousStocks.filter(s => s.quantite === 0).length;
+        afficherStocks(tousStocks);
+      } catch(e) { console.log('Erreur stocks',e); }
+    }
+
+    document.getElementById('btn-save-stock').addEventListener('click', async () => {
+      const nom      = document.getElementById('stock-nom').value.trim();
+      const categorie= document.getElementById('stock-categorie').value;
+      const quantite = document.getElementById('stock-quantite').value;
+      const seuil    = document.getElementById('stock-seuil').value;
+      const prix     = document.getElementById('stock-prix').value;
+      if (!nom||!quantite||!prix) { alert('Remplis les champs obligatoires'); return; }
+      try {
+        const res = await fetch(`${API}/stocks`, { method:'POST', headers:getHeaders(), body:JSON.stringify({nom,categorie,quantite:Number(quantite),seuil_alerte:Number(seuil)||5,prix_unitaire:Number(prix)}) });
+        if (!res.ok) { const e=await res.json(); alert(e.message); return; }
+        ['stock-nom','stock-quantite','stock-seuil','stock-prix'].forEach(id => document.getElementById(id).value='');
+        document.getElementById('modal-stock').classList.remove('open');
+        chargerStocks();
+      } catch(e) { alert('Erreur serveur'); }
+    });
+
+    function ouvrirModifierStock(id,nom,categorie,quantite,seuil,prix) {
+      document.getElementById('modifier-stock-id').value       = id;
+      document.getElementById('modifier-stock-nom').value      = nom;
+      document.getElementById('modifier-stock-categorie').value= categorie;
+      document.getElementById('modifier-stock-quantite').value = quantite;
+      document.getElementById('modifier-stock-seuil').value    = seuil;
+      document.getElementById('modifier-stock-prix').value     = prix;
+      document.getElementById('modal-modifier-stock').classList.add('open');
+    }
+
+    document.getElementById('btn-save-modifier-stock').addEventListener('click', async () => {
+      const id       = document.getElementById('modifier-stock-id').value;
+      const nom      = document.getElementById('modifier-stock-nom').value.trim();
+      const categorie= document.getElementById('modifier-stock-categorie').value;
+      const quantite = document.getElementById('modifier-stock-quantite').value;
+      const seuil    = document.getElementById('modifier-stock-seuil').value;
+      const prix     = document.getElementById('modifier-stock-prix').value;
+      if (!nom||!quantite||!prix) { alert('Remplis les champs obligatoires'); return; }
+      try {
+        const res = await fetch(`${API}/stocks/${id}`, { method:'PUT', headers:getHeaders(), body:JSON.stringify({nom,categorie,quantite:Number(quantite),seuil_alerte:Number(seuil)||5,prix_unitaire:Number(prix)}) });
+        if (!res.ok) { const e=await res.json(); alert(e.message); return; }
+        document.getElementById('modal-modifier-stock').classList.remove('open');
+        chargerStocks();
+      } catch(e) { alert('Erreur serveur'); }
+    });
+
+    async function supprimerStock(id) {
+      if (!confirm('Supprimer ce produit définitivement ?')) return;
+      try { await fetch(`${API}/stocks/${id}`,{method:'DELETE',headers:getHeaders()}); chargerStocks(); }
+      catch(e) { alert('Erreur serveur'); }
+    }
+
+    chargerStocks();
+  </script>
 </body>
 </html>

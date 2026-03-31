@@ -4,80 +4,257 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BANKVI — Ventes</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/responsive.css">
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            "primary":"#002e59","primary-container":"#0c447c","secondary":"#1960a6",
+            "secondary-container":"#7ab3ff","tertiary":"#003524","tertiary-fixed-dim":"#68dbae",
+            "surface":"#f9f9f7","surface-container-lowest":"#ffffff","surface-container-low":"#f4f4f2",
+            "surface-container":"#eeeeec","surface-container-high":"#e8e8e6",
+            "on-surface":"#1a1c1b","on-surface-variant":"#424750","outline":"#737781",
+            "outline-variant":"#c2c6d1","error":"#ba1a1a","error-container":"#ffdad6",
+            "on-error-container":"#93000a","on-primary-container":"#88b2f1",
+          },
+          fontFamily:{"headline":["Manrope"],"body":["Inter"]}
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #f9f9f7; }
+    .font-headline { font-family: 'Manrope', sans-serif; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    .modal-bg { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:100; align-items:flex-end; justify-content:center; }
+    .modal-bg.open { display:flex; }
+    @media(min-width:1024px) { .modal-bg { align-items:center; } .modal-sheet { border-radius:1.5rem !important; max-width:520px; width:100%; } }
+    .mode-btn { transition: all 0.2s; }
+    .mode-btn.selected { background: #002e59; color: white; border-color: #002e59; }
+  </style>
 </head>
-<body>
-  <nav class="navbar">
-    <div class="nav-logo">BANK<span>VI</span></div>
-    <div class="nav-date" id="nav-date"></div>
-    <div class="nav-avatar" id="nav-avatar">?</div>
-  </nav>
+<body class="flex min-h-screen text-on-surface">
 
-  <main class="main-content">
-    <section class="hero-card" style="background:#0a6e4f;">
-      <div class="hero-left">
-        <p class="hero-label">Total ventes — aujourd'hui</p>
-        <h1 class="hero-amount" id="hero-amount">0 F</h1>
-        <p class="hero-sub" id="hero-sub">0 ventes enregistrées</p>
-      </div>
-      <div class="hero-badge">Aujourd'hui</div>
-      <div class="hero-stats">
-        <div class="hero-stat"><span class="hs-label">Cash</span><span class="hs-val green" id="stat-cash">0 F</span></div>
-        <div class="hero-stat"><span class="hs-label">À crédit</span><span class="hs-val warn" id="stat-credit">0 F</span></div>
-        <div class="hero-stat"><span class="hs-label">Cette semaine</span><span class="hs-val" id="stat-semaine">0 F</span></div>
-      </div>
-    </section>
-
-    <button class="btn-primary btn-green" onclick="document.getElementById('modal-vente').classList.add('open')">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
-      Enregistrer une vente
-    </button>
-
-    <div class="tabs-row">
-      <button class="tab-btn active" onclick="switchTab(this, 'jour')">Aujourd'hui</button>
-      <button class="tab-btn" onclick="switchTab(this, 'semaine')">Cette semaine</button>
-      <button class="tab-btn" onclick="switchTab(this, 'mois')">Ce mois</button>
+  <!-- SIDEBAR DESKTOP -->
+  <aside class="hidden lg:flex w-[220px] h-screen sticky top-0 bg-surface-container-low flex-col py-8 px-4 z-50">
+    <div class="mb-10 px-2">
+      <h1 class="text-2xl font-black tracking-tight font-headline">BANK<span class="text-secondary">VI</span></h1>
+      <p class="text-[0.6875rem] font-bold uppercase tracking-widest text-outline mt-1">Management</p>
     </div>
-
-    <div class="cards-list" id="liste-ventes">
-      <div style="padding:1.5rem;text-align:center;color:#a0a0a0;font-size:14px;">Chargement...</div>
+    <nav class="flex-1 space-y-1">
+      <a href="index.html" class="flex items-center gap-3 px-3 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-lg transition-colors"><span class="material-symbols-outlined">dashboard</span><span class="text-sm">Accueil</span></a>
+      <a href="dettes.html" class="flex items-center gap-3 px-3 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-lg transition-colors"><span class="material-symbols-outlined">payments</span><span class="text-sm">Dettes</span></a>
+      <a href="ventes.html" class="flex items-center gap-3 px-3 py-3 text-primary-container font-bold bg-surface-container-lowest rounded-lg shadow-sm"><span class="material-symbols-outlined">receipt_long</span><span class="text-sm">Ventes</span></a>
+      <a href="stocks.html" class="flex items-center gap-3 px-3 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-lg transition-colors"><span class="material-symbols-outlined">inventory_2</span><span class="text-sm">Stocks</span></a>
+      <a href="profil.html" class="flex items-center gap-3 px-3 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-lg transition-colors"><span class="material-symbols-outlined">person</span><span class="text-sm">Profil</span></a>
+    </nav>
+    <div class="pt-6 border-t border-outline-variant/30 flex items-center gap-3 px-2">
+      <div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold text-xs" id="sidebar-avatar">--</div>
+      <div><p class="text-xs font-bold truncate" id="sidebar-nom">--</p><p class="text-[10px] text-outline uppercase">Gérant</p></div>
     </div>
-  </main>
+  </aside>
 
-  <nav class="bottom-nav">
-    <a href="index.html" class="bn-item"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><rect x="2" y="2" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="10" y="2" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="2" y="10" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="10" y="10" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>Accueil</a>
-    <a href="dettes.html" class="bn-item"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M9 6v3l2 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Dettes</a>
-    <a href="ventes.html" class="bn-item active"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><path d="M3 12l3-3 3 3 3-4 3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Ventes</a>
-    <a href="stocks.html" class="bn-item"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><rect x="3" y="3" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M6 9h6M9 6v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Stocks</a>
-    <a href="profil.html" class="bn-item"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="6" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M3 15c0-3 2.7-5 6-5s6 2 6 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Profil</a>
-  </nav>
+  <div class="flex-1 flex flex-col min-h-screen">
+    <header class="w-full h-16 sticky top-0 z-40 bg-surface flex justify-between items-center px-6 border-b border-outline-variant/20">
+      <div class="flex items-center gap-4">
+        <h1 class="text-xl font-black tracking-tight font-headline lg:hidden">BANK<span class="text-secondary">VI</span></h1>
+        <h2 class="hidden lg:block font-headline font-bold text-xl">Ventes</h2>
+      </div>
+      <div class="flex items-center gap-3">
+        <p class="hidden lg:block text-sm text-outline" id="nav-date"></p>
+        <div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-white text-xs font-bold" id="nav-avatar">--</div>
+      </div>
+    </header>
 
+    <main class="flex-1 p-4 lg:p-8 max-w-[1400px] w-full mx-auto pb-24 lg:pb-8 space-y-6">
+
+      <!-- HERO VENTES -->
+      <section class="relative overflow-hidden bg-[#003524] rounded-3xl p-6 lg:p-10 text-white shadow-xl flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+        <div class="space-y-4">
+          <span class="text-[0.6875rem] font-bold uppercase tracking-[0.1em] opacity-70">Total ventes aujourd'hui</span>
+          <h3 class="font-headline text-4xl lg:text-5xl font-extrabold leading-none tracking-tight" id="hero-amount">0 F</h3>
+          <div class="flex flex-wrap gap-8">
+            <div><p class="text-xs opacity-70 uppercase tracking-wider">Nombre</p><p class="text-2xl font-bold" id="hero-count">0</p></div>
+            <div><p class="text-xs opacity-70 uppercase tracking-wider">Espèces</p><p class="text-2xl font-bold text-[#68dbae]" id="hero-cash">0 F</p></div>
+            <div><p class="text-xs opacity-70 uppercase tracking-wider">Crédit</p><p class="text-2xl font-bold text-secondary-container" id="hero-credit">0 F</p></div>
+          </div>
+        </div>
+        <button onclick="document.getElementById('modal-vente').classList.add('open')" class="flex items-center gap-2 bg-[#68dbae] text-[#003524] px-6 py-3 rounded-xl font-bold text-sm hover:scale-[1.02] transition-transform w-full lg:w-auto justify-center">
+          <span class="material-symbols-outlined text-[20px]">add</span>
+          Enregistrer une vente
+        </button>
+      </section>
+
+      <!-- FILTRES -->
+      <div class="flex gap-2">
+        <button onclick="filtrerVentes('jour',this)" class="filtre-vente px-4 py-2 rounded-xl text-sm font-semibold bg-primary text-white">Aujourd'hui</button>
+        <button onclick="filtrerVentes('semaine',this)" class="filtre-vente px-4 py-2 rounded-xl text-sm font-semibold bg-surface-container-lowest border border-outline-variant/30 text-on-surface-variant">Cette semaine</button>
+        <button onclick="filtrerVentes('mois',this)" class="filtre-vente px-4 py-2 rounded-xl text-sm font-semibold bg-surface-container-lowest border border-outline-variant/30 text-on-surface-variant">Ce mois</button>
+      </div>
+
+      <!-- LISTE VENTES -->
+      <div class="space-y-3" id="liste-ventes">
+        <div class="bg-surface-container-lowest p-6 rounded-2xl text-center text-on-surface-variant text-sm">Chargement...</div>
+      </div>
+
+    </main>
+
+    <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-surface-container-lowest border-t border-outline-variant/20 flex justify-around items-center py-2 z-50 shadow-[0_-2px_12px_rgba(0,0,0,0.06)]">
+      <a href="index.html" class="flex flex-col items-center gap-1 text-on-surface-variant"><span class="material-symbols-outlined text-xl">dashboard</span><span class="text-[10px]">Accueil</span></a>
+      <a href="dettes.html" class="flex flex-col items-center gap-1 text-on-surface-variant"><span class="material-symbols-outlined text-xl">payments</span><span class="text-[10px]">Dettes</span></a>
+      <a href="ventes.html" class="flex flex-col items-center gap-1 text-[#003524]"><span class="material-symbols-outlined text-xl" style="font-variation-settings:'FILL' 1">receipt_long</span><span class="text-[10px] font-bold">Ventes</span></a>
+      <a href="stocks.html" class="flex flex-col items-center gap-1 text-on-surface-variant"><span class="material-symbols-outlined text-xl">inventory_2</span><span class="text-[10px]">Stocks</span></a>
+      <a href="profil.html" class="flex flex-col items-center gap-1 text-on-surface-variant"><span class="material-symbols-outlined text-xl">person</span><span class="text-[10px]">Profil</span></a>
+    </nav>
+  </div>
+
+  <!-- MODAL VENTE -->
   <div class="modal-bg" id="modal-vente">
-    <div class="modal">
-      <h3 class="modal-title">Nouvelle vente</h3>
-      <div class="field"><label>Produit vendu</label><input type="text" id="vente-produit" placeholder="Ex: Sac de riz 50kg"></div>
-      <div class="field-row">
-        <div class="field"><label>Quantité</label><input type="number" id="vente-quantite" placeholder="Ex: 2"></div>
-        <div class="field"><label>Prix total (FCFA)</label><input type="number" id="vente-montant" placeholder="Ex: 22000"></div>
+    <div class="modal-sheet bg-surface-container-lowest w-full rounded-t-3xl p-6 space-y-4 max-h-[92vh] overflow-y-auto">
+      <div class="flex items-center justify-between mb-2">
+        <h3 class="font-headline text-lg font-bold">Nouvelle vente</h3>
+        <button onclick="document.getElementById('modal-vente').classList.remove('open')" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
       </div>
-      <div class="field">
-        <label>Mode de paiement</label>
-        <div class="pay-modes">
-          <button class="pay-mode active" onclick="selectMode(this)">Cash</button>
-          <button class="pay-mode" onclick="selectMode(this)">À crédit</button>
-          <button class="pay-mode" onclick="selectMode(this)">Partiel</button>
+      <div class="space-y-1.5">
+        <label class="text-[0.6875rem] font-bold uppercase tracking-wider text-outline">Produit vendu</label>
+        <input id="vente-produit" type="text" placeholder="Ex: Sac de riz 50kg" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant/30 rounded-xl focus:border-secondary outline-none text-sm">
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div class="space-y-1.5">
+          <label class="text-[0.6875rem] font-bold uppercase tracking-wider text-outline">Quantité</label>
+          <input id="vente-quantite" type="number" placeholder="Ex: 5" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant/30 rounded-xl focus:border-secondary outline-none text-sm">
+        </div>
+        <div class="space-y-1.5">
+          <label class="text-[0.6875rem] font-bold uppercase tracking-wider text-outline">Prix total (FCFA)</label>
+          <input id="vente-montant" type="number" placeholder="Ex: 22000" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant/30 rounded-xl focus:border-secondary outline-none text-sm">
         </div>
       </div>
-      <div class="field"><label>Client (optionnel)</label><input type="text" id="vente-client" placeholder="Ex: Afi Koffi"></div>
-      <div class="modal-actions">
-        <button class="btn-cancel" onclick="document.getElementById('modal-vente').classList.remove('open')">Annuler</button>
-        <button class="btn-save" id="btn-save-vente">Enregistrer</button>
+      <div class="space-y-2">
+        <label class="text-[0.6875rem] font-bold uppercase tracking-wider text-outline">Mode de paiement</label>
+        <div class="flex gap-2">
+          <button onclick="selectMode(this,'Cash')" data-mode="Cash" class="mode-btn flex-1 py-2.5 border border-outline-variant/30 rounded-xl text-sm font-semibold text-on-surface-variant selected">Cash</button>
+          <button onclick="selectMode(this,'À crédit')" data-mode="À crédit" class="mode-btn flex-1 py-2.5 border border-outline-variant/30 rounded-xl text-sm font-semibold text-on-surface-variant">À crédit</button>
+          <button onclick="selectMode(this,'Partiel')" data-mode="Partiel" class="mode-btn flex-1 py-2.5 border border-outline-variant/30 rounded-xl text-sm font-semibold text-on-surface-variant">Partiel</button>
+        </div>
+      </div>
+      <div class="space-y-1.5">
+        <label class="text-[0.6875rem] font-bold uppercase tracking-wider text-outline">Client <span class="font-normal normal-case">(obligatoire si crédit)</span></label>
+        <input id="vente-client" type="text" placeholder="Ex: Kofi Mensah" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant/30 rounded-xl focus:border-secondary outline-none text-sm">
+      </div>
+      <div class="flex gap-3 pt-2">
+        <button onclick="document.getElementById('modal-vente').classList.remove('open')" class="flex-1 py-3 border border-outline-variant/30 rounded-xl text-sm font-semibold text-on-surface-variant">Annuler</button>
+        <button id="btn-save-vente" class="flex-1 py-3 bg-[#003524] text-white rounded-xl text-sm font-bold">Enregistrer</button>
       </div>
     </div>
   </div>
 
-  <script src="js/app.js"></script>
-  <script src="js/ventes.js"></script>
+  <script>
+    const API = window.location.origin + '/api';
+    function getHeaders() { return {'Content-Type':'application/json','Authorization':localStorage.getItem('bankvi_token')||''}; }
+    function fmt(v) { return Number(v).toLocaleString('fr-FR') + ' F'; }
+
+    const user = JSON.parse(localStorage.getItem('bankvi_user')||'{}');
+    const ini = user.nom ? user.nom.substring(0,2).toUpperCase() : '--';
+    ['nav-avatar','sidebar-avatar'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=ini; });
+    const sn=document.getElementById('sidebar-nom'); if(sn&&user.nom) sn.textContent=user.nom;
+    const nd=document.getElementById('nav-date');
+    if(nd) nd.textContent=new Date().toLocaleDateString('fr-FR',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+    let modePaiement = 'Cash';
+    let toutesVentes = [];
+
+    function selectMode(btn, mode) {
+      modePaiement = mode;
+      document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+    }
+
+    function filtrerVentes(periode, el) {
+      document.querySelectorAll('.filtre-vente').forEach(b => {
+        b.className = 'filtre-vente px-4 py-2 rounded-xl text-sm font-semibold bg-surface-container-lowest border border-outline-variant/30 text-on-surface-variant';
+      });
+      el.className = 'filtre-vente px-4 py-2 rounded-xl text-sm font-semibold bg-primary text-white';
+      const now = new Date();
+      let filtrees = toutesVentes;
+      if (periode === 'jour') {
+        filtrees = toutesVentes.filter(v => new Date(v.date).toDateString() === now.toDateString());
+      } else if (periode === 'semaine') {
+        const debut = new Date(now); debut.setDate(now.getDate() - 7);
+        filtrees = toutesVentes.filter(v => new Date(v.date) >= debut);
+      } else if (periode === 'mois') {
+        filtrees = toutesVentes.filter(v => new Date(v.date).getMonth() === now.getMonth());
+      }
+      afficherVentes(filtrees);
+    }
+
+    function afficherVentes(ventes) {
+      const liste = document.getElementById('liste-ventes');
+      if (ventes.length === 0) {
+        liste.innerHTML = '<div class="bg-surface-container-lowest p-8 rounded-2xl text-center text-on-surface-variant text-sm">Aucune vente trouvée</div>';
+        return;
+      }
+      liste.innerHTML = ventes.map(v => {
+        const badgeClass = v.mode_paiement === 'Cash' ? 'bg-[#68dbae]/20 text-[#003524]' : v.mode_paiement === 'À crédit' ? 'bg-error-container text-on-error-container' : 'bg-orange-100 text-orange-700';
+        return `
+        <div class="bg-surface-container-lowest rounded-2xl p-4 lg:p-5 flex items-center justify-between border border-outline-variant/10 hover:bg-surface-container transition-colors">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-[#68dbae]/20 flex items-center justify-center">
+              <span class="material-symbols-outlined text-[#003524] text-lg" style="font-variation-settings:'FILL' 1">check_circle</span>
+            </div>
+            <div>
+              <p class="font-bold text-sm">${v.produit}</p>
+              <p class="text-xs text-on-surface-variant">Qté: ${v.quantite} • ${new Date(v.date).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <p class="font-bold text-[#003524]">${fmt(v.montant)}</p>
+            <span class="text-[10px] px-2 py-1 rounded-full font-bold ${badgeClass}">${v.mode_paiement}</span>
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    async function chargerVentes() {
+      try {
+        const res = await fetch(`${API}/ventes`, { headers: getHeaders() });
+        toutesVentes = await res.json();
+        const today = toutesVentes.filter(v => new Date(v.date).toDateString() === new Date().toDateString());
+        const total = today.reduce((s,v) => s+Number(v.montant), 0);
+        const cash  = today.filter(v => v.mode_paiement === 'Cash').reduce((s,v) => s+Number(v.montant), 0);
+        const credit= today.filter(v => v.mode_paiement === 'À crédit').reduce((s,v) => s+Number(v.montant), 0);
+        document.getElementById('hero-amount').textContent = fmt(total);
+        document.getElementById('hero-count').textContent  = today.length;
+        document.getElementById('hero-cash').textContent   = fmt(cash);
+        document.getElementById('hero-credit').textContent = fmt(credit);
+        afficherVentes(today);
+      } catch(e) { console.log('Erreur ventes',e); }
+    }
+
+    document.getElementById('btn-save-vente').addEventListener('click', async () => {
+      const produit = document.getElementById('vente-produit').value.trim();
+      const quantite = document.getElementById('vente-quantite').value;
+      const montant  = document.getElementById('vente-montant').value;
+      const client   = document.getElementById('vente-client').value.trim();
+      if (!produit||!quantite||!montant) { alert('Remplis les champs obligatoires'); return; }
+      if (modePaiement === 'À crédit' && !client) { alert('Le nom du client est obligatoire pour une vente à crédit'); return; }
+      try {
+        const res = await fetch(`${API}/ventes`, { method:'POST', headers:getHeaders(), body:JSON.stringify({produit,quantite:Number(quantite),montant:Number(montant),mode_paiement:modePaiement,client}) });
+        if (!res.ok) { const e=await res.json(); alert(e.message); return; }
+        ['vente-produit','vente-quantite','vente-montant','vente-client'].forEach(id => document.getElementById(id).value='');
+        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('selected'));
+        document.querySelector('[data-mode="Cash"]').classList.add('selected');
+        modePaiement = 'Cash';
+        document.getElementById('modal-vente').classList.remove('open');
+        chargerVentes();
+      } catch(e) { alert('Erreur serveur'); }
+    });
+
+    chargerVentes();
+  </script>
 </body>
 </html>
