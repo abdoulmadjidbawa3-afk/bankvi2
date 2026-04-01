@@ -13,12 +13,15 @@
         extend: {
           colors: {
             "primary":"#002e59","primary-container":"#0c447c","secondary":"#1960a6",
-            "tertiary":"#003524","tertiary-fixed-dim":"#68dbae","surface":"#f9f9f7",
+            "tertiary":"#003524","tertiary-fixed-dim":"#68dbae","tertiary-container":"#004e37",
+            "on-tertiary-fixed-variant":"#00513a","surface":"#f9f9f7",
             "surface-container-lowest":"#ffffff","surface-container-low":"#f4f4f2",
             "surface-container":"#eeeeec","surface-container-high":"#e8e8e6",
+            "surface-container-highest":"#e2e3e1",
             "on-surface":"#1a1c1b","on-surface-variant":"#424750","outline":"#737781",
             "outline-variant":"#c2c6d1","error":"#ba1a1a","error-container":"#ffdad6",
             "on-error-container":"#93000a","on-primary-container":"#88b2f1",
+            "secondary-fixed":"#d4e3ff","on-secondary-fixed":"#001c39",
           },
           fontFamily:{"headline":["Manrope"],"body":["Inter"]}
         }
@@ -28,7 +31,7 @@
   <style>
     body { font-family: 'Inter', sans-serif; background-color: #f9f9f7; }
     .font-headline { font-family: 'Manrope', sans-serif; }
-    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
     .modal-bg { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:100; align-items:flex-end; justify-content:center; }
     .modal-bg.open { display:flex; }
     @media(min-width:1024px) { .modal-bg { align-items:center; } .modal-sheet { border-radius:1.5rem !important; max-width:520px; width:100%; } }
@@ -36,83 +39,198 @@
 </head>
 <body class="flex min-h-screen text-on-surface">
 
-  <!-- SIDEBAR -->
+  <!-- SIDEBAR DESKTOP -->
   <aside class="hidden lg:flex w-[220px] h-screen sticky top-0 bg-surface-container-low flex-col py-8 px-4 z-50">
     <div class="mb-10 px-2">
       <h1 class="text-2xl font-black tracking-tight font-headline">BANK<span class="text-secondary">VI</span></h1>
       <p class="text-[0.6875rem] font-bold uppercase tracking-widest text-outline mt-1">Management</p>
     </div>
     <nav class="flex-1 space-y-1">
-      <a href="index.html" class="flex items-center gap-3 px-3 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-lg transition-colors"><span class="material-symbols-outlined">dashboard</span><span class="text-sm">Accueil</span></a>
-      <a href="dettes.html" class="flex items-center gap-3 px-3 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-lg transition-colors"><span class="material-symbols-outlined">payments</span><span class="text-sm">Dettes</span></a>
-      <a href="ventes.html" class="flex items-center gap-3 px-3 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-lg transition-colors"><span class="material-symbols-outlined">receipt_long</span><span class="text-sm">Ventes</span></a>
-      <a href="stocks.html" class="flex items-center gap-3 px-3 py-3 text-primary-container font-bold bg-surface-container-lowest rounded-lg shadow-sm"><span class="material-symbols-outlined">inventory_2</span><span class="text-sm">Stocks</span></a>
-      <a href="profil.html" class="flex items-center gap-3 px-3 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-lg transition-colors"><span class="material-symbols-outlined">person</span><span class="text-sm">Profil</span></a>
+      <a href="index.html" class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-lg transition-colors">
+        <span class="material-symbols-outlined">dashboard</span><span class="text-sm font-medium">Accueil</span>
+      </a>
+      <a href="dettes.html" class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-lg transition-colors">
+        <span class="material-symbols-outlined">payments</span><span class="text-sm font-medium">Dettes</span>
+      </a>
+      <a href="ventes.html" class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-lg transition-colors">
+        <span class="material-symbols-outlined">receipt_long</span><span class="text-sm font-medium">Ventes</span>
+      </a>
+      <a href="stocks.html" class="flex items-center gap-3 px-3 py-2.5 text-primary-container font-bold bg-surface-container-lowest rounded-lg shadow-sm">
+        <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">inventory_2</span><span class="text-sm">Stocks</span>
+      </a>
+      <a href="profil.html" class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-lg transition-colors">
+        <span class="material-symbols-outlined">person</span><span class="text-sm font-medium">Profil</span>
+      </a>
     </nav>
     <div class="pt-6 border-t border-outline-variant/30 flex items-center gap-3 px-2">
       <div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold text-xs" id="sidebar-avatar">--</div>
-      <div><p class="text-xs font-bold truncate" id="sidebar-nom">--</p><p class="text-[10px] text-outline uppercase">Gérant</p></div>
+      <div>
+        <p class="text-xs font-bold truncate" id="sidebar-nom">--</p>
+        <p class="text-[10px] text-outline uppercase">Gérant Boutique</p>
+      </div>
     </div>
   </aside>
 
   <div class="flex-1 flex flex-col min-h-screen">
-    <header class="w-full h-16 sticky top-0 z-40 bg-surface flex justify-between items-center px-6 border-b border-outline-variant/20">
+
+    <!-- TOPBAR DESKTOP -->
+    <header class="w-full h-16 sticky top-0 z-40 bg-surface flex justify-between items-center px-6 lg:px-8 border-b border-outline-variant/20">
       <div class="flex items-center gap-4">
         <h1 class="text-xl font-black tracking-tight font-headline lg:hidden">BANK<span class="text-secondary">VI</span></h1>
-        <h2 class="hidden lg:block font-headline font-bold text-xl">Gestion des Stocks</h2>
+        <h2 class="hidden lg:block text-base font-medium text-on-surface">Gestion des Stocks</h2>
       </div>
-      <div class="flex items-center gap-3">
-        <p class="hidden lg:block text-sm text-outline" id="nav-date"></p>
+      <div class="flex items-center gap-4">
+        <span class="hidden lg:block material-symbols-outlined text-on-surface-variant cursor-pointer">calendar_today</span>
+        <span class="hidden lg:block material-symbols-outlined text-on-surface-variant cursor-pointer">notifications</span>
         <div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-white text-xs font-bold" id="nav-avatar">--</div>
       </div>
     </header>
 
-    <main class="flex-1 p-4 lg:p-8 max-w-[1400px] w-full mx-auto pb-24 lg:pb-8 space-y-6">
+    <!-- MAIN DESKTOP -->
+    <main class="flex-1 pb-24 lg:pb-8">
 
-      <!-- MÉTRIQUES -->
-      <section class="grid grid-cols-3 gap-4">
-        <div class="bg-surface-container-lowest p-4 rounded-2xl border border-outline-variant/10 text-center">
-          <div class="w-10 h-10 rounded-xl bg-[#68dbae]/20 flex items-center justify-center text-[#003524] mx-auto mb-2"><span class="material-symbols-outlined text-xl">inventory_2</span></div>
-          <p class="font-headline text-2xl font-bold text-[#003524]" id="m-total">0</p>
-          <p class="text-xs text-on-surface-variant mt-1">Produits</p>
+      <!-- VERSION DESKTOP -->
+      <section class="hidden lg:block p-8 max-w-7xl mx-auto w-full space-y-10">
+
+        <!-- Hero header -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div>
+            <h3 class="text-3xl font-extrabold tracking-tight font-headline text-on-surface mb-2">Inventaire Produits</h3>
+            <p class="text-on-surface-variant max-w-md text-sm">Consultez et gérez vos niveaux de stocks en temps réel pour optimiser vos ventes.</p>
+          </div>
+          <button onclick="document.getElementById('modal-stock').classList.add('open')" class="bg-primary text-white px-6 py-3 rounded-xl font-semibold flex items-center gap-2 hover:opacity-90 transition-all active:scale-95">
+            <span class="material-symbols-outlined">add</span>+ Ajouter un produit
+          </button>
         </div>
-        <div class="bg-surface-container-lowest p-4 rounded-2xl border border-outline-variant/10 text-center">
-          <div class="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center text-orange-700 mx-auto mb-2"><span class="material-symbols-outlined text-xl">warning</span></div>
-          <p class="font-headline text-2xl font-bold text-orange-600" id="m-bas">0</p>
-          <p class="text-xs text-on-surface-variant mt-1">Stock bas</p>
+
+        <!-- Metric cards -->
+        <div class="grid grid-cols-3 gap-6">
+          <div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border-b-4 border-tertiary-fixed-dim">
+            <div class="flex justify-between items-start mb-4">
+              <span class="material-symbols-outlined text-tertiary-fixed-dim text-2xl">check_circle</span>
+              <span class="text-[0.6875rem] font-bold uppercase tracking-widest text-outline">Normal</span>
+            </div>
+            <p class="text-4xl font-black text-on-surface font-headline" id="d-ok">0</p>
+            <p class="text-sm text-on-surface-variant mt-1">Produits en stock</p>
+          </div>
+          <div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border-b-4 border-amber-400">
+            <div class="flex justify-between items-start mb-4">
+              <span class="material-symbols-outlined text-amber-500 text-2xl">warning</span>
+              <span class="text-[0.6875rem] font-bold uppercase tracking-widest text-outline">Critique</span>
+            </div>
+            <p class="text-4xl font-black text-on-surface font-headline" id="d-bas">0</p>
+            <p class="text-sm text-on-surface-variant mt-1">Stock faible</p>
+          </div>
+          <div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border-b-4 border-error">
+            <div class="flex justify-between items-start mb-4">
+              <span class="material-symbols-outlined text-error text-2xl">error</span>
+              <span class="text-[0.6875rem] font-bold uppercase tracking-widest text-outline">Urgent</span>
+            </div>
+            <p class="text-4xl font-black text-on-surface font-headline" id="d-rupture">0</p>
+            <p class="text-sm text-on-surface-variant mt-1">Rupture de stock</p>
+          </div>
         </div>
-        <div class="bg-surface-container-lowest p-4 rounded-2xl border border-outline-variant/10 text-center">
-          <div class="w-10 h-10 rounded-xl bg-error-container flex items-center justify-center text-on-error-container mx-auto mb-2"><span class="material-symbols-outlined text-xl">error</span></div>
-          <p class="font-headline text-2xl font-bold text-error" id="m-rupture">0</p>
-          <p class="text-xs text-on-surface-variant mt-1">Rupture</p>
+
+        <!-- Search -->
+        <div class="flex items-center gap-4 bg-surface-container-low p-4 rounded-xl">
+          <div class="relative flex-1">
+            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">search</span>
+            <input id="search-stocks-d" type="text" placeholder="Rechercher par nom, catégorie ou SKU..." class="w-full bg-surface-container-lowest border-none ring-1 ring-outline-variant/20 rounded-lg pl-12 py-3 focus:ring-secondary outline-none transition-all text-sm">
+          </div>
+          <button class="bg-surface-container-high px-4 py-3 rounded-lg text-on-surface flex items-center gap-2 hover:bg-surface-container-highest transition-colors text-sm font-medium">
+            <span class="material-symbols-outlined text-xl">filter_list</span>Filtrer
+          </button>
         </div>
+
+        <!-- Grid produits -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6" id="liste-stocks-desktop">
+          <div class="col-span-full text-center text-on-surface-variant py-8">Chargement...</div>
+        </div>
+
       </section>
 
-      <!-- ACTIONS -->
-      <div class="flex flex-col sm:flex-row gap-3">
-        <div class="relative flex-1">
-          <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-xl">search</span>
-          <input id="search-stocks" type="text" placeholder="Rechercher un produit..." class="w-full pl-12 pr-4 py-3 bg-surface-container-lowest border border-outline-variant/30 rounded-xl focus:border-secondary outline-none text-sm">
-        </div>
-        <button onclick="document.getElementById('modal-stock').classList.add('open')" class="flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-xl font-bold text-sm hover:opacity-90 transition justify-center">
-          <span class="material-symbols-outlined text-[20px]">add</span>
-          Ajouter un produit
-        </button>
-      </div>
+      <!-- VERSION MOBILE -->
+      <section class="lg:hidden px-5 pt-6 space-y-6 pb-4">
 
-      <!-- LISTE STOCKS -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4" id="liste-stocks">
-        <div class="bg-surface-container-lowest p-6 rounded-2xl text-center text-on-surface-variant text-sm col-span-full">Chargement...</div>
-      </div>
+        <!-- Header mobile -->
+        <div class="flex flex-col gap-4">
+          <div class="flex items-end justify-between">
+            <div>
+              <p class="text-[10px] uppercase tracking-wider font-bold text-outline mb-1">Gestion d'inventaire</p>
+              <h2 class="text-2xl font-extrabold font-headline text-on-surface leading-none">Mes Stocks</h2>
+            </div>
+            <button onclick="document.getElementById('modal-stock').classList.add('open')" class="bg-primary-container text-white px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2 active:scale-95 transition-transform">
+              <span class="material-symbols-outlined text-sm">add</span>+ Ajouter
+            </button>
+          </div>
+          <!-- Search mobile -->
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-lg">search</span>
+            <input id="search-stocks-m" type="text" placeholder="Rechercher un produit..." class="w-full bg-surface-container-lowest border-0 ring-1 ring-outline-variant/20 rounded-xl py-3.5 pl-12 pr-4 text-sm outline-none">
+          </div>
+        </div>
+
+        <!-- Metric cards mobile -->
+        <div class="grid grid-cols-2 gap-3">
+          <div class="col-span-2 bg-white p-5 rounded-xl border border-outline-variant/10 flex items-center justify-between">
+            <div>
+              <p class="text-[10px] uppercase font-bold text-outline mb-1">Produits en stock</p>
+              <h3 class="text-3xl font-black text-tertiary-container font-headline" id="m-ok">0</h3>
+            </div>
+            <div class="bg-tertiary-fixed-dim/20 p-3 rounded-full">
+              <span class="material-symbols-outlined text-tertiary-container" style="font-variation-settings:'FILL' 1">inventory_2</span>
+            </div>
+          </div>
+          <div class="bg-white p-4 rounded-xl border border-outline-variant/10">
+            <p class="text-[10px] uppercase font-bold text-outline mb-1">Stock bas</p>
+            <div class="flex items-center gap-2">
+              <span class="text-2xl font-black text-amber-600 font-headline" id="m-bas-m">0</span>
+              <span class="material-symbols-outlined text-amber-500 text-sm">warning</span>
+            </div>
+          </div>
+          <div class="bg-white p-4 rounded-xl border border-outline-variant/10">
+            <p class="text-[10px] uppercase font-bold text-outline mb-1">Rupture</p>
+            <div class="flex items-center gap-2">
+              <span class="text-2xl font-black text-error font-headline" id="m-rupture-m">0</span>
+              <span class="material-symbols-outlined text-error text-sm">error</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Liste produits mobile -->
+        <div>
+          <h3 class="text-sm font-bold text-on-surface px-1 mb-3">Derniers produits</h3>
+          <div class="space-y-4" id="liste-stocks-mobile">
+            <div class="text-center text-on-surface-variant py-6 text-sm">Chargement...</div>
+          </div>
+        </div>
+
+      </section>
 
     </main>
 
-    <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-surface-container-lowest border-t border-outline-variant/20 flex justify-around items-center py-2 z-50 shadow-[0_-2px_12px_rgba(0,0,0,0.06)]">
-      <a href="index.html" class="flex flex-col items-center gap-1 text-on-surface-variant"><span class="material-symbols-outlined text-xl">dashboard</span><span class="text-[10px]">Accueil</span></a>
-      <a href="dettes.html" class="flex flex-col items-center gap-1 text-on-surface-variant"><span class="material-symbols-outlined text-xl">payments</span><span class="text-[10px]">Dettes</span></a>
-      <a href="ventes.html" class="flex flex-col items-center gap-1 text-on-surface-variant"><span class="material-symbols-outlined text-xl">receipt_long</span><span class="text-[10px]">Ventes</span></a>
-      <a href="stocks.html" class="flex flex-col items-center gap-1 text-primary-container"><span class="material-symbols-outlined text-xl" style="font-variation-settings:'FILL' 1">inventory_2</span><span class="text-[10px] font-bold">Stocks</span></a>
-      <a href="profil.html" class="flex flex-col items-center gap-1 text-on-surface-variant"><span class="material-symbols-outlined text-xl">person</span><span class="text-[10px]">Profil</span></a>
+    <!-- BOTTOM NAV MOBILE -->
+    <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t border-outline-variant/20 flex justify-around items-center py-2 z-50 shadow-[0_-2px_12px_rgba(0,0,0,0.06)] h-[60px]">
+      <a href="index.html" class="flex flex-col items-center gap-0.5 text-outline px-3 py-1">
+        <span class="material-symbols-outlined text-2xl">home</span>
+        <span class="text-[10px] uppercase tracking-wider font-bold">Accueil</span>
+      </a>
+      <a href="dettes.html" class="flex flex-col items-center gap-0.5 text-outline px-3 py-1">
+        <span class="material-symbols-outlined text-2xl">account_balance_wallet</span>
+        <span class="text-[10px] uppercase tracking-wider font-bold">Dettes</span>
+      </a>
+      <a href="ventes.html" class="flex flex-col items-center gap-0.5 text-outline px-3 py-1">
+        <span class="material-symbols-outlined text-2xl">sell</span>
+        <span class="text-[10px] uppercase tracking-wider font-bold">Ventes</span>
+      </a>
+      <a href="stocks.html" class="flex flex-col items-center gap-0.5 text-primary-container bg-surface-container-low rounded-xl px-3 py-1 scale-95">
+        <span class="material-symbols-outlined text-2xl" style="font-variation-settings:'FILL' 1">inventory_2</span>
+        <span class="text-[10px] uppercase tracking-wider font-bold">Stocks</span>
+      </a>
+      <a href="profil.html" class="flex flex-col items-center gap-0.5 text-outline px-3 py-1">
+        <span class="material-symbols-outlined text-2xl">person</span>
+        <span class="text-[10px] uppercase tracking-wider font-bold">Profil</span>
+      </a>
     </nav>
   </div>
 
@@ -121,7 +239,9 @@
     <div class="modal-sheet bg-surface-container-lowest w-full rounded-t-3xl p-6 space-y-4 max-h-[92vh] overflow-y-auto">
       <div class="flex items-center justify-between mb-2">
         <h3 class="font-headline text-lg font-bold">Ajouter un produit</h3>
-        <button onclick="document.getElementById('modal-stock').classList.remove('open')" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center"><span class="material-symbols-outlined text-lg">close</span></button>
+        <button onclick="document.getElementById('modal-stock').classList.remove('open')" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
       </div>
       <div class="space-y-1.5">
         <label class="text-[0.6875rem] font-bold uppercase tracking-wider text-outline">Nom du produit</label>
@@ -130,7 +250,8 @@
       <div class="space-y-1.5">
         <label class="text-[0.6875rem] font-bold uppercase tracking-wider text-outline">Catégorie</label>
         <select id="stock-categorie" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant/30 rounded-xl focus:border-secondary outline-none text-sm">
-          <option>Alimentation</option><option>Hygiène</option><option>Boissons</option><option>Textile</option><option>Électronique</option><option>Autre</option>
+          <option>Alimentation</option><option>Hygiène</option><option>Boissons</option>
+          <option>Textile</option><option>Électronique</option><option>Autre</option>
         </select>
       </div>
       <div class="grid grid-cols-2 gap-3">
@@ -159,7 +280,9 @@
     <div class="modal-sheet bg-surface-container-lowest w-full rounded-t-3xl p-6 space-y-4 max-h-[92vh] overflow-y-auto">
       <div class="flex items-center justify-between mb-2">
         <h3 class="font-headline text-lg font-bold">Modifier le produit</h3>
-        <button onclick="document.getElementById('modal-modifier-stock').classList.remove('open')" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center"><span class="material-symbols-outlined text-lg">close</span></button>
+        <button onclick="document.getElementById('modal-modifier-stock').classList.remove('open')" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
       </div>
       <input type="hidden" id="modifier-stock-id">
       <div class="space-y-1.5">
@@ -169,7 +292,8 @@
       <div class="space-y-1.5">
         <label class="text-[0.6875rem] font-bold uppercase tracking-wider text-outline">Catégorie</label>
         <select id="modifier-stock-categorie" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant/30 rounded-xl focus:border-secondary outline-none text-sm">
-          <option>Alimentation</option><option>Hygiène</option><option>Boissons</option><option>Textile</option><option>Électronique</option><option>Autre</option>
+          <option>Alimentation</option><option>Hygiène</option><option>Boissons</option>
+          <option>Textile</option><option>Électronique</option><option>Autre</option>
         </select>
       </div>
       <div class="grid grid-cols-2 gap-3">
@@ -199,77 +323,143 @@
     function fmt(v) { return Number(v).toLocaleString('fr-FR') + ' F'; }
 
     const user = JSON.parse(localStorage.getItem('bankvi_user')||'{}');
-    const ini = user.nom ? user.nom.substring(0,2).toUpperCase() : '--';
+    const ini  = user.nom ? user.nom.substring(0,2).toUpperCase() : '--';
     ['nav-avatar','sidebar-avatar'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=ini; });
     const sn=document.getElementById('sidebar-nom'); if(sn&&user.nom) sn.textContent=user.nom;
-    const nd=document.getElementById('nav-date');
-    if(nd) nd.textContent=new Date().toLocaleDateString('fr-FR',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
 
     let tousStocks = [];
 
-    document.getElementById('search-stocks').addEventListener('input', function() {
+    // Search desktop
+    const sd = document.getElementById('search-stocks-d');
+    if(sd) sd.addEventListener('input', function() {
       const val = this.value.toLowerCase();
       afficherStocks(tousStocks.filter(s => s.nom.toLowerCase().includes(val) || s.categorie.toLowerCase().includes(val)));
     });
 
-    function afficherStocks(stocks) {
-      const liste = document.getElementById('liste-stocks');
-      if (stocks.length === 0) {
-        liste.innerHTML = '<div class="bg-surface-container-lowest p-8 rounded-2xl text-center text-on-surface-variant text-sm col-span-full">Aucun produit trouvé</div>';
-        return;
-      }
-      liste.innerHTML = stocks.map(s => {
-        const rupture = s.quantite === 0;
-        const bas     = s.quantite > 0 && s.quantite <= s.seuil_alerte;
-        const pct     = Math.min(100, Math.round((s.quantite / Math.max(s.seuil_alerte * 5, 1)) * 100));
-        const badgeClass = rupture ? 'bg-error-container text-on-error-container' : bas ? 'bg-orange-100 text-orange-700' : 'bg-[#68dbae]/20 text-[#003524]';
-        const badgeText  = rupture ? 'Rupture' : bas ? 'Stock bas' : 'OK';
-        const barClass   = rupture ? 'bg-error' : bas ? 'bg-orange-500' : 'bg-[#003524]';
-        const borderClass = rupture ? 'border-l-4 border-l-error' : bas ? 'border-l-4 border-l-orange-500' : '';
-        return `
-        <div class="bg-surface-container-lowest rounded-2xl overflow-hidden border border-outline-variant/10 ${borderClass} hover:shadow-md transition-all">
-          <div class="p-4 lg:p-5">
-            <div class="flex items-start justify-between mb-3">
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl font-bold text-xs flex items-center justify-center ${rupture ? 'bg-error-container text-on-error-container' : bas ? 'bg-orange-100 text-orange-700' : 'bg-[#68dbae]/20 text-[#003524]'}">${s.nom.substring(0,2).toUpperCase()}</div>
-                <div>
-                  <p class="font-bold text-sm">${s.nom}</p>
-                  <p class="text-xs text-on-surface-variant">${s.categorie}</p>
-                </div>
-              </div>
-              <span class="text-[10px] px-2 py-1 rounded-full font-bold ${badgeClass}">${badgeText}</span>
+    // Search mobile
+    const sm = document.getElementById('search-stocks-m');
+    if(sm) sm.addEventListener('input', function() {
+      const val = this.value.toLowerCase();
+      afficherStocks(tousStocks.filter(s => s.nom.toLowerCase().includes(val) || s.categorie.toLowerCase().includes(val)));
+    });
+
+    function getBadge(s) {
+      const rupture = s.quantite === 0;
+      const bas     = s.quantite > 0 && s.quantite <= s.seuil_alerte;
+      if(rupture) return { label:'Rupture', cls:'bg-error-container text-on-error-container', border:'border-l-4 border-l-error', bar:'bg-error', pct:0, avBg:'bg-error-container/50 text-error' };
+      if(bas) return { label:'Bas', cls:'bg-amber-100 text-amber-700', border:'border-l-4 border-l-amber-500', bar:'bg-amber-500', pct: Math.round((s.quantite/s.seuil_alerte)*100), avBg:'bg-amber-100 text-amber-700' };
+      return { label:'OK', cls:'bg-tertiary-fixed-dim/30 text-on-tertiary-fixed-variant', border:'', bar:'bg-tertiary-container', pct: Math.min(100,Math.round((s.quantite/Math.max(s.seuil_alerte*2,1))*100)), avBg:'bg-tertiary-fixed-dim/20 text-tertiary-container' };
+    }
+
+    function cardDesktop(s) {
+      const b = getBadge(s);
+      const ini2 = s.nom.substring(0,2).toUpperCase();
+      return `
+      <div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden flex flex-col group hover:shadow-md transition-all ${b.border}">
+        <div class="p-6 space-y-4 flex-1">
+          <div class="flex items-start justify-between">
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 rounded-lg font-bold text-lg flex items-center justify-center ${b.avBg}">${ini2}</div>
+              <div><h4 class="font-bold text-on-surface">${s.nom}</h4><p class="text-xs text-outline font-medium">${s.categorie}</p></div>
             </div>
-            <div class="mb-3">
-              <div class="flex justify-between text-xs text-on-surface-variant mb-1">
-                <span>${s.quantite} unités</span>
-                <span class="font-bold">${pct}%</span>
-              </div>
-              <div class="w-full bg-surface-container-high rounded-full h-1.5">
-                <div class="h-1.5 rounded-full ${barClass} transition-all" style="width:${pct}%"></div>
-              </div>
-              <div class="flex justify-between text-[10px] text-outline mt-1">
-                <span>Seuil: ${s.seuil_alerte}</span>
-                <span>${fmt(s.prix_unitaire)} /unité</span>
-              </div>
+            <span class="text-[10px] font-bold uppercase px-2 py-1 rounded ${b.cls}">${b.label}</span>
+          </div>
+          <div class="space-y-2">
+            <div class="flex justify-between text-xs font-bold">
+              <span class="text-on-surface-variant">Quantité: ${s.quantite} / ${s.seuil_alerte * 2}</span>
+              <span>${b.pct}%</span>
             </div>
-            <div class="flex gap-2">
-              <button onclick="ouvrirModifierStock(${s.id},'${s.nom.replace(/'/g,"\\'")}','${s.categorie}',${s.quantite},${s.seuil_alerte},${s.prix_unitaire})" class="flex-1 py-2 bg-surface-container text-on-surface-variant rounded-xl text-xs font-bold hover:bg-surface-container-high transition-colors">Modifier</button>
-              <button onclick="supprimerStock(${s.id})" class="py-2 px-3 bg-error-container/50 text-error rounded-xl text-xs font-bold hover:bg-error-container transition-colors">
-                <span class="material-symbols-outlined text-sm">delete</span>
-              </button>
+            <div class="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+              <div class="${b.bar} h-full rounded-full" style="width:${b.pct}%"></div>
             </div>
           </div>
-        </div>`;
-      }).join('');
+          <div class="flex justify-between items-center pt-2">
+            <span class="text-sm font-bold text-on-surface">${fmt(s.prix_unitaire)} <span class="text-[10px] text-outline font-normal">/unité</span></span>
+            <span class="text-[10px] text-outline">Seuil: ${s.seuil_alerte}</span>
+          </div>
+        </div>
+        <div class="bg-surface-container-low px-4 py-3 flex gap-2">
+          <button onclick="ouvrirModifier(${s.id},'${s.nom.replace(/'/g,"\\'")}','${s.categorie}',${s.quantite},${s.seuil_alerte},${s.prix_unitaire})" class="flex-1 py-2 text-xs font-bold text-on-surface-variant bg-surface-container-high rounded-lg hover:bg-surface-container-highest transition-colors">Modifier</button>
+          <button onclick="supprimerStock(${s.id})" class="px-4 py-2 text-xs font-bold text-error bg-error-container/40 rounded-lg hover:bg-error-container/60 transition-colors">Supprimer</button>
+        </div>
+      </div>`;
+    }
+
+    function cardMobile(s) {
+      const b = getBadge(s);
+      const ini2 = s.nom.substring(0,2).toUpperCase();
+      return `
+      <div class="bg-surface-container-lowest rounded-xl p-4 border-l-4 ${s.quantite===0?'border-error':s.quantite<=s.seuil_alerte?'border-amber-500':'border-transparent'} shadow-sm border border-outline-variant/10">
+        <div class="flex items-start gap-4 mb-4">
+          <div class="w-14 h-14 rounded-lg flex items-center justify-center font-bold text-lg flex-shrink-0 ${b.avBg}">${ini2}</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex justify-between items-start">
+              <h4 class="font-bold text-on-surface truncate">${s.nom}</h4>
+              <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-full ${b.cls} ml-2 flex-shrink-0">${b.label}</span>
+            </div>
+            <p class="text-xs text-on-surface-variant">${s.categorie}</p>
+            <p class="text-sm font-bold text-primary-container mt-1">${fmt(s.prix_unitaire)} <span class="text-[10px] text-outline font-normal">/unité</span></p>
+          </div>
+        </div>
+        <div class="space-y-1 mb-4">
+          <div class="flex justify-between text-[11px] font-medium">
+            <span class="text-on-surface-variant">Stock: ${s.quantite} / Seuil: ${s.seuil_alerte}</span>
+            <span class="${s.quantite===0?'text-error':s.quantite<=s.seuil_alerte?'text-amber-600':'text-tertiary-container'} font-bold">${b.pct}%</span>
+          </div>
+          <div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
+            <div class="${b.bar} h-full rounded-full" style="width:${b.pct}%"></div>
+          </div>
+        </div>
+        <div class="flex gap-2">
+          <button onclick="ouvrirModifier(${s.id},'${s.nom.replace(/'/g,"\\'")}','${s.categorie}',${s.quantite},${s.seuil_alerte},${s.prix_unitaire})" class="flex-1 py-2 rounded-lg bg-surface-container-low text-on-surface-variant text-xs font-semibold flex items-center justify-center gap-1">
+            <span class="material-symbols-outlined text-sm">edit</span> Modifier
+          </button>
+          <button onclick="supprimerStock(${s.id})" class="flex-1 py-2 rounded-lg bg-error-container/40 text-error text-xs font-semibold flex items-center justify-center gap-1">
+            <span class="material-symbols-outlined text-sm">delete</span> Supprimer
+          </button>
+        </div>
+      </div>`;
+    }
+
+    function addNewCard() {
+      return `
+      <div onclick="document.getElementById('modal-stock').classList.add('open')" class="border-2 border-dashed border-outline-variant/30 rounded-xl flex flex-col items-center justify-center p-8 text-center space-y-4 hover:border-secondary hover:bg-surface-container-low/50 transition-all cursor-pointer group">
+        <div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center group-hover:scale-110 transition-transform">
+          <span class="material-symbols-outlined text-outline">add</span>
+        </div>
+        <div><p class="font-bold text-on-surface">Nouveau Produit</p><p class="text-xs text-outline">Ajouter manuellement à l'inventaire</p></div>
+      </div>`;
+    }
+
+    function afficherStocks(stocks) {
+      const desktop = document.getElementById('liste-stocks-desktop');
+      const mobile  = document.getElementById('liste-stocks-mobile');
+
+      if (stocks.length === 0) {
+        if(desktop) desktop.innerHTML = '<div class="col-span-full text-center text-on-surface-variant py-8 text-sm">Aucun produit trouvé</div>';
+        if(mobile)  mobile.innerHTML  = '<div class="text-center text-on-surface-variant py-6 text-sm">Aucun produit trouvé</div>';
+        return;
+      }
+
+      if(desktop) desktop.innerHTML = stocks.map(s => cardDesktop(s)).join('') + addNewCard();
+      if(mobile)  mobile.innerHTML  = stocks.map(s => cardMobile(s)).join('');
     }
 
     async function chargerStocks() {
       try {
         const res = await fetch(`${API}/stocks`, { headers: getHeaders() });
-        tousStocks = await res.json();
-        document.getElementById('m-total').textContent   = tousStocks.length;
-        document.getElementById('m-bas').textContent     = tousStocks.filter(s => s.quantite > 0 && s.quantite <= s.seuil_alerte).length;
-        document.getElementById('m-rupture').textContent = tousStocks.filter(s => s.quantite === 0).length;
+        if (res.status === 401) { localStorage.clear(); window.location.href='login.html'; return; }
+        const data = await res.json();
+        tousStocks = Array.isArray(data) ? data : [];
+
+        const ok      = tousStocks.filter(s => s.quantite > s.seuil_alerte).length;
+        const bas     = tousStocks.filter(s => s.quantite > 0 && s.quantite <= s.seuil_alerte).length;
+        const rupture = tousStocks.filter(s => s.quantite === 0).length;
+
+        ['d-ok','m-ok'].forEach(id => { const el=document.getElementById(id); if(el) el.textContent=ok; });
+        ['d-bas','m-bas-m'].forEach(id => { const el=document.getElementById(id); if(el) el.textContent=bas; });
+        ['d-rupture','m-rupture-m'].forEach(id => { const el=document.getElementById(id); if(el) el.textContent=rupture; });
+
         afficherStocks(tousStocks);
       } catch(e) { console.log('Erreur stocks',e); }
     }
@@ -282,19 +472,19 @@
       const prix     = document.getElementById('stock-prix').value;
       if (!nom||!quantite||!prix) { alert('Remplis les champs obligatoires'); return; }
       try {
-        const res = await fetch(`${API}/stocks`, { method:'POST', headers:getHeaders(), body:JSON.stringify({nom,categorie,quantite:Number(quantite),seuil_alerte:Number(seuil)||5,prix_unitaire:Number(prix)}) });
+        const res = await fetch(`${API}/stocks`,{method:'POST',headers:getHeaders(),body:JSON.stringify({nom,categorie,quantite:Number(quantite),seuil_alerte:Number(seuil)||5,prix_unitaire:Number(prix)})});
         if (!res.ok) { const e=await res.json(); alert(e.message); return; }
-        ['stock-nom','stock-quantite','stock-seuil','stock-prix'].forEach(id => document.getElementById(id).value='');
+        ['stock-nom','stock-quantite','stock-seuil','stock-prix'].forEach(id=>document.getElementById(id).value='');
         document.getElementById('modal-stock').classList.remove('open');
         chargerStocks();
       } catch(e) { alert('Erreur serveur'); }
     });
 
-    function ouvrirModifierStock(id,nom,categorie,quantite,seuil,prix) {
+    function ouvrirModifier(id,nom,cat,qte,seuil,prix) {
       document.getElementById('modifier-stock-id').value       = id;
       document.getElementById('modifier-stock-nom').value      = nom;
-      document.getElementById('modifier-stock-categorie').value= categorie;
-      document.getElementById('modifier-stock-quantite').value = quantite;
+      document.getElementById('modifier-stock-categorie').value= cat;
+      document.getElementById('modifier-stock-quantite').value = qte;
       document.getElementById('modifier-stock-seuil').value    = seuil;
       document.getElementById('modifier-stock-prix').value     = prix;
       document.getElementById('modal-modifier-stock').classList.add('open');
@@ -309,7 +499,7 @@
       const prix     = document.getElementById('modifier-stock-prix').value;
       if (!nom||!quantite||!prix) { alert('Remplis les champs obligatoires'); return; }
       try {
-        const res = await fetch(`${API}/stocks/${id}`, { method:'PUT', headers:getHeaders(), body:JSON.stringify({nom,categorie,quantite:Number(quantite),seuil_alerte:Number(seuil)||5,prix_unitaire:Number(prix)}) });
+        const res = await fetch(`${API}/stocks/${id}`,{method:'PUT',headers:getHeaders(),body:JSON.stringify({nom,categorie,quantite:Number(quantite),seuil_alerte:Number(seuil)||5,prix_unitaire:Number(prix)})});
         if (!res.ok) { const e=await res.json(); alert(e.message); return; }
         document.getElementById('modal-modifier-stock').classList.remove('open');
         chargerStocks();

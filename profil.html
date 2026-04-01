@@ -4,76 +4,391 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BANKVI — Profil</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/responsive.css">
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            "primary":"#002e59","primary-container":"#0c447c","secondary":"#1960a6",
+            "tertiary":"#003524","tertiary-fixed-dim":"#68dbae","tertiary-container":"#004e37",
+            "surface":"#f9f9f7","surface-container-lowest":"#ffffff","surface-container-low":"#f4f4f2",
+            "surface-container":"#eeeeec","surface-container-high":"#e8e8e6",
+            "on-surface":"#1a1c1b","on-surface-variant":"#424750","outline":"#737781",
+            "outline-variant":"#c2c6d1","error":"#ba1a1a","error-container":"#ffdad6",
+            "on-error-container":"#93000a","on-primary-container":"#88b2f1",
+            "secondary-fixed":"#d4e3ff","tertiary-fixed":"#86f8c9",
+          },
+          fontFamily:{"headline":["Manrope"],"body":["Inter"]}
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #f9f9f7; }
+    .font-headline { font-family: 'Manrope', sans-serif; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
+    .toggle { position:relative; display:inline-flex; align-items:center; width:44px; height:24px; cursor:pointer; }
+    .toggle input { opacity:0; width:0; height:0; position:absolute; }
+    .slider { position:absolute; inset:0; background:#c2c6d1; border-radius:24px; transition:.3s; }
+    .slider:before { position:absolute; content:""; height:18px; width:18px; left:3px; bottom:3px; background:white; border-radius:50%; transition:.3s; box-shadow:0 1px 3px rgba(0,0,0,0.2); }
+    input:checked + .slider { background:#003524; }
+    input:checked + .slider:before { transform:translateX(20px); }
+  </style>
 </head>
-<body>
-  <nav class="navbar">
-    <div class="nav-logo">BANK<span>VI</span></div>
-    <div class="nav-date" id="nav-date"></div>
-    <div class="nav-avatar" id="nav-avatar">?</div>
-  </nav>
+<body class="flex min-h-screen text-on-surface">
 
-  <main class="main-content">
-    <section class="hero-card profil-hero">
-      <div class="profil-info">
-        <div class="profil-avatar" id="profil-avatar">?</div>
+  <!-- SIDEBAR DESKTOP -->
+  <aside class="hidden lg:flex w-[220px] h-screen sticky top-0 bg-surface-container-low flex-col py-8 px-4 z-50">
+    <div class="mb-10 px-2">
+      <h1 class="text-2xl font-black tracking-tight font-headline">BANK<span class="text-secondary">VI</span></h1>
+      <p class="text-[0.6875rem] font-bold uppercase tracking-widest text-outline mt-1">Management</p>
+    </div>
+    <nav class="flex-1 space-y-1">
+      <a href="index.html" class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-lg transition-colors"><span class="material-symbols-outlined">dashboard</span><span class="text-sm font-medium">Accueil</span></a>
+      <a href="dettes.html" class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-lg transition-colors"><span class="material-symbols-outlined">payments</span><span class="text-sm font-medium">Dettes</span></a>
+      <a href="ventes.html" class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-lg transition-colors"><span class="material-symbols-outlined">receipt_long</span><span class="text-sm font-medium">Ventes</span></a>
+      <a href="stocks.html" class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-lg transition-colors"><span class="material-symbols-outlined">inventory_2</span><span class="text-sm font-medium">Stocks</span></a>
+      <a href="profil.html" class="flex items-center gap-3 px-3 py-2.5 text-primary-container font-bold bg-surface-container-lowest rounded-lg shadow-sm"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">person</span><span class="text-sm">Profil</span></a>
+    </nav>
+    <div class="pt-6 border-t border-outline-variant/30 px-2">
+      <div class="flex items-center gap-3 p-2 bg-surface-container rounded-xl">
+        <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white text-xs font-bold" id="sidebar-avatar">--</div>
+        <div class="overflow-hidden">
+          <p class="text-xs font-bold truncate" id="sidebar-nom">--</p>
+          <p class="text-[10px] text-outline uppercase">Gérant</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="flex-1 flex flex-col min-h-screen">
+
+    <!-- TOPBAR -->
+    <header class="w-full h-16 sticky top-0 z-40 bg-surface flex justify-between items-center px-6 border-b border-outline-variant/20">
+      <div class="flex items-center gap-4">
+        <h1 class="text-xl font-black tracking-tight font-headline lg:hidden">BANK<span class="text-secondary">VI</span></h1>
+      </div>
+      <div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-white text-xs font-bold" id="nav-avatar">--</div>
+    </header>
+
+    <main class="flex-1 pb-24 lg:pb-8">
+
+      <!-- DESKTOP -->
+      <section class="hidden lg:block px-14 py-12 max-w-6xl mx-auto space-y-12">
+
+        <!-- Hero desktop -->
+        <div class="grid grid-cols-12 gap-8 items-start">
+          <div class="col-span-8 bg-primary-container rounded-xl p-10 relative overflow-hidden flex flex-col md:flex-row items-center gap-8 shadow-sm">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-secondary/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
+            <div class="w-32 h-32 rounded-full bg-surface-container-lowest/20 border-4 border-on-primary-container/20 flex items-center justify-center text-white text-4xl font-extrabold font-headline" id="d-avatar">--</div>
+            <div class="relative z-10 text-center md:text-left">
+              <h2 class="text-white text-3xl font-extrabold font-headline tracking-tight mb-1" id="d-nom">--</h2>
+              <p class="text-on-primary-container opacity-80 text-lg mb-4" id="d-boutique">--</p>
+              <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-secondary text-white rounded-full text-[0.6875rem] font-bold uppercase tracking-widest">
+                <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">verified</span>Membre BANKVI
+              </div>
+            </div>
+          </div>
+          <div class="col-span-4 bg-surface-container-low rounded-xl p-8 flex flex-col justify-between h-full">
+            <div>
+              <p class="text-outline text-[0.6875rem] font-bold uppercase tracking-widest mb-4">Aujourd'hui</p>
+              <h3 class="text-on-surface text-2xl font-bold font-headline" id="d-date">--</h3>
+            </div>
+            <div class="flex items-center gap-4 text-tertiary mt-6">
+              <span class="material-symbols-outlined text-3xl">wb_sunny</span>
+              <span class="font-medium">Lomé, Togo</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Métriques desktop -->
         <div>
-          <h2 class="profil-name" id="profil-nom">--</h2>
-          <p class="profil-shop" id="profil-boutique">--</p>
-          <p class="profil-since">Membre BANKVI</p>
+          <div class="flex items-end justify-between mb-8">
+            <div>
+              <p class="text-outline text-[0.6875rem] font-bold uppercase tracking-widest mb-1">Résumé de l'activité</p>
+              <h2 class="text-2xl font-black font-headline text-primary">Tableau de bord</h2>
+            </div>
+          </div>
+          <div class="grid grid-cols-3 gap-6">
+            <div class="bg-surface-container-lowest p-8 rounded-xl flex flex-col gap-6 hover:bg-surface-container transition-colors">
+              <div class="w-12 h-12 rounded-lg bg-tertiary-fixed-dim flex items-center justify-center text-tertiary"><span class="material-symbols-outlined">trending_up</span></div>
+              <div>
+                <p class="text-outline text-[0.6875rem] font-bold uppercase tracking-widest mb-1">Ventes du jour</p>
+                <p class="text-2xl font-black font-headline text-on-surface" id="d-ventes">0 F</p>
+              </div>
+              <div class="h-1 bg-surface-container rounded-full overflow-hidden"><div class="h-full bg-tertiary w-3/4"></div></div>
+            </div>
+            <div class="bg-surface-container-lowest p-8 rounded-xl flex flex-col gap-6 hover:bg-surface-container transition-colors">
+              <div class="w-12 h-12 rounded-lg bg-error-container flex items-center justify-center text-on-error-container"><span class="material-symbols-outlined">warning</span></div>
+              <div>
+                <p class="text-outline text-[0.6875rem] font-bold uppercase tracking-widest mb-1">Dettes en cours</p>
+                <p class="text-2xl font-black font-headline text-on-surface" id="d-dettes">0 F</p>
+              </div>
+              <div class="flex items-center gap-2 text-error text-xs font-bold">
+                <span class="material-symbols-outlined text-sm">schedule</span>
+                <span id="d-dettes-count">0 clients</span>
+              </div>
+            </div>
+            <div class="bg-surface-container-lowest p-8 rounded-xl flex flex-col gap-6 hover:bg-surface-container transition-colors">
+              <div class="w-12 h-12 rounded-lg bg-secondary-fixed flex items-center justify-center text-secondary"><span class="material-symbols-outlined">inventory_2</span></div>
+              <div>
+                <p class="text-outline text-[0.6875rem] font-bold uppercase tracking-widest mb-1">Stock total</p>
+                <p class="text-2xl font-black font-headline text-on-surface" id="d-stocks">0 articles</p>
+              </div>
+              <div class="flex items-center gap-2 text-secondary text-xs font-bold">
+                <span class="material-symbols-outlined text-sm">check_circle</span> Inventaire à jour
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </section>
 
-    <div class="metrics-grid" style="grid-template-columns:repeat(3,minmax(0,1fr));margin-bottom:1.25rem;">
-      <div class="metric-card"><p class="metric-label">Aujourd'hui</p><h2 class="metric-value blue" id="p-ventes">0 F</h2><p class="metric-sub">ventes</p></div>
-      <div class="metric-card"><p class="metric-label">Dettes</p><h2 class="metric-value red" id="p-dettes">0</h2><p class="metric-sub">en cours</p></div>
-      <div class="metric-card"><p class="metric-label">Produits</p><h2 class="metric-value green" id="p-stocks">0</h2><p class="metric-sub">en stock</p></div>
-    </div>
+        <!-- Préférences + Aide desktop -->
+        <div class="grid grid-cols-2 gap-12 items-start">
+          <div class="space-y-8">
+            <div class="border-b border-outline/10 pb-4">
+              <h3 class="text-xl font-bold font-headline flex items-center gap-2">
+                <span class="material-symbols-outlined text-secondary">settings</span>Préférences
+              </h3>
+            </div>
+            <div class="space-y-6">
+              <div class="flex items-center justify-between p-2">
+                <div>
+                  <p class="text-sm font-bold">Alertes de stock</p>
+                  <p class="text-xs text-outline">Notification quand un produit passe sous le seuil critique.</p>
+                </div>
+                <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+              </div>
+              <div class="flex items-center justify-between p-2">
+                <div>
+                  <p class="text-sm font-bold">Rappels de dettes</p>
+                  <p class="text-xs text-outline">Rappel automatique pour les clients ayant dépassé 30 jours.</p>
+                </div>
+                <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+              </div>
+              <div class="flex items-center justify-between p-2 opacity-60">
+                <div>
+                  <p class="text-sm font-bold">Rapport Hebdomadaire</p>
+                  <p class="text-xs text-outline">Recevoir un résumé PDF de vos ventes chaque dimanche.</p>
+                </div>
+                <label class="toggle"><input type="checkbox"><span class="slider"></span></label>
+              </div>
+            </div>
+          </div>
+          <div class="space-y-8">
+            <div class="border-b border-outline/10 pb-4">
+              <h3 class="text-xl font-bold font-headline flex items-center gap-2">
+                <span class="material-symbols-outlined text-secondary">help_center</span>Centre d'aide
+              </h3>
+            </div>
+            <div class="space-y-4">
+              <a href="guide.html" class="flex items-center justify-between p-4 bg-surface-container-lowest rounded-xl hover:bg-surface-container-high transition-colors group">
+                <div class="flex items-center gap-4">
+                  <span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">book</span>
+                  <span class="text-sm font-medium">Guide d'utilisation BANKVI</span>
+                </div>
+                <span class="material-symbols-outlined text-sm text-outline">chevron_right</span>
+              </a>
+              <div class="flex items-center justify-between p-4 bg-surface-container-lowest rounded-xl hover:bg-surface-container-high transition-colors group cursor-pointer">
+                <div class="flex items-center gap-4">
+                  <span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">support_agent</span>
+                  <span class="text-sm font-medium">Contacter le support technique</span>
+                </div>
+                <span class="material-symbols-outlined text-sm text-outline">chevron_right</span>
+              </div>
+              <div class="pt-4">
+                <button onclick="seDeconnecter()" class="w-full py-4 bg-error-container text-on-error-container rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:bg-error hover:text-white transition-all">
+                  <span class="material-symbols-outlined">logout</span>Se déconnecter
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
 
-    <p class="list-section-label">Préférences</p>
-    <div class="cards-list menu-list">
-      <div class="menu-item">
-        <div class="lc-left">
-          <div class="menu-icon blue"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#185FA5" stroke-width="1.5"/><path d="M8 5v3l2 2" stroke="#185FA5" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-          <div><p class="lc-name">Alertes de stock</p><p class="lc-sub">Notification rupture</p></div>
-        </div>
-        <div class="toggle on" onclick="this.classList.toggle('on')"><div class="toggle-thumb"></div></div>
-      </div>
-      <div class="menu-item">
-        <div class="lc-left">
-          <div class="menu-icon red"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#D85A30" stroke-width="1.5"/><path d="M8 5v3l2 2" stroke="#D85A30" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-          <div><p class="lc-name">Rappels de dettes</p><p class="lc-sub">Alerte dettes en retard</p></div>
-        </div>
-        <div class="toggle on" onclick="this.classList.toggle('on')"><div class="toggle-thumb"></div></div>
-      </div>
-    </div>
+        <footer class="text-center pt-10 border-t border-outline/5">
+          <p class="text-[0.6875rem] text-outline font-medium tracking-widest uppercase">Version BANKVI v1.0 — Fait au Togo</p>
+          <div class="flex justify-center gap-2 mt-3">
+            <div class="w-2 h-2 rounded-full bg-[#006A4E]"></div>
+            <div class="w-2 h-2 rounded-full bg-[#FFD100]"></div>
+            <div class="w-2 h-2 rounded-full bg-[#D21034]"></div>
+          </div>
+        </footer>
 
-    <p class="list-section-label" style="margin-top:1.25rem;">Aide</p>
-    <div class="cards-list menu-list">
-      <a href="guide.html" class="menu-item">
-        <div class="lc-left">
-          <div class="menu-icon blue"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#185FA5" stroke-width="1.5"/><path d="M8 10V9c1.1 0 2-.9 2-2S9.1 5 8 5 6 5.9 6 7" stroke="#185FA5" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="12" r="0.8" fill="#185FA5"/></svg></div>
-          <div><p class="lc-name">Guide d'utilisation</p><p class="lc-sub">Comment utiliser BANKVI</p></div>
+      </section>
+
+      <!-- MOBILE -->
+      <section class="lg:hidden pt-4 pb-4 px-4 max-w-md mx-auto space-y-6">
+
+        <!-- Hero mobile -->
+        <div class="bg-primary-container rounded-[20px] p-6 text-white relative overflow-hidden">
+          <div class="relative z-10 flex flex-col items-center text-center">
+            <div class="w-20 h-20 bg-white/10 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center mb-4 text-3xl font-extrabold tracking-tight font-headline" id="m-avatar">--</div>
+            <h1 class="text-2xl font-bold leading-tight" id="m-nom">--</h1>
+            <p class="text-on-primary-container font-medium opacity-90 text-sm mt-1" id="m-boutique">--</p>
+            <div class="mt-4 inline-flex items-center gap-1 px-3 py-1 bg-white/10 rounded-full border border-white/10">
+              <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">verified</span>
+              <span class="text-[10px] font-bold tracking-widest uppercase">Membre BANKVI</span>
+            </div>
+          </div>
+          <div class="absolute -top-12 -right-12 w-32 h-32 bg-secondary opacity-20 blur-3xl rounded-full"></div>
         </div>
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="#a0a0a0" stroke-width="1.5" stroke-linecap="round"/></svg>
+
+        <!-- Métriques mobile -->
+        <div class="grid grid-cols-3 gap-3">
+          <div class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/20 flex flex-col items-center text-center">
+            <span class="material-symbols-outlined text-secondary text-xl mb-1">payments</span>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-outline">Ventes</span>
+            <span class="text-sm font-bold text-on-surface mt-0.5" id="m-ventes">0 F</span>
+          </div>
+          <div class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/20 flex flex-col items-center text-center">
+            <span class="material-symbols-outlined text-error text-xl mb-1">account_balance_wallet</span>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-outline">Dettes</span>
+            <span class="text-sm font-bold text-on-surface mt-0.5" id="m-dettes">0 F</span>
+          </div>
+          <div class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/20 flex flex-col items-center text-center">
+            <span class="material-symbols-outlined text-tertiary text-xl mb-1">inventory_2</span>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-outline">Stock</span>
+            <span class="text-sm font-bold text-on-surface mt-0.5" id="m-stocks">0</span>
+          </div>
+        </div>
+
+        <!-- Préférences mobile -->
+        <div class="space-y-3">
+          <h2 class="text-sm font-bold uppercase tracking-[0.1em] text-outline px-1">Préférences</h2>
+          <div class="bg-surface-container-lowest rounded-xl border border-outline-variant/20 divide-y divide-outline-variant/10 overflow-hidden">
+            <div class="p-4 flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center"><span class="material-symbols-outlined text-secondary text-sm">notifications</span></div>
+                <span class="text-sm font-medium">Alertes de stock</span>
+              </div>
+              <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+            </div>
+            <div class="p-4 flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center"><span class="material-symbols-outlined text-secondary text-sm">history_toggle_off</span></div>
+                <span class="text-sm font-medium">Rappels de dettes</span>
+              </div>
+              <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Aide mobile -->
+        <div class="space-y-3">
+          <h2 class="text-sm font-bold uppercase tracking-[0.1em] text-outline px-1">Aide</h2>
+          <div class="bg-surface-container-lowest rounded-xl border border-outline-variant/20 overflow-hidden">
+            <a href="guide.html" class="p-4 flex items-center justify-between hover:bg-surface-container-low transition-colors">
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center"><span class="material-symbols-outlined text-secondary text-sm">menu_book</span></div>
+                <span class="text-sm font-medium">Guide d'utilisation</span>
+              </div>
+              <span class="material-symbols-outlined text-outline">chevron_right</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Déconnexion + footer mobile -->
+        <div class="pt-2 space-y-4">
+          <button onclick="seDeconnecter()" class="w-full py-4 bg-error-container text-on-error-container rounded-xl font-bold text-sm flex items-center justify-center gap-2 border border-error/10 hover:opacity-90 active:scale-[0.98] transition-all">
+            <span class="material-symbols-outlined text-lg">logout</span>Se déconnecter
+          </button>
+          <div class="text-center">
+            <p class="text-[10px] font-bold uppercase tracking-widest text-outline">Version BANKVI v1.0 — Fait au Togo</p>
+            <div class="mt-2 flex justify-center gap-2">
+              <div class="w-1.5 h-1.5 rounded-full bg-[#006A4E]"></div>
+              <div class="w-1.5 h-1.5 rounded-full bg-[#FFD100]"></div>
+              <div class="w-1.5 h-1.5 rounded-full bg-[#D21034]"></div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </main>
+
+    <!-- BOTTOM NAV MOBILE -->
+    <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t border-outline-variant/20 flex justify-around items-center py-2 z-50 shadow-[0_-2px_12px_rgba(0,0,0,0.06)] h-[60px]">
+      <a href="index.html" class="flex flex-col items-center gap-0.5 text-outline px-3 py-1">
+        <span class="material-symbols-outlined text-2xl">home</span>
+        <span class="text-[10px] uppercase tracking-wider font-bold">Accueil</span>
       </a>
-    </div>
+      <a href="dettes.html" class="flex flex-col items-center gap-0.5 text-outline px-3 py-1">
+        <span class="material-symbols-outlined text-2xl">account_balance_wallet</span>
+        <span class="text-[10px] uppercase tracking-wider font-bold">Dettes</span>
+      </a>
+      <a href="ventes.html" class="flex flex-col items-center gap-0.5 text-outline px-3 py-1">
+        <span class="material-symbols-outlined text-2xl">sell</span>
+        <span class="text-[10px] uppercase tracking-wider font-bold">Ventes</span>
+      </a>
+      <a href="stocks.html" class="flex flex-col items-center gap-0.5 text-outline px-3 py-1">
+        <span class="material-symbols-outlined text-2xl">inventory_2</span>
+        <span class="text-[10px] uppercase tracking-wider font-bold">Stocks</span>
+      </a>
+      <a href="profil.html" class="flex flex-col items-center gap-0.5 text-primary-container bg-surface-container-low rounded-xl px-3 py-1 scale-95">
+        <span class="material-symbols-outlined text-2xl" style="font-variation-settings:'FILL' 1">person</span>
+        <span class="text-[10px] uppercase tracking-wider font-bold">Profil</span>
+      </a>
+    </nav>
 
-    <button class="btn-logout" id="btn-logout">Se déconnecter</button>
-    <p class="version-text">BANKVI v1.0 </p>
-  </main>
+  </div>
 
-  <nav class="bottom-nav">
-    <a href="index.html" class="bn-item"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><rect x="2" y="2" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="10" y="2" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="2" y="10" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="10" y="10" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>Accueil</a>
-    <a href="dettes.html" class="bn-item"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M9 6v3l2 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Dettes</a>
-    <a href="ventes.html" class="bn-item"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><path d="M3 12l3-3 3 3 3-4 3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Ventes</a>
-    <a href="stocks.html" class="bn-item"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><rect x="3" y="3" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M6 9h6M9 6v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Stocks</a>
-    <a href="profil.html" class="bn-item active"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="6" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M3 15c0-3 2.7-5 6-5s6 2 6 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Profil</a>
-  </nav>
+  <script>
+    const API = window.location.origin + '/api';
+    function getHeaders() { return {'Content-Type':'application/json','Authorization':localStorage.getItem('bankvi_token')||''}; }
+    function fmt(v) { return Number(v).toLocaleString('fr-FR') + ' F'; }
 
-  <script src="js/app.js"></script>
-  <script src="js/profil.js"></script>
+    const user = JSON.parse(localStorage.getItem('bankvi_user')||'{}');
+
+    // Remplir les infos utilisateur
+    const ini = user.nom ? user.nom.substring(0,2).toUpperCase() : '--';
+    ['nav-avatar','sidebar-avatar','d-avatar','m-avatar'].forEach(id => { const el=document.getElementById(id); if(el) el.textContent=ini; });
+
+    const sn=document.getElementById('sidebar-nom'); if(sn&&user.nom) sn.textContent=user.nom;
+
+    const nomEls = ['d-nom','m-nom'];
+    nomEls.forEach(id => { const el=document.getElementById(id); if(el&&user.nom) el.textContent=user.nom; });
+
+    const boutEls = ['d-boutique','m-boutique'];
+    boutEls.forEach(id => { const el=document.getElementById(id); if(el&&user.boutique) el.textContent=user.boutique+' — Lomé, Togo'; });
+
+    const dateEl = document.getElementById('d-date');
+    if(dateEl) dateEl.textContent = new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+
+    async function chargerProfil() {
+      try {
+        const token = localStorage.getItem('bankvi_token');
+        if (!token) { window.location.href='login.html'; return; }
+
+        const res = await fetch(`${API}/dashboard`, { headers: getHeaders() });
+        if (res.status === 401) { localStorage.clear(); window.location.href='login.html'; return; }
+        const data = await res.json();
+
+        const ventes = fmt(data.ventes_jour||0);
+        const dettes = fmt(data.dettes_total||0);
+        const dCount = (data.dettes_count||0) + ' clients';
+
+        ['d-ventes','m-ventes'].forEach(id => { const el=document.getElementById(id); if(el) el.textContent=ventes; });
+        ['d-dettes','m-dettes'].forEach(id => { const el=document.getElementById(id); if(el) el.textContent=dettes; });
+        const dc=document.getElementById('d-dettes-count'); if(dc) dc.textContent=dCount;
+
+        const resS = await fetch(`${API}/stocks`, { headers: getHeaders() });
+        if (resS.ok) {
+          const stocks = await resS.json();
+          const count = Array.isArray(stocks) ? stocks.length : 0;
+          const ds=document.getElementById('d-stocks'); if(ds) ds.textContent=count+' articles';
+          const ms=document.getElementById('m-stocks'); if(ms) ms.textContent=count;
+        }
+      } catch(e) { console.log('Erreur profil',e); }
+    }
+
+    function seDeconnecter() {
+      if (!confirm('Se déconnecter de BANKVI ?')) return;
+      localStorage.clear();
+      window.location.href = 'login.html';
+    }
+
+    chargerProfil();
+  </script>
 </body>
 </html>
