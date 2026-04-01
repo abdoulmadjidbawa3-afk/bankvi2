@@ -259,7 +259,15 @@
       window.open(`${API}/rapport?token=${token}`, '_blank');
     }
 
-   
+    // Date
+    function afficherDate() {
+      const d = new Date().toLocaleDateString('fr-FR', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+      const dm = document.getElementById('nav-date-mobile');
+      const dd = document.getElementById('nav-date-desktop');
+      if (dm) dm.textContent = d;
+      if (dd) dd.textContent = d;
+    }
+    afficherDate();
 
     // User
     const user = JSON.parse(localStorage.getItem('bankvi_user') || '{}');
