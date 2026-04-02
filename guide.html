@@ -1,270 +1,839 @@
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BANKVI — Guide</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/responsive.css">
+  <title>BANKVI — Guide d'utilisation</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            "primary":"#002e59","primary-container":"#0c447c","secondary":"#1960a6",
+            "tertiary":"#003524","tertiary-fixed-dim":"#68dbae",
+            "surface":"#f9f9f7","surface-container-lowest":"#ffffff",
+            "surface-container-low":"#f4f4f2","surface-container":"#eeeeec",
+            "surface-container-high":"#e8e8e6",
+            "on-surface":"#1a1c1b","on-surface-variant":"#424750",
+            "outline":"#737781","outline-variant":"#c2c6d1",
+            "error":"#ba1a1a","error-container":"#ffdad6","on-error-container":"#93000a",
+            "on-primary-container":"#88b2f1",
+          },
+          fontFamily:{"headline":["Manrope"],"body":["Inter"]}
+        }
+      }
+    }
+  </script>
   <style>
-    .guide-hero {
-      background: #0C447C;
-      border-radius: 20px;
-      padding: 2rem 1.5rem;
-      margin-bottom: 1.5rem;
-      text-align: center;
-    }
-    .guide-hero h1 { font-size: 24px; font-weight: 700; color: #fff; margin-bottom: 8px; }
-    .guide-hero p  { font-size: 14px; color: #85B7EB; }
-    .guide-step {
-      background: var(--bg-card);
-      border: 0.5px solid var(--border);
-      border-radius: 16px;
-      padding: 1.25rem;
-      margin-bottom: 1rem;
-    }
-    .step-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 10px;
-    }
-    .step-number {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      font-weight: 700;
-      flex-shrink: 0;
-    }
-    .step-number.blue  { background: #E6F1FB; color: #185FA5; }
-    .step-number.green { background: #E1F5EE; color: #0F6E56; }
-    .step-number.red   { background: #FAECE7; color: #993C1D; }
-    .step-number.amber { background: #FAEEDA; color: #854F0B; }
-    .step-title { font-size: 16px; font-weight: 600; color: var(--text); }
-    .step-desc  { font-size: 13px; color: #6b6b6b; line-height: 1.6; margin-bottom: 10px; }
-    .step-how {
-      background: #f5f5f3;
-      border-radius: 10px;
-      padding: 10px 14px;
-    }
-    .step-how p {
-      font-size: 12px;
-      color: #6b6b6b;
-      margin-bottom: 4px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .step-how ul {
-      list-style: none;
-      padding: 0;
-    }
-    .step-how ul li {
-      font-size: 13px;
-      color: var(--text);
-      padding: 4px 0;
-      border-bottom: 0.5px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .step-how ul li:last-child { border-bottom: none; }
-    .step-how ul li::before {
-      content: '→';
-      color: #185FA5;
-      font-weight: 700;
-      flex-shrink: 0;
-    }
-    .tip {
-      background: #E1F5EE;
-      border-left: 3px solid #1D9E75;
-      border-radius: 0 10px 10px 0;
-      padding: 10px 14px;
-      margin-top: 10px;
-      font-size: 13px;
-      color: #0F6E56;
-    }
-    .section-guide-title {
-      font-size: 13px;
-      font-weight: 600;
-      color: #a0a0a0;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin: 1.5rem 0 0.75rem;
-    }
-    .back-btn {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: #185FA5;
-      font-size: 14px;
-      margin-bottom: 1rem;
-      cursor: pointer;
-      text-decoration: none;
-    }
+    body { font-family: 'Inter', sans-serif; background-color: #f9f9f7; }
+    .font-headline { font-family: 'Manrope', sans-serif; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
+
+    /* Phone mockup */
+    .phone { background:#fff; border-radius:20px; border:2px solid #e8e8e6; overflow:hidden; box-shadow:0 8px 24px rgba(0,46,89,0.08); }
+    .phone-bar { background:#f4f4f2; padding:8px 12px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #e8e8e6; }
+    .phone-logo { font-size:13px; font-weight:800; color:#1a1c1b; letter-spacing:-0.5px; }
+    .phone-logo span { color:#1960a6; }
+    .phone-av { width:22px; height:22px; border-radius:50%; background:#0c447c; display:flex; align-items:center; justify-content:center; font-size:8px; font-weight:700; color:#fff; }
+
+    /* Screen elements */
+    .hero-blue { background:#0c447c; border-radius:14px; padding:14px; margin:10px; color:#fff; }
+    .hero-green { background:#003524; border-radius:14px; padding:14px; margin:10px; color:#fff; }
+    .hero-secondary { background:#1960a6; border-radius:14px; padding:14px; margin:10px; color:#fff; }
+    .hero-label { font-size:9px; opacity:.7; text-transform:uppercase; letter-spacing:.5px; font-weight:700; }
+    .hero-val { font-size:22px; font-weight:800; letter-spacing:-1px; }
+    .hero-sub { font-size:9px; opacity:.7; margin-top:2px; }
+    .hero-stats { display:flex; gap:16px; margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,.15); }
+    .hs-lbl { font-size:8px; opacity:.6; text-transform:uppercase; }
+    .hs-val { font-size:12px; font-weight:700; margin-top:2px; }
+
+    .s-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:10px; }
+    .s-card { background:#fff; border-radius:10px; padding:10px; border:1px solid #e8e8e6; }
+    .s-card-lbl { font-size:9px; color:#737781; text-transform:uppercase; letter-spacing:.3px; margin-bottom:6px; }
+    .s-card-icon { width:28px; height:28px; border-radius:8px; display:flex; align-items:center; justify-content:center; margin-bottom:6px; }
+    .s-card-val { font-size:16px; font-weight:800; }
+    .s-card-sub { font-size:9px; color:#737781; margin-top:2px; }
+
+    .s-btn { display:flex; align-items:center; justify-content:center; gap:6px; padding:11px; border-radius:12px; font-size:12px; font-weight:700; cursor:pointer; margin:10px; }
+    .s-btn-blue { background:#002e59; color:#fff; }
+    .s-btn-green { background:#003524; color:#fff; }
+
+    .s-input { width:100%; padding:10px 12px; border-radius:10px; border:1px solid #e8e8e6; font-size:11px; background:#f4f4f2; color:#1a1c1b; box-sizing:border-box; }
+    .s-field { margin:0 10px 8px; }
+    .s-label { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; color:#737781; margin-bottom:4px; display:block; }
+
+    .s-modes { display:flex; gap:4px; margin:0 10px 8px; }
+    .s-mode { flex:1; padding:7px 4px; border-radius:8px; font-size:9px; font-weight:700; text-align:center; border:1px solid #e8e8e6; color:#737781; }
+    .s-mode.active { background:#002e59; color:#fff; border-color:#002e59; }
+
+    .debt-card { background:#fff; border-radius:10px; margin:0 10px 6px; overflow:hidden; border:1px solid #e8e8e6; }
+    .debt-card.retard { border-left:3px solid #ba1a1a; }
+    .dc-row { display:flex; justify-content:space-between; align-items:center; padding:10px; }
+    .dc-av { width:28px; height:28px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; flex-shrink:0; }
+    .dc-name { font-size:11px; font-weight:700; }
+    .dc-sub { font-size:9px; color:#737781; }
+    .dc-amt { font-size:11px; font-weight:800; color:#ba1a1a; }
+    .dc-actions { display:flex; gap:4px; padding:6px 10px; border-top:1px solid #e8e8e6; }
+    .dc-btn { flex:1; padding:5px; border-radius:6px; font-size:9px; font-weight:700; text-align:center; }
+    .dc-btn.green { background:#68dbae20; color:#003524; }
+    .dc-btn.gray { background:#f4f4f2; color:#737781; }
+    .dc-btn.red { background:#ffdad640; color:#ba1a1a; }
+
+    .stock-card { background:#fff; border-radius:10px; margin:0 10px 6px; overflow:hidden; border:1px solid #e8e8e6; }
+    .sc-top { display:flex; justify-content:space-between; align-items:center; padding:10px; }
+    .sc-av { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; }
+    .sc-badge { font-size:8px; font-weight:800; text-transform:uppercase; padding:2px 6px; border-radius:20px; }
+    .sc-bar-wrap { padding:0 10px 8px; }
+    .sc-bar { height:5px; background:#e8e8e6; border-radius:3px; overflow:hidden; margin:4px 0; }
+    .sc-bar-fill { height:100%; border-radius:3px; }
+    .sc-footer { display:flex; justify-content:space-between; font-size:9px; color:#737781; }
+    .sc-price { font-size:10px; font-weight:700; color:#0c447c; margin:0 10px 4px; }
+    .sc-actions { display:flex; gap:4px; padding:6px 10px; border-top:1px solid #e8e8e6; }
+
+    .bottom-nav { display:flex; justify-content:space-around; padding:8px 0; border-top:1px solid #e8e8e6; background:#fff; }
+    .bn-it { display:flex; flex-direction:column; align-items:center; gap:2px; font-size:8px; font-weight:700; text-transform:uppercase; color:#737781; padding:2px 8px; }
+    .bn-it.active { color:#0c447c; background:#f4f4f2; border-radius:8px; }
+
+    .login-tabs { display:flex; background:#f4f4f2; border-radius:10px; padding:3px; margin:10px; }
+    .l-tab { flex:1; text-align:center; padding:7px; font-size:10px; border-radius:8px; font-weight:600; color:#737781; }
+    .l-tab.active { background:#fff; color:#1a1c1b; box-shadow:0 1px 3px rgba(0,0,0,.08); }
+
+    .tip-box { background:#e1f5ee; border-left:3px solid #1D9E75; padding:10px 12px; border-radius:0 8px 8px 0; font-size:12px; color:#003524; line-height:1.6; margin:0.75rem 0; }
+    .warn-box { background:#faeeda; border-left:3px solid #ef9f27; padding:10px 12px; border-radius:0 8px 8px 0; font-size:12px; color:#633806; line-height:1.6; margin:0.75rem 0; }
+    .danger-box { background:#faece7; border-left:3px solid #D85A30; padding:10px 12px; border-radius:0 8px 8px 0; font-size:12px; color:#993C1D; line-height:1.6; margin:0.75rem 0; }
   </style>
 </head>
-<body>
-  <nav class="navbar">
-    <div class="nav-logo">BANK<span>VI</span></div>
-    <div class="nav-date" id="nav-date"></div>
-    <div class="nav-avatar" id="nav-avatar">?</div>
-  </nav>
+<body class="text-on-surface">
 
-  <main class="main-content">
+  <!-- SIDEBAR DESKTOP -->
+  <div class="hidden lg:flex">
+    <aside class="w-[220px] h-screen sticky top-0 bg-surface-container-low flex-col py-8 px-4 z-50 flex">
+      <div class="mb-10 px-2">
+        <h1 class="text-2xl font-black tracking-tight font-headline">BANK<span class="text-secondary">VI</span></h1>
+        <p class="text-[0.6875rem] font-bold uppercase tracking-widest text-outline mt-1">Management</p>
+      </div>
+      <nav class="flex-1 space-y-1">
+        <a href="index.html" class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-lg transition-colors"><span class="material-symbols-outlined">dashboard</span><span class="text-sm">Accueil</span></a>
+        <a href="dettes.html" class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-lg transition-colors"><span class="material-symbols-outlined">payments</span><span class="text-sm">Dettes</span></a>
+        <a href="ventes.html" class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-lg transition-colors"><span class="material-symbols-outlined">receipt_long</span><span class="text-sm">Ventes</span></a>
+        <a href="stocks.html" class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-lg transition-colors"><span class="material-symbols-outlined">inventory_2</span><span class="text-sm">Stocks</span></a>
+        <a href="profil.html" class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-lg transition-colors"><span class="material-symbols-outlined">person</span><span class="text-sm">Profil</span></a>
+        <a href="guide.html" class="flex items-center gap-3 px-3 py-2.5 text-primary-container font-bold bg-surface-container-lowest rounded-lg shadow-sm"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">menu_book</span><span class="text-sm">Guide</span></a>
+      </nav>
+    </aside>
+  </div>
 
-    <a href="profil.html" class="back-btn">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <path d="M10 4l-4 4 4 4" stroke="#185FA5" stroke-width="1.5" stroke-linecap="round"/>
-      </svg>
-      Retour au profil
+  <!-- TOPBAR MOBILE -->
+  <header class="lg:hidden w-full h-14 sticky top-0 z-40 bg-surface flex justify-between items-center px-5 border-b border-outline-variant/20">
+    <a href="index.html" class="text-xl font-black tracking-tight font-headline">BANK<span class="text-secondary">VI</span></a>
+    <a href="index.html" class="flex items-center gap-1 text-sm font-semibold text-secondary">
+      <span class="material-symbols-outlined text-lg">arrow_back</span> Retour
     </a>
+  </header>
 
-    <div class="guide-hero">
-      <h1>Guide BANKVI</h1>
-      <p>Tout ce que tu dois savoir pour gérer ton commerce facilement</p>
-    </div>
+  <!-- MAIN CONTENT -->
+  <div class="lg:ml-[220px]">
+  <main class="max-w-3xl mx-auto px-4 lg:px-8 py-6 lg:py-10 pb-24 space-y-12">
 
-    <p class="section-guide-title">Démarrage</p>
-
-    <div class="guide-step">
-      <div class="step-header">
-        <div class="step-number blue">1</div>
-        <div class="step-title">Créer ton compte</div>
+    <!-- ===== COVER ===== -->
+    <section class="bg-primary-container rounded-3xl p-8 text-white text-center relative overflow-hidden">
+      <div class="absolute -top-16 -right-16 w-48 h-48 bg-secondary/20 rounded-full blur-3xl"></div>
+      <div class="absolute -bottom-12 -left-12 w-40 h-40 bg-tertiary-fixed-dim/10 rounded-full blur-3xl"></div>
+      <div class="relative z-10">
+        <h1 class="font-headline text-3xl lg:text-4xl font-extrabold tracking-tight mb-3">BANK<span class="text-tertiary-fixed-dim">VI</span></h1>
+        <p class="text-on-primary-container opacity-80 text-base mb-6">Guide d'utilisation complet</p>
+        <div class="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-2 text-sm font-semibold">
+          <span class="material-symbols-outlined text-base">auto_stories</span>
+          Gère ton commerce. Protège ton argent.
+        </div>
       </div>
-      <p class="step-desc">La première chose à faire — crée ton compte personnel. Chaque commerçant a son propre espace privé. Personne d'autre ne voit tes données.</p>
-      <div class="step-how">
-        <p>Comment faire</p>
-        <ul>
-          <li>Va sur bankvi.onrender.com</li>
-          <li>Clique sur "Inscription"</li>
-          <li>Entre ton nom, ta boutique, ton numéro et un mot de passe</li>
-          <li>Clique "Créer mon compte"</li>
-          <li>Connecte-toi avec ton numéro et mot de passe</li>
-        </ul>
-      </div>
-      <div class="tip">Retiens bien ton mot de passe — il n'y a pas encore de récupération par SMS.</div>
-    </div>
+    </section>
 
-    <p class="section-guide-title">Gérer tes ventes</p>
+    <!-- ===== TABLE DES MATIÈRES ===== -->
+    <section class="grid grid-cols-2 lg:grid-cols-3 gap-3">
+      <a href="#connexion" class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/10 hover:bg-surface-container transition-colors flex flex-col gap-2">
+        <div class="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center"><span class="material-symbols-outlined text-primary text-lg">login</span></div>
+        <p class="text-sm font-bold">Connexion</p>
+        <p class="text-xs text-on-surface-variant">Créer un compte et se connecter</p>
+      </a>
+      <a href="#dashboard" class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/10 hover:bg-surface-container transition-colors flex flex-col gap-2">
+        <div class="w-9 h-9 rounded-xl bg-primary-container/20 flex items-center justify-center"><span class="material-symbols-outlined text-primary-container text-lg">dashboard</span></div>
+        <p class="text-sm font-bold">Tableau de bord</p>
+        <p class="text-xs text-on-surface-variant">Vue globale du commerce</p>
+      </a>
+      <a href="#ventes" class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/10 hover:bg-surface-container transition-colors flex flex-col gap-2">
+        <div class="w-9 h-9 rounded-xl bg-[#003524]/10 flex items-center justify-center"><span class="material-symbols-outlined text-[#003524] text-lg">receipt_long</span></div>
+        <p class="text-sm font-bold">Ventes</p>
+        <p class="text-xs text-on-surface-variant">Enregistrer chaque vente</p>
+      </a>
+      <a href="#dettes" class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/10 hover:bg-surface-container transition-colors flex flex-col gap-2">
+        <div class="w-9 h-9 rounded-xl bg-error-container/50 flex items-center justify-center"><span class="material-symbols-outlined text-error text-lg">payments</span></div>
+        <p class="text-sm font-bold">Dettes</p>
+        <p class="text-xs text-on-surface-variant">Gérer les créances clients</p>
+      </a>
+      <a href="#stocks" class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/10 hover:bg-surface-container transition-colors flex flex-col gap-2">
+        <div class="w-9 h-9 rounded-xl bg-amber-100 flex items-center justify-center"><span class="material-symbols-outlined text-amber-700 text-lg">inventory_2</span></div>
+        <p class="text-sm font-bold">Stocks</p>
+        <p class="text-xs text-on-surface-variant">Suivre les niveaux de stock</p>
+      </a>
+      <a href="#conseils" class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/10 hover:bg-surface-container transition-colors flex flex-col gap-2">
+        <div class="w-9 h-9 rounded-xl bg-tertiary-fixed-dim/30 flex items-center justify-center"><span class="material-symbols-outlined text-tertiary text-lg">tips_and_updates</span></div>
+        <p class="text-sm font-bold">Conseils</p>
+        <p class="text-xs text-on-surface-variant">Bien utiliser BANKVI</p>
+      </a>
+    </section>
 
-    <div class="guide-step">
-      <div class="step-header">
-        <div class="step-number green">2</div>
-        <div class="step-title">Enregistrer une vente</div>
+    <!-- ===== PARTIE 1 : CONNEXION ===== -->
+    <section id="connexion" class="scroll-mt-20">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold text-sm">1</div>
+        <h2 class="font-headline text-2xl font-extrabold text-on-surface">Connexion & Inscription</h2>
       </div>
-      <p class="step-desc">À chaque fois que tu vends quelque chose, enregistre-le dans BANKVI. Ça te donne ton chiffre d'affaires exact en temps réel.</p>
-      <div class="step-how">
-        <p>Comment faire</p>
-        <ul>
-          <li>Va dans l'onglet "Ventes"</li>
-          <li>Clique le bouton vert "+ Enregistrer une vente"</li>
-          <li>Entre le nom du produit, la quantité et le prix total</li>
-          <li>Choisis le mode de paiement : Cash, À crédit ou Partiel</li>
-          <li>Si c'est à crédit, entre le nom du client</li>
-          <li>Clique "Enregistrer"</li>
-        </ul>
-      </div>
-      <div class="tip">Si tu choisis "À crédit" et que tu entres le nom du client, la dette est créée automatiquement dans l'onglet Dettes.</div>
-    </div>
 
-    <p class="section-guide-title">Gérer les dettes</p>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+        <div class="space-y-4">
+          <div class="flex gap-3 items-start">
+            <div class="w-7 h-7 rounded-full bg-primary-container/20 text-primary-container flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">1</div>
+            <div>
+              <p class="font-semibold text-sm">Ouvre BANKVI dans ton navigateur</p>
+              <p class="text-sm text-on-surface-variant mt-1">Va sur <strong class="text-primary">bankvi.onrender.com</strong>. La page de connexion s'affiche automatiquement.</p>
+            </div>
+          </div>
+          <div class="flex gap-3 items-start">
+            <div class="w-7 h-7 rounded-full bg-primary-container/20 text-primary-container flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">2</div>
+            <div>
+              <p class="font-semibold text-sm">Première fois ? Clique sur "S'inscrire"</p>
+              <p class="text-sm text-on-surface-variant mt-1">Remplis ton nom complet, le nom de ta boutique, ton numéro de téléphone et un mot de passe. Clique <strong>Créer mon compte</strong>.</p>
+            </div>
+          </div>
+          <div class="flex gap-3 items-start">
+            <div class="w-7 h-7 rounded-full bg-primary-container/20 text-primary-container flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">3</div>
+            <div>
+              <p class="font-semibold text-sm">Déjà inscrit ? Connecte-toi</p>
+              <p class="text-sm text-on-surface-variant mt-1">Entre ton numéro de téléphone et ton mot de passe. Clique <strong>Se connecter</strong>.</p>
+            </div>
+          </div>
+          <div class="tip-box">💡 Retiens bien ton numéro et ton mot de passe — c'est ce qui protège toutes tes données.</div>
+        </div>
 
-    <div class="guide-step">
-      <div class="step-header">
-        <div class="step-number red">3</div>
-        <div class="step-title">Suivre les crédits clients</div>
+        <!-- Illustration connexion -->
+        <div class="phone max-w-[220px] mx-auto">
+          <div class="phone-bar">
+            <div class="phone-logo">BANK<span>VI</span></div>
+            <span style="font-size:9px;color:#737781;">bankvi.onrender.com</span>
+          </div>
+          <div style="padding:16px 10px;">
+            <div style="text-align:center;margin-bottom:16px;">
+              <div style="font-size:20px;font-weight:800;letter-spacing:-1px;color:#1a1c1b;">BANK<span style="color:#1960a6;">VI</span></div>
+              <div style="font-size:9px;color:#737781;margin-top:2px;">Gère ton commerce. Protège ton argent.</div>
+            </div>
+            <div class="login-tabs">
+              <div class="l-tab active">Se connecter</div>
+              <div class="l-tab">S'inscrire</div>
+            </div>
+            <div class="s-field">
+              <span class="s-label">Numéro de téléphone</span>
+              <div style="position:relative;">
+                <input class="s-input" value="Ex: 90000000" readonly style="padding-left:30px;">
+                <span style="position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:12px;color:#737781;">📱</span>
+              </div>
+            </div>
+            <div class="s-field">
+              <span class="s-label">Mot de passe</span>
+              <div style="position:relative;">
+                <input class="s-input" type="password" value="••••••••" readonly style="padding-left:30px;">
+                <span style="position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:12px;color:#737781;">🔒</span>
+              </div>
+            </div>
+            <div class="s-btn s-btn-blue" style="margin-top:12px;">
+              Se connecter →
+            </div>
+            <div style="text-align:center;margin-top:8px;font-size:9px;color:#737781;text-transform:uppercase;letter-spacing:.5px;">— Sécurité Bancaire —</div>
+          </div>
+        </div>
       </div>
-      <p class="step-desc">Plus de carnet perdu. Toutes les dettes de tes clients sont ici, avec la date et le montant exact.</p>
-      <div class="step-how">
-        <p>Comment faire</p>
-        <ul>
-          <li>Va dans l'onglet "Dettes"</li>
-          <li>Clique "+ Ajouter une dette" pour enregistrer un crédit</li>
-          <li>Entre le nom du client, le produit et le montant</li>
-          <li>Quand le client rembourse, clique "Marquer payé"</li>
-          <li>Tu peux aussi modifier ou supprimer une dette</li>
-        </ul>
-      </div>
-      <div class="tip">Tu vois directement le total de tout ce qu'on te doit en haut de la page.</div>
-    </div>
+    </section>
 
-    <p class="section-guide-title">Gérer ton stock</p>
+    <div class="border-t border-outline-variant/20"></div>
 
-    <div class="guide-step">
-      <div class="step-header">
-        <div class="step-number amber">4</div>
-        <div class="step-title">Suivre tes produits</div>
+    <!-- ===== PARTIE 2 : TABLEAU DE BORD ===== -->
+    <section id="dashboard" class="scroll-mt-20">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-white font-bold text-sm">2</div>
+        <h2 class="font-headline text-2xl font-extrabold text-on-surface">Tableau de bord</h2>
       </div>
-      <p class="step-desc">BANKVI t'alerte quand un produit est en rupture ou en stock bas. Tu ne seras plus jamais pris au dépourvu.</p>
-      <div class="step-how">
-        <p>Comment faire</p>
-        <ul>
-          <li>Va dans l'onglet "Stocks"</li>
-          <li>Clique "+ Ajouter un produit"</li>
-          <li>Entre le nom, la catégorie, la quantité et le prix</li>
-          <li>Définit un seuil d'alerte (ex: 5 = alerte quand il reste 5)</li>
-          <li>Les produits en rouge = rupture, en orange = stock bas</li>
-          <li>Tu peux modifier ou supprimer un produit à tout moment</li>
-        </ul>
-      </div>
-      <div class="tip">Le tableau de bord affiche automatiquement le nombre de produits en stock critique.</div>
-    </div>
 
-    <p class="section-guide-title">Tableau de bord</p>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+        <div class="space-y-4">
+          <p class="text-sm text-on-surface-variant leading-relaxed">Dès ta connexion, tu arrives sur le tableau de bord. C'est ta vue d'ensemble du commerce. Tu vois en un coup d'œil :</p>
+          <div class="space-y-3">
+            <div class="flex gap-3 items-start">
+              <div class="w-8 h-8 rounded-xl bg-primary-container flex items-center justify-center flex-shrink-0">
+                <span class="material-symbols-outlined text-white text-sm">payments</span>
+              </div>
+              <div>
+                <p class="font-semibold text-sm">Chiffre d'affaires du jour</p>
+                <p class="text-xs text-on-surface-variant">La grande carte bleue affiche tes ventes totales du jour.</p>
+              </div>
+            </div>
+            <div class="flex gap-3 items-start">
+              <div class="w-8 h-8 rounded-xl bg-error-container flex items-center justify-center flex-shrink-0">
+                <span class="material-symbols-outlined text-on-error-container text-sm">person_alert</span>
+              </div>
+              <div>
+                <p class="font-semibold text-sm">Dettes clients</p>
+                <p class="text-xs text-on-surface-variant">Total de ce que tes clients te doivent encore.</p>
+              </div>
+            </div>
+            <div class="flex gap-3 items-start">
+              <div class="w-8 h-8 rounded-xl bg-amber-100 flex items-center justify-center flex-shrink-0">
+                <span class="material-symbols-outlined text-amber-700 text-sm">warning</span>
+              </div>
+              <div>
+                <p class="font-semibold text-sm">Stock critique</p>
+                <p class="text-xs text-on-surface-variant">Nombre de produits en dessous du seuil d'alerte.</p>
+              </div>
+            </div>
+            <div class="flex gap-3 items-start">
+              <div class="w-8 h-8 rounded-xl bg-tertiary-fixed-dim/30 flex items-center justify-center flex-shrink-0">
+                <span class="material-symbols-outlined text-tertiary text-sm">download</span>
+              </div>
+              <div>
+                <p class="font-semibold text-sm">Télécharger le rapport du jour</p>
+                <p class="text-xs text-on-surface-variant">Un fichier PDF avec toutes tes ventes, dettes et stocks critiques du jour.</p>
+              </div>
+            </div>
+          </div>
+          <div class="tip-box">💡 Consulte le tableau de bord chaque matin pour démarrer ta journée avec une vue claire de ton commerce.</div>
+        </div>
 
-    <div class="guide-step">
-      <div class="step-header">
-        <div class="step-number blue">5</div>
-        <div class="step-title">Lire ton résumé du jour</div>
+        <!-- Illustration dashboard -->
+        <div class="phone max-w-[220px] mx-auto">
+          <div class="phone-bar">
+            <div class="phone-logo">BANK<span>VI</span></div>
+            <div style="font-size:9px;color:#737781;">mardi 1 avr. 2026</div>
+            <div class="phone-av">KM</div>
+          </div>
+          <div class="hero-blue">
+            <div class="hero-label">Chiffre d'affaires du jour</div>
+            <div class="hero-val">127 500 F</div>
+            <div class="hero-sub">8 ventes enregistrées</div>
+            <div class="hero-stats">
+              <div><div class="hs-lbl">Ventes</div><div class="hs-val">8</div></div>
+              <div><div class="hs-lbl">Encaissé</div><div class="hs-val" style="color:#68dbae;">89k F</div></div>
+              <div><div class="hs-lbl">En attente</div><div class="hs-val" style="color:#7ab3ff;">38k F</div></div>
+            </div>
+          </div>
+          <div class="s-grid">
+            <div class="s-card">
+              <div class="s-card-icon" style="background:#ffdad6;"><span style="font-size:14px;">⚠️</span></div>
+              <div class="s-card-lbl">Dettes clients</div>
+              <div class="s-card-val" style="color:#ba1a1a;">89 000 F</div>
+              <div class="s-card-sub">5 clients</div>
+            </div>
+            <div class="s-card">
+              <div class="s-card-icon" style="background:#fef3c7;"><span style="font-size:14px;">📦</span></div>
+              <div class="s-card-lbl">Stock critique</div>
+              <div class="s-card-val" style="color:#d97706;">3</div>
+              <div class="s-card-sub">produits urgents</div>
+            </div>
+            <div class="s-card">
+              <div class="s-card-icon" style="background:#dcfce7;"><span style="font-size:14px;">📈</span></div>
+              <div class="s-card-lbl">Ventes du jour</div>
+              <div class="s-card-val" style="color:#003524;">8</div>
+              <div class="s-card-sub">enregistrées</div>
+            </div>
+            <div class="s-card">
+              <div class="s-card-icon" style="background:#dbeafe;"><span style="font-size:14px;">🏪</span></div>
+              <div class="s-card-lbl">Mon commerce</div>
+              <div class="s-card-val" style="color:#0c447c;font-size:11px;">Boutiq...</div>
+              <div class="s-card-sub">actif</div>
+            </div>
+          </div>
+          <div style="margin:0 10px 8px;padding:9px 12px;background:#fff;border-radius:10px;border:1px solid #e8e8e6;display:flex;align-items:center;justify-content:center;gap:6px;font-size:10px;font-weight:700;color:#002e59;">
+            <span>⬇️</span> Télécharger le rapport du jour
+          </div>
+          <div class="bottom-nav">
+            <div class="bn-it active">🏠<br>Accueil</div>
+            <div class="bn-it">💳<br>Dettes</div>
+            <div class="bn-it">🏷️<br>Ventes</div>
+            <div class="bn-it">📦<br>Stocks</div>
+            <div class="bn-it">👤<br>Profil</div>
+          </div>
+        </div>
       </div>
-      <p class="step-desc">La page d'accueil te donne un résumé complet de ta journée en un coup d'œil.</p>
-      <div class="step-how">
-        <p>Ce que tu vois</p>
-        <ul>
-          <li>Chiffre d'affaires du jour — total de tes ventes</li>
-          <li>Dettes clients — ce qu'on te doit en ce moment</li>
-          <li>Stock critique — produits à commander</li>
-          <li>Ventes du jour — nombre de ventes enregistrées</li>
-          <li>Dettes récentes — les 3 dernières dettes en cours</li>
-        </ul>
-      </div>
-    </div>
+    </section>
 
-    <p class="section-guide-title">Conseils importants</p>
+    <div class="border-t border-outline-variant/20"></div>
 
-    <div class="guide-step">
-      <div class="step-header">
-        <div class="step-number green">6</div>
-        <div class="step-title">Bonnes pratiques</div>
+    <!-- ===== PARTIE 3 : VENTES ===== -->
+    <section id="ventes" class="scroll-mt-20">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-10 h-10 rounded-full bg-[#003524] flex items-center justify-center text-white font-bold text-sm">3</div>
+        <h2 class="font-headline text-2xl font-extrabold text-on-surface">Enregistrer une vente</h2>
       </div>
-      <div class="step-how">
-        <p>Pour bien utiliser BANKVI</p>
-        <ul>
-          <li>Enregistre chaque vente immédiatement après la transaction</li>
-          <li>Vérifie les dettes en cours chaque matin</li>
-          <li>Mets à jour ton stock après chaque réapprovisionnement</li>
-          <li>Consulte le tableau de bord chaque soir avant de fermer</li>
-          <li>Ne partage jamais ton mot de passe avec quelqu'un</li>
-        </ul>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+        <div class="space-y-4">
+          <div class="flex gap-3 items-start">
+            <div class="w-7 h-7 rounded-full bg-[#003524]/10 text-[#003524] flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">1</div>
+            <div>
+              <p class="font-semibold text-sm">Va sur l'onglet Ventes</p>
+              <p class="text-sm text-on-surface-variant mt-1">Clique sur <strong>Ventes</strong> dans le menu du bas (mobile) ou à gauche (desktop).</p>
+            </div>
+          </div>
+          <div class="flex gap-3 items-start">
+            <div class="w-7 h-7 rounded-full bg-[#003524]/10 text-[#003524] flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">2</div>
+            <div>
+              <p class="font-semibold text-sm">Clique sur "Enregistrer une vente"</p>
+              <p class="text-sm text-on-surface-variant mt-1">Le formulaire s'ouvre. Remplis le produit, la quantité, le prix total.</p>
+            </div>
+          </div>
+          <div class="flex gap-3 items-start">
+            <div class="w-7 h-7 rounded-full bg-[#003524]/10 text-[#003524] flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">3</div>
+            <div>
+              <p class="font-semibold text-sm">Choisis le mode de paiement</p>
+              <p class="text-sm text-on-surface-variant mt-1"><strong>Cash</strong> — payé immédiatement. <strong>À crédit</strong> — le client paiera plus tard (obligatoire de mettre le nom du client). <strong>Partiel</strong> — payé en partie.</p>
+            </div>
+          </div>
+          <div class="flex gap-3 items-start">
+            <div class="w-7 h-7 rounded-full bg-[#003524]/10 text-[#003524] flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">4</div>
+            <div>
+              <p class="font-semibold text-sm">Clique "Enregistrer"</p>
+              <p class="text-sm text-on-surface-variant mt-1">La vente apparaît dans la liste et le stock du produit diminue automatiquement.</p>
+            </div>
+          </div>
+          <div class="tip-box">💡 Si tu choisis <strong>À crédit</strong> avec le nom du client, la dette est créée automatiquement dans l'onglet Dettes.</div>
+        </div>
+
+        <!-- Illustration ventes -->
+        <div class="phone max-w-[220px] mx-auto">
+          <div class="phone-bar">
+            <div class="phone-logo">BANK<span>VI</span></div>
+            <div class="phone-av">KM</div>
+          </div>
+          <div class="hero-green">
+            <div class="hero-label">Total ventes aujourd'hui</div>
+            <div class="hero-val">458 500 F</div>
+            <div class="hero-stats">
+              <div><div class="hs-lbl">Nombre</div><div class="hs-val">24</div></div>
+              <div><div class="hs-lbl">Espèces</div><div class="hs-val" style="color:#68dbae;">320k</div></div>
+              <div><div class="hs-lbl">Crédit</div><div class="hs-val" style="color:#7ab3ff;">138k</div></div>
+            </div>
+          </div>
+          <div class="s-btn s-btn-green">+ Enregistrer une vente</div>
+          <!-- Modal vente -->
+          <div style="margin:0 10px;background:#f4f4f2;border-radius:12px;padding:10px;">
+            <div style="font-size:11px;font-weight:700;margin-bottom:8px;">Nouvelle vente</div>
+            <div class="s-field" style="margin:0 0 6px;">
+              <span class="s-label">Produit vendu</span>
+              <input class="s-input" value="Sac de riz 50kg" readonly>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px;">
+              <div><span class="s-label">Quantité</span><input class="s-input" value="2" readonly></div>
+              <div><span class="s-label">Prix total</span><input class="s-input" value="22 000" readonly></div>
+            </div>
+            <span class="s-label">Mode de paiement</span>
+            <div class="s-modes">
+              <div class="s-mode active">Cash</div>
+              <div class="s-mode">À crédit</div>
+              <div class="s-mode">Partiel</div>
+            </div>
+            <div class="s-field" style="margin:0 0 8px;">
+              <span class="s-label">Client (optionnel)</span>
+              <input class="s-input" placeholder="Ex: Kofi Mensah" readonly>
+            </div>
+            <div style="display:flex;gap:6px;">
+              <div style="flex:1;padding:8px;border-radius:8px;border:1px solid #e8e8e6;text-align:center;font-size:10px;font-weight:600;color:#737781;">Annuler</div>
+              <div style="flex:2;padding:8px;border-radius:8px;background:#003524;text-align:center;font-size:10px;font-weight:700;color:#fff;">Enregistrer</div>
+            </div>
+          </div>
+          <div class="bottom-nav" style="margin-top:8px;">
+            <div class="bn-it">🏠<br>Accueil</div>
+            <div class="bn-it">💳<br>Dettes</div>
+            <div class="bn-it active">🏷️<br>Ventes</div>
+            <div class="bn-it">📦<br>Stocks</div>
+            <div class="bn-it">👤<br>Profil</div>
+          </div>
+        </div>
       </div>
-      <div class="tip">BANKVI fonctionne mieux quand tu l'utilises tous les jours — c'est comme un carnet numérique toujours à jour.</div>
-    </div>
+    </section>
+
+    <div class="border-t border-outline-variant/20"></div>
+
+    <!-- ===== PARTIE 4 : DETTES ===== -->
+    <section id="dettes" class="scroll-mt-20">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-10 h-10 rounded-full bg-error flex items-center justify-center text-white font-bold text-sm">4</div>
+        <h2 class="font-headline text-2xl font-extrabold text-on-surface">Gérer les dettes</h2>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+        <div class="space-y-4">
+          <div class="flex gap-3 items-start">
+            <div class="w-7 h-7 rounded-full bg-error-container text-on-error-container flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">1</div>
+            <div>
+              <p class="font-semibold text-sm">Ajouter une dette manuellement</p>
+              <p class="text-sm text-on-surface-variant mt-1">Va sur <strong>Dettes</strong> → clique <strong>Ajouter une dette</strong>. Remplis le nom du client, le produit, le montant et la date de remboursement prévue.</p>
+            </div>
+          </div>
+          <div class="flex gap-3 items-start">
+            <div class="w-7 h-7 rounded-full bg-error-container text-on-error-container flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">2</div>
+            <div>
+              <p class="font-semibold text-sm">Marquer une dette comme payée</p>
+              <p class="text-sm text-on-surface-variant mt-1">Quand un client rembourse, trouve sa dette et clique <strong>Marquer payé</strong>. La dette passe dans les payées mais reste dans l'historique.</p>
+            </div>
+          </div>
+          <div class="flex gap-3 items-start">
+            <div class="w-7 h-7 rounded-full bg-error-container text-on-error-container flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">3</div>
+            <div>
+              <p class="font-semibold text-sm">Modifier une dette</p>
+              <p class="text-sm text-on-surface-variant mt-1">Tu t'es trompé dans la saisie ? Clique <strong>Modifier</strong> sur la dette concernée pour corriger.</p>
+            </div>
+          </div>
+          <div class="flex gap-3 items-start">
+            <div class="w-7 h-7 rounded-full bg-error-container text-on-error-container flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">4</div>
+            <div>
+              <p class="font-semibold text-sm">Rechercher un client</p>
+              <p class="text-sm text-on-surface-variant mt-1">La barre de recherche te permet de trouver rapidement un client ou un produit dans la liste.</p>
+            </div>
+          </div>
+          <div class="danger-box">⚠️ La suppression d'une dette est définitive. Utilise <strong>Supprimer</strong> uniquement pour les erreurs de saisie — pas quand un client a payé.</div>
+          <div class="tip-box">💡 Les dettes créées automatiquement lors d'une vente à crédit apparaissent directement ici sans que tu aies besoin de les saisir manuellement.</div>
+        </div>
+
+        <!-- Illustration dettes -->
+        <div class="phone max-w-[220px] mx-auto">
+          <div class="phone-bar">
+            <div class="phone-logo">BANK<span>VI</span></div>
+            <div class="phone-av">KM</div>
+          </div>
+          <div class="hero-secondary">
+            <div class="hero-label">Total des créances</div>
+            <div class="hero-val">89 000 F</div>
+            <div class="hero-stats">
+              <div><div class="hs-lbl">Clients actifs</div><div class="hs-val">5</div></div>
+              <div><div class="hs-lbl">En retard</div><div class="hs-val" style="color:#ffdad6;">2</div></div>
+            </div>
+          </div>
+          <div class="s-btn s-btn-blue" style="margin-bottom:8px;">+ Ajouter une dette</div>
+          <div style="margin:0 10px 8px;position:relative;">
+            <input class="s-input" placeholder="🔍 Rechercher un client..." readonly style="padding-left:28px;">
+          </div>
+          <!-- Liste dettes -->
+          <div class="debt-card retard">
+            <div class="dc-row">
+              <div style="display:flex;align-items:center;gap:6px;">
+                <div class="dc-av" style="background:#ffdad6;color:#ba1a1a;">AK</div>
+                <div><div class="dc-name">Afi Koffi</div><div class="dc-sub">Tissu wax x3</div></div>
+              </div>
+              <div style="text-align:right;">
+                <div class="dc-amt">25 000 F</div>
+                <div style="font-size:8px;color:#ba1a1a;font-weight:700;">En retard</div>
+              </div>
+            </div>
+            <div class="dc-actions">
+              <div class="dc-btn green">Marquer payé</div>
+              <div class="dc-btn gray">Modifier</div>
+              <div class="dc-btn red">🗑</div>
+            </div>
+          </div>
+          <div class="debt-card">
+            <div class="dc-row">
+              <div style="display:flex;align-items:center;gap:6px;">
+                <div class="dc-av" style="background:#e8e8e6;color:#424750;">MD</div>
+                <div><div class="dc-name">Mawuli Dodzi</div><div class="dc-sub">Huile x5</div></div>
+              </div>
+              <div style="text-align:right;">
+                <div class="dc-amt">12 000 F</div>
+                <div style="font-size:8px;color:#737781;">01/04/2026</div>
+              </div>
+            </div>
+            <div class="dc-actions">
+              <div class="dc-btn green">Marquer payé</div>
+              <div class="dc-btn gray">Modifier</div>
+              <div class="dc-btn red">🗑</div>
+            </div>
+          </div>
+          <div class="bottom-nav" style="margin-top:8px;">
+            <div class="bn-it">🏠<br>Accueil</div>
+            <div class="bn-it active">💳<br>Dettes</div>
+            <div class="bn-it">🏷️<br>Ventes</div>
+            <div class="bn-it">📦<br>Stocks</div>
+            <div class="bn-it">👤<br>Profil</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="border-t border-outline-variant/20"></div>
+
+    <!-- ===== PARTIE 5 : STOCKS ===== -->
+    <section id="stocks" class="scroll-mt-20">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-10 h-10 rounded-full bg-amber-600 flex items-center justify-center text-white font-bold text-sm">5</div>
+        <h2 class="font-headline text-2xl font-extrabold text-on-surface">Gérer les stocks</h2>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+        <div class="space-y-4">
+          <div class="flex gap-3 items-start">
+            <div class="w-7 h-7 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">1</div>
+            <div>
+              <p class="font-semibold text-sm">Ajouter un produit</p>
+              <p class="text-sm text-on-surface-variant mt-1">Va sur <strong>Stocks</strong> → <strong>Ajouter un produit</strong>. Remplis le nom, la catégorie, la quantité, le seuil d'alerte et le prix unitaire.</p>
+            </div>
+          </div>
+          <div class="flex gap-3 items-start">
+            <div class="w-7 h-7 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">2</div>
+            <div>
+              <p class="font-semibold text-sm">Comprendre les couleurs</p>
+              <p class="text-sm text-on-surface-variant mt-1">🟢 <strong>OK</strong> — stock suffisant. 🟡 <strong>Stock bas</strong> — en dessous du seuil. 🔴 <strong>Rupture</strong> — plus de stock du tout.</p>
+            </div>
+          </div>
+          <div class="flex gap-3 items-start">
+            <div class="w-7 h-7 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">3</div>
+            <div>
+              <p class="font-semibold text-sm">Mettre à jour après livraison</p>
+              <p class="text-sm text-on-surface-variant mt-1">Quand tu reçois une livraison, clique <strong>Modifier</strong> sur le produit et mets à jour la quantité.</p>
+            </div>
+          </div>
+          <div class="flex gap-3 items-start">
+            <div class="w-7 h-7 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">4</div>
+            <div>
+              <p class="font-semibold text-sm">Stock diminue automatiquement</p>
+              <p class="text-sm text-on-surface-variant mt-1">Chaque vente enregistrée diminue automatiquement le stock du produit correspondant.</p>
+            </div>
+          </div>
+          <div class="tip-box">💡 Le seuil d'alerte c'est la quantité à partir de laquelle tu veux être alerté. Si tu commandes quand il te reste 5 sacs, mets le seuil à 5.</div>
+        </div>
+
+        <!-- Illustration stocks -->
+        <div class="phone max-w-[220px] mx-auto">
+          <div class="phone-bar">
+            <div class="phone-logo">BANK<span>VI</span></div>
+            <div class="phone-av">KM</div>
+          </div>
+          <div style="padding:12px 10px 0;">
+            <div style="font-size:9px;text-transform:uppercase;font-weight:700;color:#737781;letter-spacing:.5px;margin-bottom:4px;">Gestion d'inventaire</div>
+            <div style="font-size:18px;font-weight:800;color:#1a1c1b;font-family:'Manrope',sans-serif;margin-bottom:10px;">Mes Stocks</div>
+            <!-- Métriques -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px;">
+              <div style="grid-column:span 2;background:#fff;border-radius:10px;padding:10px;border:1px solid #e8e8e6;display:flex;justify-content:space-between;align-items:center;">
+                <div><div style="font-size:9px;font-weight:700;color:#737781;text-transform:uppercase;">Produits en stock</div><div style="font-size:22px;font-weight:900;color:#004e37;font-family:'Manrope',sans-serif;">24</div></div>
+                <div style="background:#68dbae30;padding:8px;border-radius:50%;"><span style="font-size:18px;">📦</span></div>
+              </div>
+              <div style="background:#fff;border-radius:10px;padding:10px;border:1px solid #e8e8e6;">
+                <div style="font-size:9px;font-weight:700;color:#737781;text-transform:uppercase;">Stock bas</div>
+                <div style="display:flex;align-items:center;gap:4px;"><span style="font-size:18px;font-weight:900;color:#d97706;">4</span><span>⚠️</span></div>
+              </div>
+              <div style="background:#fff;border-radius:10px;padding:10px;border:1px solid #e8e8e6;">
+                <div style="font-size:9px;font-weight:700;color:#737781;text-transform:uppercase;">Rupture</div>
+                <div style="display:flex;align-items:center;gap:4px;"><span style="font-size:18px;font-weight:900;color:#ba1a1a;">2</span><span>🔴</span></div>
+              </div>
+            </div>
+          </div>
+          <!-- Produits -->
+          <div style="font-size:9px;font-weight:700;color:#1a1c1b;padding:0 10px;margin-bottom:6px;">Derniers produits</div>
+          <div class="stock-card" style="border-left:3px solid #ba1a1a;">
+            <div class="sc-top">
+              <div style="display:flex;align-items:center;gap:6px;">
+                <div class="sc-av" style="background:#ffdad640;color:#ba1a1a;">HP</div>
+                <div><div style="font-size:10px;font-weight:700;">Huile de palme</div><div style="font-size:8px;color:#737781;">Alimentation</div></div>
+              </div>
+              <span class="sc-badge" style="background:#ffdad6;color:#ba1a1a;">Rupture</span>
+            </div>
+            <div class="sc-bar-wrap">
+              <div class="sc-footer"><span>0 bidons</span><span style="font-weight:700;color:#ba1a1a;">0%</span></div>
+              <div class="sc-bar"><div class="sc-bar-fill" style="background:#ba1a1a;width:0%"></div></div>
+              <div class="sc-footer"><span style="color:#737781;">Seuil: 5</span></div>
+            </div>
+            <div class="sc-price">5 500 F /bidon</div>
+            <div class="sc-actions">
+              <div style="flex:1;padding:5px;border-radius:6px;background:#f4f4f2;font-size:9px;font-weight:700;text-align:center;color:#424750;">Modifier</div>
+              <div style="padding:5px 8px;border-radius:6px;background:#ffdad640;font-size:9px;font-weight:700;color:#ba1a1a;">Supprimer</div>
+            </div>
+          </div>
+          <div class="stock-card" style="border-left:3px solid #d97706;">
+            <div class="sc-top">
+              <div style="display:flex;align-items:center;gap:6px;">
+                <div class="sc-av" style="background:#fef3c7;color:#d97706;">SC</div>
+                <div><div style="font-size:10px;font-weight:700;">Sucre cristal</div><div style="font-size:8px;color:#737781;">Alimentation</div></div>
+              </div>
+              <span class="sc-badge" style="background:#fef3c7;color:#d97706;">Stock bas</span>
+            </div>
+            <div class="sc-bar-wrap">
+              <div class="sc-footer"><span>4 sacs</span><span style="font-weight:700;color:#d97706;">20%</span></div>
+              <div class="sc-bar"><div class="sc-bar-fill" style="background:#d97706;width:20%"></div></div>
+              <div class="sc-footer"><span style="color:#737781;">Seuil: 8</span></div>
+            </div>
+            <div class="sc-price">8 500 F /sac</div>
+            <div class="sc-actions">
+              <div style="flex:1;padding:5px;border-radius:6px;background:#f4f4f2;font-size:9px;font-weight:700;text-align:center;color:#424750;">Modifier</div>
+              <div style="padding:5px 8px;border-radius:6px;background:#ffdad640;font-size:9px;font-weight:700;color:#ba1a1a;">Supprimer</div>
+            </div>
+          </div>
+          <div class="bottom-nav">
+            <div class="bn-it">🏠<br>Accueil</div>
+            <div class="bn-it">💳<br>Dettes</div>
+            <div class="bn-it">🏷️<br>Ventes</div>
+            <div class="bn-it active">📦<br>Stocks</div>
+            <div class="bn-it">👤<br>Profil</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="border-t border-outline-variant/20"></div>
+
+    <!-- ===== PARTIE 6 : CONSEILS ===== -->
+    <section id="conseils" class="scroll-mt-20">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-10 h-10 rounded-full bg-tertiary-fixed-dim flex items-center justify-center text-tertiary font-bold text-sm">✓</div>
+        <h2 class="font-headline text-2xl font-extrabold text-on-surface">Conseils pour bien utiliser BANKVI</h2>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/10 flex gap-4">
+          <div class="w-10 h-10 rounded-xl bg-primary-container/20 flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-primary-container text-xl">add_shopping_cart</span>
+          </div>
+          <div>
+            <p class="font-bold text-sm mb-1">Enregistre chaque vente immédiatement</p>
+            <p class="text-xs text-on-surface-variant leading-relaxed">Ne remets pas à plus tard. Chaque vente non enregistrée est une donnée perdue. Prends l'habitude de saisir dès que la transaction est faite.</p>
+          </div>
+        </div>
+        <div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/10 flex gap-4">
+          <div class="w-10 h-10 rounded-xl bg-tertiary-fixed-dim/30 flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-tertiary text-xl">dashboard</span>
+          </div>
+          <div>
+            <p class="font-bold text-sm mb-1">Consulte le tableau de bord chaque matin</p>
+            <p class="text-xs text-on-surface-variant leading-relaxed">Commence ta journée en vérifiant le dashboard. Tu verras immédiatement les dettes en retard et les stocks critiques.</p>
+          </div>
+        </div>
+        <div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/10 flex gap-4">
+          <div class="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-amber-700 text-xl">inventory_2</span>
+          </div>
+          <div>
+            <p class="font-bold text-sm mb-1">Mets à jour les stocks après chaque livraison</p>
+            <p class="text-xs text-on-surface-variant leading-relaxed">Quand tu reçois une livraison, va dans Stocks → Modifier le produit → mets la nouvelle quantité. Garde des données à jour.</p>
+          </div>
+        </div>
+        <div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/10 flex gap-4">
+          <div class="w-10 h-10 rounded-xl bg-error-container flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-on-error-container text-xl">payments</span>
+          </div>
+          <div>
+            <p class="font-bold text-sm mb-1">Marque les dettes payées immédiatement</p>
+            <p class="text-xs text-on-surface-variant leading-relaxed">Quand un client rembourse, marque sa dette comme payée de suite. Ne supprime jamais une dette remboursée — utilise toujours "Marquer payé".</p>
+          </div>
+        </div>
+        <div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/10 flex gap-4">
+          <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-primary text-xl">download</span>
+          </div>
+          <div>
+            <p class="font-bold text-sm mb-1">Télécharge ton rapport chaque soir</p>
+            <p class="text-xs text-on-surface-variant leading-relaxed">Le rapport PDF du jour résume toutes tes ventes, dettes et stocks critiques. Garde-le sur ton téléphone pour référence.</p>
+          </div>
+        </div>
+        <div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/10 flex gap-4">
+          <div class="w-10 h-10 rounded-xl bg-secondary-fixed/50 flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-secondary text-xl">lock</span>
+          </div>
+          <div>
+            <p class="font-bold text-sm mb-1">Garde ton mot de passe secret</p>
+            <p class="text-xs text-on-surface-variant leading-relaxed">Chaque commerçant a son propre compte. Tes données sont privées. Ne partage jamais ton mot de passe avec personne.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FINAL CTA ===== -->
+    <section class="bg-primary-container rounded-3xl p-8 text-white text-center relative overflow-hidden">
+      <div class="absolute -top-12 -right-12 w-40 h-40 bg-secondary/20 rounded-full blur-3xl"></div>
+      <div class="relative z-10">
+        <h2 class="font-headline text-2xl font-extrabold mb-3">BANKVI est prêt pour toi 🎯</h2>
+        <p class="text-on-primary-container opacity-80 text-sm mb-6 max-w-md mx-auto">Gère tes ventes, dettes et stocks au quotidien. Toutes tes données sont sécurisées et accessibles partout.</p>
+        <a href="index.html" class="inline-flex items-center gap-2 bg-white text-primary-container font-bold px-6 py-3 rounded-xl text-sm hover:scale-[1.02] transition-transform">
+          <span class="material-symbols-outlined text-lg">home</span>
+          Retour au tableau de bord
+        </a>
+        <div class="mt-6 text-[10px] opacity-50 uppercase tracking-widest">bankvi.onrender.com</div>
+      </div>
+    </section>
 
   </main>
+  </div>
 
-  <nav class="bottom-nav">
-    <a href="index.html" class="bn-item"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><rect x="2" y="2" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="10" y="2" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="2" y="10" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="10" y="10" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>Accueil</a>
-    <a href="dettes.html" class="bn-item"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M9 6v3l2 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Dettes</a>
-    <a href="ventes.html" class="bn-item"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><path d="M3 12l3-3 3 3 3-4 3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Ventes</a>
-    <a href="stocks.html" class="bn-item"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><rect x="3" y="3" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M6 9h6M9 6v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Stocks</a>
-    <a href="profil.html" class="bn-item active"><svg width="20" height="20" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="6" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M3 15c0-3 2.7-5 6-5s6 2 6 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Profil</a>
+  <!-- BOTTOM NAV MOBILE -->
+  <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t border-outline-variant/20 flex justify-around items-center py-2 z-50 h-[60px]">
+    <a href="index.html" class="flex flex-col items-center gap-0.5 text-outline px-3 py-1">
+      <span class="material-symbols-outlined text-2xl">home</span>
+      <span class="text-[10px] uppercase tracking-wider font-bold">Accueil</span>
+    </a>
+    <a href="dettes.html" class="flex flex-col items-center gap-0.5 text-outline px-3 py-1">
+      <span class="material-symbols-outlined text-2xl">account_balance_wallet</span>
+      <span class="text-[10px] uppercase tracking-wider font-bold">Dettes</span>
+    </a>
+    <a href="ventes.html" class="flex flex-col items-center gap-0.5 text-outline px-3 py-1">
+      <span class="material-symbols-outlined text-2xl">sell</span>
+      <span class="text-[10px] uppercase tracking-wider font-bold">Ventes</span>
+    </a>
+    <a href="stocks.html" class="flex flex-col items-center gap-0.5 text-outline px-3 py-1">
+      <span class="material-symbols-outlined text-2xl">inventory_2</span>
+      <span class="text-[10px] uppercase tracking-wider font-bold">Stocks</span>
+    </a>
+    <a href="profil.html" class="flex flex-col items-center gap-0.5 text-outline px-3 py-1">
+      <span class="material-symbols-outlined text-2xl">person</span>
+      <span class="text-[10px] uppercase tracking-wider font-bold">Profil</span>
+    </a>
   </nav>
 
-  <script src="js/app.js"></script>
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
 </body>
 </html>
