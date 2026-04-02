@@ -219,7 +219,7 @@ async function auth(req, res, next) {
 
 // ===== ROUTES =====
 app.get('/',         (req, res) => res.sendFile(path.join(__dirname, 'login.html')));
-app.get('/api/ping', auth, (req, res) => res.json({ status:'ok', user: req.user.nom }));
+app.get('/api/ping', (req, res) => res.json({ status: 'ok' }));
 
 // ===== REGISTER =====
 app.post('/api/register', rateLimit(5, 300000), async (req, res) => {

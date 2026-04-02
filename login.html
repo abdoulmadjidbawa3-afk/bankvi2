@@ -48,11 +48,61 @@
                         radial-gradient(at 100% 100%, hsla(160,100%,96%,1) 0, transparent 50%);
     }
     .msg { display: none; padding: 10px 14px; border-radius: 10px; font-size: 13px; margin-bottom: 1rem; }
-    .msg.error { background: #ffdad6; color: #93000a; }
+    .msg.error   { background: #ffdad6; color: #93000a; }
     .msg.success { background: #e1f5ee; color: #0F6E56; }
+
+    /* LOADING SCREEN */
+    #loading-screen {
+      position: fixed;
+      inset: 0;
+      background: #002e59;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.5s;
+    }
+    .loading-logo {
+      font-family: 'Manrope', sans-serif;
+      font-size: 40px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -2px;
+      margin-bottom: 8px;
+    }
+    .loading-logo span { color: #68dbae; }
+    .loading-msg {
+      font-size: 13px;
+      color: #88b2f1;
+      margin-bottom: 2rem;
+      font-family: 'Inter', sans-serif;
+    }
+    .loading-dots { display: flex; gap: 8px; }
+    .loading-dots div {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #68dbae;
+      animation: bounce 1.2s infinite;
+    }
+    .loading-dots div:nth-child(2) { animation-delay: 0.2s; }
+    .loading-dots div:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes bounce {
+      0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+      40%           { transform: scale(1);   opacity: 1;   }
+    }
   </style>
 </head>
 <body class="bg-surface font-body text-on-background min-h-screen bento-mesh flex flex-col">
+
+  <!-- LOADING SCREEN — ici, dans le body -->
+  <div id="loading-screen">
+    <div class="loading-logo">BANK<span>VI</span></div>
+    <p class="loading-msg">Veuillez patienter...</p>
+    <div class="loading-dots">
+      <div></div><div></div><div></div>
+    </div>
+  </div>
 
   <header class="w-full py-12 flex flex-col items-center justify-center">
     <div class="flex items-center space-x-0.5 mb-2">
@@ -94,9 +144,7 @@
                 </div>
               </div>
               <div class="space-y-1.5">
-                <div class="flex justify-between items-end ml-1">
-                  <label class="text-[0.6875rem] font-bold uppercase tracking-[0.05em] text-outline">Mot de passe</label>
-                </div>
+                <label class="text-[0.6875rem] font-bold uppercase tracking-[0.05em] text-outline">Mot de passe</label>
                 <div class="relative">
                   <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-xl">lock</span>
                   <input id="login-pwd" type="password" placeholder="••••••••" class="w-full pl-12 pr-4 py-3.5 bg-surface-container-lowest border border-outline-variant/30 rounded-xl focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all text-sm">
@@ -120,7 +168,7 @@
               <h2 class="text-xl font-bold font-headline text-on-surface tracking-tight">Créer un compte marchand</h2>
               <p class="text-sm text-on-surface-variant">Commencez à gérer vos stocks et dettes aujourd'hui.</p>
             </div>
-            <div class="msg error" id="err-register"></div>
+            <div class="msg error"   id="err-register"></div>
             <div class="msg success" id="suc-register"></div>
             <div class="space-y-4">
               <div class="grid grid-cols-2 gap-4">
@@ -178,30 +226,50 @@
     </div>
   </main>
 
-  <!-- Decorative gradient -->
   <div class="fixed bottom-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-secondary to-[#68dbae] opacity-20"></div>
 
   <script>
+    // ===== UNE SEULE DÉCLARATION DE API =====
     const API = window.location.origin + '/api';
-    if (localStorage.getItem('bankvi_token')) window.location.href = 'index.html';
+
+    // Rediriger si déjà connecté
+    if (localStorage.getItem('bankvi_token')) {
+      window.location.href = 'index.html';
+    }
+
+    // Page de chargement — ping sans auth
+    async function verifierServeur() {
+      const loading = document.getElementById('loading-screen');
+      try {
+        const res = await fetch(`${API}/ping`);
+        if (res.ok) {
+          loading.style.opacity = '0';
+          setTimeout(() => loading.style.display = 'none', 500);
+        } else {
+          setTimeout(verifierServeur, 3000);
+        }
+      } catch(e) {
+        setTimeout(verifierServeur, 3000);
+      }
+    }
+    verifierServeur();
 
     function switchTab(tab) {
-      const loginTab = document.getElementById('tab-login');
-      const registerTab = document.getElementById('tab-register');
-      const formLogin = document.getElementById('form-login');
+      const loginTab     = document.getElementById('tab-login');
+      const registerTab  = document.getElementById('tab-register');
+      const formLogin    = document.getElementById('form-login');
       const formRegister = document.getElementById('form-register');
-
       if (tab === 'login') {
-        loginTab.classList.add('bg-surface-container-lowest', 'text-primary', 'shadow-sm');
+        loginTab.classList.add('bg-surface-container-lowest','text-primary','shadow-sm');
         loginTab.classList.remove('text-on-surface-variant');
-        registerTab.classList.remove('bg-surface-container-lowest', 'text-primary', 'shadow-sm');
+        registerTab.classList.remove('bg-surface-container-lowest','text-primary','shadow-sm');
         registerTab.classList.add('text-on-surface-variant');
         formLogin.classList.remove('hidden');
         formRegister.classList.add('hidden');
       } else {
-        registerTab.classList.add('bg-surface-container-lowest', 'text-primary', 'shadow-sm');
+        registerTab.classList.add('bg-surface-container-lowest','text-primary','shadow-sm');
         registerTab.classList.remove('text-on-surface-variant');
-        loginTab.classList.remove('bg-surface-container-lowest', 'text-primary', 'shadow-sm');
+        loginTab.classList.remove('bg-surface-container-lowest','text-primary','shadow-sm');
         loginTab.classList.add('text-on-surface-variant');
         formRegister.classList.remove('hidden');
         formLogin.classList.add('hidden');
@@ -215,14 +283,24 @@
       err.style.display = 'none';
       if (!tel || !pwd) { err.textContent = 'Remplis tous les champs'; err.style.display = 'block'; return; }
       try {
-        const res  = await fetch(`${API}/login`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ tel, password: pwd }) });
+        const res  = await fetch(`${API}/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ tel, password: pwd })
+        });
         const data = await res.json();
         if (res.ok) {
           localStorage.setItem('bankvi_token', data.token);
-          localStorage.setItem('bankvi_user', JSON.stringify(data.user));
+          localStorage.setItem('bankvi_user',  JSON.stringify(data.user));
           window.location.href = 'index.html';
-        } else { err.textContent = data.message; err.style.display = 'block'; }
-      } catch(e) { err.textContent = 'Erreur serveur — réessaie'; err.style.display = 'block'; }
+        } else {
+          err.textContent = data.message;
+          err.style.display = 'block';
+        }
+      } catch(e) {
+        err.textContent = 'Erreur serveur — réessaie';
+        err.style.display = 'block';
+      }
     }
 
     async function sInscrire() {
@@ -232,18 +310,37 @@
       const pwd      = document.getElementById('reg-pwd').value;
       const err = document.getElementById('err-register');
       const suc = document.getElementById('suc-register');
-      err.style.display = 'none'; suc.style.display = 'none';
-      if (!nom || !boutique || !tel || !pwd) { err.textContent = 'Remplis tous les champs'; err.style.display = 'block'; return; }
-      if (pwd.length < 6) { err.textContent = 'Mot de passe trop court'; err.style.display = 'block'; return; }
+      err.style.display = 'none';
+      suc.style.display = 'none';
+      if (!nom || !boutique || !tel || !pwd) {
+        err.textContent = 'Remplis tous les champs';
+        err.style.display = 'block';
+        return;
+      }
+      if (pwd.length < 6) {
+        err.textContent = 'Mot de passe trop court';
+        err.style.display = 'block';
+        return;
+      }
       try {
-        const res  = await fetch(`${API}/register`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ nom, boutique, tel, password: pwd }) });
+        const res  = await fetch(`${API}/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nom, boutique, tel, password: pwd })
+        });
         const data = await res.json();
         if (res.ok) {
           suc.textContent = 'Compte créé ! Connecte-toi.';
           suc.style.display = 'block';
           setTimeout(() => switchTab('login'), 1500);
-        } else { err.textContent = data.message; err.style.display = 'block'; }
-      } catch(e) { err.textContent = 'Erreur serveur — réessaie'; err.style.display = 'block'; }
+        } else {
+          err.textContent = data.message;
+          err.style.display = 'block';
+        }
+      } catch(e) {
+        err.textContent = 'Erreur serveur — réessaie';
+        err.style.display = 'block';
+      }
     }
   </script>
 </body>
